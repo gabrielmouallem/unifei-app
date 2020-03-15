@@ -1,0 +1,8 @@
+{
+  "appId": "app.unifei",
+  "appName": "Unifei App",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www",
+  "cordova": {}
+}
