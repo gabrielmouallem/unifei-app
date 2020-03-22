@@ -1,15 +1,14 @@
 import React from 'react';
 import './App.css';
-import Nav from './pages/DashBoard/components/Nav/Nav';
-import Map from './pages/DashBoard/components/Map/Map';
-import BottomTab from './pages/DashBoard/components/BottomTab/BottomTab';
+import AppProviders from './components/AppProviders/AppProviders';
+import BaseRouter from './routes/BaseRouter/BaseRouter';
 
 function App() {
   return (
     <div className="App">
-      <Nav />
-      <Map />
-      <BottomTab />
+      <AppProviders>
+        <BaseRouter />
+      </AppProviders>
     </div>
   );
 }
