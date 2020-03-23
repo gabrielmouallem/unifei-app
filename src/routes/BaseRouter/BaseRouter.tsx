@@ -16,7 +16,7 @@ import DashboardRouter from "../DashboardRouter/DashboardRouter";
 const BaseRouter = () => {
   // Farms.
   //const logged_in = useSelector();
-  const logged_in = false;
+  const logged_in = true;
 
   return (
     <Router>
