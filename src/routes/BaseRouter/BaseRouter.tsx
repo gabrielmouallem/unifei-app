@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // router
 import {
   BrowserRouter as Router,
@@ -6,8 +6,6 @@ import {
   Route,
   Switch
 } from "react-router-dom";
-
-import { useSelector } from "react-redux";
 
 import AuthRouter from "../AuthRouter/AuthRouter";
 import DashboardRouter from "../DashboardRouter/DashboardRouter";

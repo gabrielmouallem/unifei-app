@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ReactJSX } from "../../../../utils/types";
 import "./DashboardContainer.scss";
 import CustomCircularProgress from "../../../../components/CustomCircularProgress/CustomCircularProgress";
