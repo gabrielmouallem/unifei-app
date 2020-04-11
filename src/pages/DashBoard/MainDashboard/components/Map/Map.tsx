@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 
 import GoogleMapReact from 'google-map-react';
 
+import blueDot from '../../../../../assets/images/blue-dot.png';
+import redDot from '../../../../../assets/images/red-dot.png';
+import greenDot from '../../../../../assets/images/green-dot.png';
+
 const AnyReactComponent = () => <div>MARKER</div>;
 
 export default () => {
@@ -33,7 +37,7 @@ export default () => {
                             lng: -45.449687
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
+                        icon: {url: blueDot}
     
                     })
 
@@ -43,7 +47,7 @@ export default () => {
                             lng: -45.449007
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
+                        icon: {url: blueDot}
     
                     })
 
@@ -53,7 +57,7 @@ export default () => {
                             lng: -45.449007
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
+                        icon: {url: blueDot}
     
                     })
 
@@ -63,7 +67,7 @@ export default () => {
                             lng: -45.449207
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"}
+                        icon: {url: redDot}
     
                     })
 
@@ -73,7 +77,7 @@ export default () => {
                             lng: -45.448207
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"}
+                        icon: {url: redDot}
     
                     })
 
@@ -83,7 +87,7 @@ export default () => {
                             lng: -45.449007
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"}
+                        icon: {url: redDot}
     
                     })
 
@@ -93,7 +97,7 @@ export default () => {
                             lng: -45.449907
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                        icon: {url: greenDot}
     
                     })
 
@@ -103,7 +107,7 @@ export default () => {
                             lng: -45.449907
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                        icon: {url: greenDot}
     
                     })
 
@@ -113,7 +117,7 @@ export default () => {
                             lng: -45.450907
                         },
                         map: map,//Objeto mapa
-                        icon: {url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                        icon: {url: greenDot}
     
                     })
                 }
