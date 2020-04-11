@@ -3,6 +3,6 @@
   "appName": "Unifei App",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www",
+  "webDir": "build",
   "cordova": {}
 }
