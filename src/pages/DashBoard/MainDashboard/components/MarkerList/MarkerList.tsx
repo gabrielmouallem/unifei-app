@@ -2,6 +2,10 @@ import React from 'react';
 import './MarkerList.scss';
 import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider } from '@material-ui/core';
 
+import blueDot from '../../../../../assets/images/blue-dot.png';
+import redDot from '../../../../../assets/images/red-dot.png';
+import greenDot from '../../../../../assets/images/green-dot.png';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -22,7 +26,7 @@ export default () => {
             <List className={classes.root}>
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar alt="marker" src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" />
+                        <Avatar alt="marker" src={blueDot} />
                     </ListItemAvatar>
                     <ListItemText
                         primary="Sala B1013"
@@ -44,7 +48,7 @@ export default () => {
                 <Divider variant="inset" component="li" />
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar alt="marker" src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+                        <Avatar alt="marker" src={redDot} />
                     </ListItemAvatar>
                     <ListItemText
                         primary="Sala A1104"
@@ -66,7 +70,7 @@ export default () => {
                 <Divider variant="inset" component="li" />
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar alt="marker" src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" />
+                        <Avatar alt="marker" src={greenDot} />
                     </ListItemAvatar>
                     <ListItemText
                         primary="Sala X1208"
