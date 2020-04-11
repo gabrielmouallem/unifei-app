@@ -21,7 +21,7 @@ const BaseRouter = () => {
       <Switch>
         <Route
           exact
-          path={'/login'}
+          path={'/'}
           render={(props: any) =>
             !logged_in ? (
               <AuthRouter {...props} />
