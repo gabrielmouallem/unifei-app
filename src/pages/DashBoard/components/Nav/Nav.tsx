@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './Nav.scss';
 
 import { Plugins } from '@capacitor/core';
@@ -8,10 +8,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
+import { BasicsContext } from '../BasicsProvider/BasicsProvider';
 
 const { StatusBar } = Plugins;
 
 export default () => {
+
+    const ctx = useContext(BasicsContext);
 
     useEffect(() => {
         StatusBar.setBackgroundColor({ color: "#004780" });
@@ -22,7 +25,10 @@ export default () => {
             <Toolbar>
                 <div className="nav">
                     <div className="nav__items-left">
-                        <IconButton edge="start" aria-label="menu">
+                        <IconButton edge="start" aria-label="menu"
+                            onClick={()=>{
+                                ctx.openDrawer();
+                            }}>
                             <MenuIcon />
                         </IconButton>
                         <h6>
