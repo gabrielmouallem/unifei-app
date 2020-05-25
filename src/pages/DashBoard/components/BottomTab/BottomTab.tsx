@@ -24,8 +24,10 @@ export default () => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: any, newValue: any) => {
+        console.log(newValue)
         setValue(newValue);
     };
+    
 
     return (
         <div className="bottom-tab">
@@ -34,14 +36,13 @@ export default () => {
                     value={value}
                     onChange={handleChange}
                     variant="fullWidth"
-                    indicatorColor="primary"
-                    textColor="primary"
-                    aria-label="icon tabs example"
+                    indicatorColor="secondary"
+                    textColor="secondary"
+                    aria-label="bottom-tab"
+                    TabIndicatorProps={{style: {backgroundColor: "white"}}}
                 >
-                    <Tab icon={<PlaceIcon />} aria-label="place" />
-                    <Tab icon={<LocalLibraryIcon />} aria-label="study" />
-                    <Tab icon={<EventIcon />} aria-label="event" />
-                    <Tab icon={<LocalTaxiIcon />} aria-label="car-ride" />
+                    <Tab label="MAPA" aria-label="map" />
+                    <Tab label="LISTA" aria-label="list" />
                 </Tabs>
             </Paper>
         </div>
