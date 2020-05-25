@@ -8,6 +8,7 @@ import Tab from '@material-ui/core/Tab';
 import Map from '../../MainDashboard/components/Map/Map';
 
 import { makeStyles } from '@material-ui/core/styles';
+import MarkerList from '../../MainDashboard/components/MarkerList/MarkerList';
 
 const useStyles = makeStyles({
     root: {
@@ -27,7 +28,7 @@ export default () => {
     return (
         <>
             {
-                value ? <></> : <Map />
+                value ? <MarkerList /> : <Map />
             }
             <div className="bottom-tab">
                 <Paper square className={classes.root}>

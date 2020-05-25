@@ -1,3 +1,12 @@
-.map {
+@keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+}
 
+.map {
+    // animation: 0.2s ease-out 0s 1 slideInFromLeft;
 }
