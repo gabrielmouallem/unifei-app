@@ -5,10 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-import PlaceIcon from '@material-ui/icons/Place';
-import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
-import EventIcon from '@material-ui/icons/Event';
-import LocalTaxiIcon from '@material-ui/icons/LocalTaxi';
+import Map from '../../MainDashboard/components/Map/Map';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -24,27 +21,30 @@ export default () => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: any, newValue: any) => {
-        console.log(newValue)
         setValue(newValue);
     };
-    
 
     return (
-        <div className="bottom-tab">
-            <Paper square className={classes.root}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    variant="fullWidth"
-                    indicatorColor="secondary"
-                    textColor="secondary"
-                    aria-label="bottom-tab"
-                    TabIndicatorProps={{style: {backgroundColor: "white"}}}
-                >
-                    <Tab label="MAPA" aria-label="map" />
-                    <Tab label="LISTA" aria-label="list" />
-                </Tabs>
-            </Paper>
-        </div>
+        <>
+            {
+                value ? <></> : <Map />
+            }
+            <div className="bottom-tab">
+                <Paper square className={classes.root}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="fullWidth"
+                        indicatorColor="secondary"
+                        textColor="secondary"
+                        aria-label="bottom-tab"
+                        TabIndicatorProps={{ style: { backgroundColor: "white" } }}
+                    >
+                        <Tab label="MAPA" aria-label="map" />
+                        <Tab label="LISTA" aria-label="list" />
+                    </Tabs>
+                </Paper>
+            </div>
+        </>
     );
 }

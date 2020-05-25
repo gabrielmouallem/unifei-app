@@ -2,7 +2,7 @@ import React from 'react';
 import './MainDashboard.scss';
 
 import Map from './components/Map/Map';
-import BottomTab from '../components/BottomTab/BottomTab';
+import BottomDrawer from '../components/BottomTab/BottomTab';
 
 export default () => {
 
@@ -10,10 +10,9 @@ export default () => {
         <div className="main-dashboard">
             <div className="main-dashboard__map-container">
                 <div className="main-dashboard__map">
-                    <Map />
+                    <BottomDrawer />
                 </div>
             </div>
-            <BottomTab />
         </div>
     )
 }
