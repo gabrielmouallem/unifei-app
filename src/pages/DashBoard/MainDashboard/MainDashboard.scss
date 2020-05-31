@@ -1,12 +1,3 @@
 .main-dashboard {
-    &__map-container {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-    }
 
-    &__map {
-        width: 100%;
-        height: calc(100% - 105px); //100% - height of header and top components
-    }
 }
