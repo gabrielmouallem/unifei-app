@@ -9,6 +9,7 @@ import Map from '../../MainDashboard/components/Map/Map';
 
 import { makeStyles } from '@material-ui/core/styles';
 import MarkerList from '../../MainDashboard/components/MarkerList/MarkerList';
+import FilterList from '../../MainDashboard/components/FilterList/FilterList';
 
 const useStyles = makeStyles({
     root: {
@@ -41,7 +42,7 @@ export default () => {
                                 backgroundColor: "#FA610C",
                                 top: "0",
                                 height: "3px"
-                            } 
+                            }
                         }}
                     >
                         <Tab label="MAPA" aria-label="map" />
@@ -52,9 +53,7 @@ export default () => {
             <div className="top-tab__container">
                 <div className="top-tab__map">
                     {/* Podemos colocar componentes sobre o componente do mapa caso queiramos */}
-                    {/* <div className="teste">
-                        TESTE
-                    </div> */}
+                    {/* <FilterList /> */}
                     {
                         value ? <MarkerList /> : <Map />
                     }

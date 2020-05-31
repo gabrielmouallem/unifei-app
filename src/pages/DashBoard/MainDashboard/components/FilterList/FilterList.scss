@@ -1,0 +1,52 @@
+.filter-list {
+    z-index: 1;
+    position: fixed;
+    top: 15%;
+    left: calc(100% - 200px);
+    width: 175px;
+    font-size: 0.8em !important;
+
+    text-align: center !important;
+
+    &__flex {
+        color: white;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        svg {
+            width: 20px;
+            margin-right: 10px;
+            opacity: 1;
+        }
+    }
+
+    .MuiListItem-root {
+        padding-top: 0;
+        padding-bottom: 0;
+        text-align: center;
+    }
+
+    .MuiTypography-root {
+        margin: 0;
+        font-size: 1em !important;
+    }
+
+    .MuiListItemText-root {
+        font-size: 0.8em !important;
+    }
+
+    .MuiExpansionPanelSummary-content {
+        margin: 5px 0;
+    }
+
+    .MuiExpansionPanelDetails-root {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+
+        div {
+            padding: 10px 0px;
+        }
+    }
+}

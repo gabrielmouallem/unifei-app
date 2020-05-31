@@ -1,4 +1,4 @@
-@keyframes slideInFromLeft {
+@keyframes fadeIn {
     0% {
       opacity: 0;
     }
@@ -8,7 +8,8 @@
 }
 
 .marker-list {
-    animation: 1.3s ease-out 0s 1 slideInFromLeft;
+    padding-top: 30px;
+    animation: 1.3s ease-out 0s 1 fadeIn;
     height: 100%;
     background-color: white;
 }

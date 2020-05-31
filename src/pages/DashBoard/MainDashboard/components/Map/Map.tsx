@@ -18,6 +18,10 @@ export default () => {
         zoom: 17
     });
 
+    const defaultMapOptions = {
+        fullscreenControl: false,
+    };
+
     return (
         // Important! Always set the container height explicitly
         <>
@@ -27,18 +31,18 @@ export default () => {
                     language: "pt",
                     region: "BR"
                 }}
+                options={defaultMapOptions}
                 defaultCenter={defaultProps.center}
                 defaultZoom={defaultProps.zoom}
-                onGoogleApiLoaded={({ map, maps }) =>
-                {
+                onGoogleApiLoaded={({ map, maps }) => {
                     new google.maps.Marker({
                         position: {
                             lat: -22.413042,
                             lng: -45.449687
                         },
                         map: map,//Objeto mapa
-                        icon: {url: blueDot}
-    
+                        icon: { url: blueDot }
+
                     })
 
                     new google.maps.Marker({
@@ -47,8 +51,8 @@ export default () => {
                             lng: -45.449007
                         },
                         map: map,//Objeto mapa
-                        icon: {url: blueDot}
-    
+                        icon: { url: blueDot }
+
                     })
 
                     new google.maps.Marker({
@@ -57,8 +61,8 @@ export default () => {
                             lng: -45.449007
                         },
                         map: map,//Objeto mapa
-                        icon: {url: blueDot}
-    
+                        icon: { url: blueDot }
+
                     })
 
                     new google.maps.Marker({
@@ -67,8 +71,8 @@ export default () => {
                             lng: -45.449207
                         },
                         map: map,//Objeto mapa
-                        icon: {url: redDot}
-    
+                        icon: { url: redDot }
+
                     })
 
                     new google.maps.Marker({
@@ -77,8 +81,8 @@ export default () => {
                             lng: -45.448207
                         },
                         map: map,//Objeto mapa
-                        icon: {url: redDot}
-    
+                        icon: { url: redDot }
+
                     })
 
                     new google.maps.Marker({
@@ -87,8 +91,8 @@ export default () => {
                             lng: -45.449007
                         },
                         map: map,//Objeto mapa
-                        icon: {url: redDot}
-    
+                        icon: { url: redDot }
+
                     })
 
                     new google.maps.Marker({
@@ -97,8 +101,8 @@ export default () => {
                             lng: -45.449907
                         },
                         map: map,//Objeto mapa
-                        icon: {url: greenDot}
-    
+                        icon: { url: greenDot }
+
                     })
 
                     new google.maps.Marker({
@@ -107,8 +111,8 @@ export default () => {
                             lng: -45.449907
                         },
                         map: map,//Objeto mapa
-                        icon: {url: greenDot}
-    
+                        icon: { url: greenDot }
+
                     })
 
                     new google.maps.Marker({
@@ -117,8 +121,8 @@ export default () => {
                             lng: -45.450907
                         },
                         map: map,//Objeto mapa
-                        icon: {url: greenDot}
-    
+                        icon: { url: greenDot }
+
                     })
                 }
                 }
