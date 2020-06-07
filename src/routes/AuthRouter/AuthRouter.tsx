@@ -1,5 +1,5 @@
 import React from "react";
 
-import Login from "../../pages/Auth/components/Login/Login";
+import Login from "../../pages/Auth/Login/Login";
 
 export default () => <Login />;
