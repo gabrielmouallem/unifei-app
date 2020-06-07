@@ -48,10 +48,7 @@ const MenuDrawer = () => {
                 fontSize: "80px"
               }} />
           </div>
-          <div
-            onClick={() => {
-              dispatch(clearToken());
-            }}>
+          <div>
             <div className="menu-drawer__profile-name">
               <Typography
                 style={{ fontWeight: "bold" }} >
@@ -60,7 +57,10 @@ const MenuDrawer = () => {
             </div>
             <div className="menu-drawer__profile-infos">
               <span className="menu-drawer__code">2017017731</span>
-              <span className="menu-drawer__logout">
+              <span className="menu-drawer__logout"
+                onClick={() => {
+                  dispatch(clearToken());
+                }}>
                 <ArrowForwardIosIcon
                   style={{ fontSize: "15px" }} /> Sair
               </span>
