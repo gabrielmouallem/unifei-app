@@ -1,0 +1,137 @@
+.register {
+    width: 100vw;
+    height: 125vh;
+    background: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__back {
+        margin: 3vh 0vh 5px 13vh;
+        width: 100%;
+        opacity: 0.5;
+    }
+
+    &__title {
+        margin-top: -12px;
+        margin-bottom: 18px;
+    }
+
+    &__logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 5vh;
+        img {
+            min-width: 15%;
+            max-width: 35%;
+        }
+    }
+
+    &__input {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2.5vh;
+    }
+
+    &__button {
+        width: 75%;
+    }
+
+    &__terms {
+        opacity: 0.6;
+        padding: 20px 0px 5px 0px;
+        width: 75%;
+    }
+    
+    &__or-line {
+        display: inline-block;
+        position: relative;
+        margin: 10px 0px 10px 0px;
+        color: rgb(139, 139, 139);
+    
+        &:before {
+          content: "";
+          position: absolute;
+          height: 5px;
+          border-bottom: 1px solid #aaa;
+          top: 25%;
+          width: 110px;
+        }
+        &:after {
+          content: "";
+          position: absolute;
+          height: 5px;
+          border-bottom: 1px solid #aaa;
+          top: 25%;
+          width: 110px;
+        }
+    
+        &:before {
+          right: 100%;
+          margin-right: 15px;
+        }
+    
+        &:after {
+          left: 100%;
+          margin-left: 15px;
+        }
+    }
+
+    &__google-container {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__google-button {
+        cursor: pointer;
+        width: 75%;
+        height: 50px;
+        background: #ffffff;
+        border: 1px solid #797979;
+        box-sizing: border-box;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        &__icon {
+            margin-left: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        &__text {
+            width: 100%;
+            height: 16px;
+            color: #797979;
+            .MuiTypography-root {
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 16px;
+                letter-spacing: 0.4px;
+            }
+        }
+    }
+
+    &__login {
+        width: 75%;
+        margin-top: 1.5vh;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        opacity: 70%;
+    }
+
+    .MuiOutlinedInput-input {
+        padding: 12.5px 14px;
+    }
+}
