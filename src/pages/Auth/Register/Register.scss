@@ -1,6 +1,7 @@
 .register {
-    width: 100vw;
-    height: 125vh;
+    width: 100%;
+    overflow-x: hidden;
+    height: 100%;
     background: #F5F5F5;
     display: flex;
     flex-direction: column;

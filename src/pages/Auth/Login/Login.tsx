@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Login.scss';
 import LogoWShaddow from '../../../assets/images/logo-w-shadow.png';
-import { FormControl, InputLabel, Input, InputAdornment, IconButton, makeStyles, OutlinedInput, Button, Typography, Slide, Fade } from '@material-ui/core';
+import { FormControl, InputLabel, Input, InputAdornment, IconButton, makeStyles, OutlinedInput, Button, Typography, Slide, Fade, Dialog, DialogContent } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import LockIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
@@ -9,6 +9,7 @@ import GoogleIcon from '../components/GoogleIcon';
 import { useHistory } from 'react-router-dom';
 import routes from '../../../routes/routes';
 import Register from '../Register/Register';
+import { TransitionProps } from '@material-ui/core/transitions/transition';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
         width: '25ch',
     },
 }));
+
+const Transition = React.forwardRef<unknown, TransitionProps>(
+    function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    }
+);
 
 export default () => {
 
@@ -52,8 +59,8 @@ export default () => {
         event.preventDefault();
     };
 
-    if(!register)
-        return (
+    return (
+        <>
             <div className="login">
                 <div className="login__logo">
                     <img src={LogoWShaddow} />
@@ -159,8 +166,8 @@ export default () => {
                     >
                         Ainda não possui uma conta?
                         <div
-                            style={{color: "#3055D8"}}
-                            onClick={()=>{
+                            style={{ color: "#3055D8" }}
+                            onClick={() => {
                                 setRegister(true)
                             }} >
                             Crie uma!
@@ -168,6 +175,20 @@ export default () => {
                     </Typography>
                 </div>
             </div>
-        );
-    else return <Register register={register} setRegister={setRegister} />
+            <Dialog
+                fullWidth
+                fullScreen
+                open={register}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={() => {
+                    setRegister(!register)
+                }}
+                aria-labelledby="alert-dialog-slide-title"
+                aria-describedby="alert-dialog-slide-description"
+            >
+                <Register setOpen={setRegister}/>
+            </Dialog>
+        </>
+    );
 }
