@@ -39,13 +39,13 @@
     }
 
     &__button {
-        width: 75%;
+        width: 270px;
     }
 
     &__terms {
         opacity: 0.6;
         padding: 20px 0px 5px 0px;
-        width: 75%;
+        width: 270px;
     }
     
     &__or-line {
@@ -92,7 +92,7 @@
 
     &__google-button {
         cursor: pointer;
-        width: 75%;
+        width: 270px;
         height: 50px;
         background: #ffffff;
         border: 1px solid #797979;
@@ -122,7 +122,7 @@
     }
 
     &__login {
-        width: 75%;
+        width: 270px;
         margin-top: 1.5vh;
         display: flex;
         flex-direction: row;

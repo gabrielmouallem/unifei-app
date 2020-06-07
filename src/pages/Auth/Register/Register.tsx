@@ -237,7 +237,11 @@ export default (props: Props) => {
                     }}
                 >
                     Já possui uma conta?
-                    <div style={{ color: "#3055D8" }}>
+                    <div
+                        style={{ color: "#3055D8" }}
+                        onClick={() => {
+                            props.setOpen(false)
+                        }}>
                         Entre!
                     </div>
                 </Typography>
