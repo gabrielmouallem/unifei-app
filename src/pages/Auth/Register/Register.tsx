@@ -7,6 +7,9 @@ import PersonIcon from '@material-ui/icons/Person';
 import GoogleIcon from '../components/GoogleIcon';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import EmailIcon from '@material-ui/icons/Email';
+import useNotify from '../../../hooks/tools/useNotify';
+import { coreHTTPClient } from '../../../services/webclient';
+import CustomCircularProgress from '../../../components/CustomCircularProgress/CustomCircularProgress';
 
 interface Props {
     setOpen: (open: any) => void;
@@ -33,22 +36,42 @@ export default (props: Props) => {
 
     const classes = useStyles();
 
+    const notify = useNotify();
+
     const [values, setValues] = React.useState({
-        password: '',
-        showPassword: false,
+        username: '',
+        email: '',
+        password1: '',
+        password2: '',
     });
 
     const handleChange = (prop: any) => (event: { target: { value: any; }; }) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
-    };
+    const validateEmailFormat = (email: string) => {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !re.test(String(email).toLowerCase());
+    }
 
-    const handleMouseDownPassword = (event: { preventDefault: () => void; }) => {
-        event.preventDefault();
-    };
+    async function doRegister() {
+        await new Promise(async resolve => {
+            try {
+                const body = {
+                    username: values.username,
+                    password: values.password2,
+                    email: values.email
+                }
+                console.log(body)
+                const response = await coreHTTPClient.post(`auth/register/`, body);
+                notify("Registrado com sucesso!", "success");
+                props.setOpen(false);
+            } catch (err) {
+                console.log("Erro em doRegister", err);
+                notify("Ocorreu um erro ao registrar.", 'error');
+            }
+        });
+    }
 
     return (
         <div className="register">
@@ -68,7 +91,7 @@ export default (props: Props) => {
                     }}
                 >
                     Criar Uma Conta
-                    </Typography>
+                        </Typography>
             </div>
             <div className="register__input">
                 <span>
@@ -83,9 +106,9 @@ export default (props: Props) => {
                             <OutlinedInput
                                 id="outlined-adornment-username"
                                 type="text"
-                                value={values.password}
+                                value={values.username}
                                 label="Usuário"
-                                onChange={() => { }}
+                                onChange={handleChange('username')}
                                 labelWidth={70}
                             />
                         </FormControl>
@@ -105,9 +128,10 @@ export default (props: Props) => {
                             <OutlinedInput
                                 id="outlined-adornment-email"
                                 type="text"
-                                value={values.password}
+                                value={values.email}
                                 label="Email"
-                                onChange={() => { }}
+                                onChange={handleChange('email')}
+                                error={validateEmailFormat(values.email)}
                                 labelWidth={70}
                             />
                         </FormControl>
@@ -121,27 +145,15 @@ export default (props: Props) => {
                 <div>
                     <div className={classes.root}>
                         <FormControl variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">
+                            <InputLabel htmlFor="outlined-adornment-password1">
                                 <div style={{ fontSize: "0.8em" }}>Senha</div>
                             </InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-password"
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
+                                id="outlined-adornment-password1"
+                                type={'password'}
+                                value={values.password1}
                                 label="Senha"
-                                onChange={handleChange('password')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
+                                onChange={handleChange('password1')}
                                 labelWidth={70}
                             />
                         </FormControl>
@@ -160,22 +172,11 @@ export default (props: Props) => {
                             </InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-confirm-password"
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
+                                type={'password'}
+                                value={values.password2}
                                 label="Senha"
-                                onChange={handleChange('password')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle confirm password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
+                                onChange={handleChange('password2')}
+                                error={values.password1 !== values.password2}
                                 labelWidth={70}
                             />
                         </FormControl>
@@ -191,9 +192,16 @@ export default (props: Props) => {
                         fontSize: "0.8em",
                         height: "50px"
                     }}
-                    variant="contained">
+                    variant="contained"
+                    onClick={() => {
+                        if (values.password1 !== values.password2 || validateEmailFormat(values.email)) {
+                            notify("Erro! Verifique os campos em vermelho.", `error`);
+                        } else {
+                            doRegister();
+                        }
+                    }}>
                     REGISTRAR
-                </Button>
+                    </Button>
             </div>
             <div className="register__terms">
                 <Typography
@@ -203,14 +211,14 @@ export default (props: Props) => {
                         textAlign: "center"
                     }}>
                     Ao registrar você está confirmando que concorda com nossos
-                        <span style={{ color: "#FA610C" }}> Termos de Uso </span> e
-                         <span style={{ color: "#FA610C" }}> Política de Privacidade </span>.
-                    </Typography>
+                            <span style={{ color: "#FA610C" }}> Termos de Uso </span> e
+                             <span style={{ color: "#FA610C" }}> Política de Privacidade </span>.
+                        </Typography>
             </div>
             <div className="register__or-line">
                 <Typography>
                     ou
-                </Typography>
+                    </Typography>
             </div>
             <div className="register__google-container">
                 <button
@@ -224,7 +232,7 @@ export default (props: Props) => {
                     <div className="register__google-button__text">
                         <Typography>
                             Entrar com o Google
-                        </Typography>
+                            </Typography>
                     </div>
                     {/* <GlobalText content={TextContentID.LOGIN_GOOGLE_SIGN_IN} /> */}
                 </button>
@@ -237,13 +245,13 @@ export default (props: Props) => {
                     }}
                 >
                     Já possui uma conta?
-                    <div
+                        <div
                         style={{ color: "#3055D8" }}
                         onClick={() => {
                             props.setOpen(false)
                         }}>
                         Entre!
-                    </div>
+                        </div>
                 </Typography>
             </div>
         </div>

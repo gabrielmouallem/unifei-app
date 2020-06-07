@@ -20,17 +20,10 @@ coreHTTPClient.interceptors.request.use(
     if (checkExists(getAuthorization())) {
       config.headers.Authorization = `Token ${getAuthorization()}`;
     }
-
     return config;
   },
   error => Promise.reject(error)
 );
-
-export const coreHTTPClientOld = axios.create({
-  baseURL: baseURL.core,
-  responseType: "json",
-  timeout: 90000
-});
 
 function getAuthorization() {
   return Store().store.getState().auth.token;

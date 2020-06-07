@@ -9,12 +9,18 @@ import {
 
 import AuthRouter from "../AuthRouter/AuthRouter";
 import DashboardRouter from "../DashboardRouter/DashboardRouter";
+import { useSelector, shallowEqual } from "react-redux";
+import { ApplicationState } from "../../redux";
 
 
 const BaseRouter = () => {
-  // Farms.
-  //const logged_in = useSelector();
-  const logged_in = false;
+
+  //const logged_in = true;
+  
+  const logged_in = useSelector(
+    (state: ApplicationState) => state.auth.logged_in,
+    shallowEqual
+  );
 
   return (
     <Router>
@@ -39,7 +45,7 @@ const BaseRouter = () => {
             logged_in ? (
               <DashboardRouter {...props} />
             ) : (
-              <Redirect to={{ pathname: '/login' }} />
+              <Redirect to={{ pathname: '/' }} />
             )
           }
         />

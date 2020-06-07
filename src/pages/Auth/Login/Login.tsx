@@ -10,6 +10,16 @@ import { useHistory } from 'react-router-dom';
 import routes from '../../../routes/routes';
 import Register from '../Register/Register';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
+import { coreHTTPClient } from '../../../services/webclient';
+import useNotify from '../../../hooks/tools/useNotify';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../../../redux/auth/actions';
+import CustomCircularProgress from '../../../components/CustomCircularProgress/CustomCircularProgress';
+
+interface LoginProps {
+    username: string;
+    password: string;
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,9 +50,16 @@ export default () => {
 
     const history = useHistory();
 
+    const notify = useNotify();
+
+    const dispatch = useDispatch();
+
     const [register, setRegister] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
     const [values, setValues] = React.useState({
+        username: '',
         password: '',
         showPassword: false,
     });
@@ -59,136 +76,175 @@ export default () => {
         event.preventDefault();
     };
 
-    return (
-        <>
-            <div className="login">
-                <div className="login__logo">
-                    <img src={LogoWShaddow} />
-                </div>
-                <div className="login__input">
-                    <span>
-                        <PersonIcon style={{ opacity: "50%", fontSize: "36px", marginRight: "5vw" }} />
-                    </span>
-                    <div>
-                        <div className={classes.root}>
-                            <FormControl variant="outlined">
-                                <InputLabel htmlFor="outlined-adornment-username">Usuário</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-username"
-                                    type="text"
-                                    value={values.password}
-                                    label="Usuário"
-                                    onChange={() => { }}
-                                    labelWidth={70}
-                                />
-                            </FormControl>
+    async function passwordLogin() {
+        await new Promise(async resolve => {
+            setLoading(true)
+            try {
+                const body = {
+                    method: "password",
+                    username: values.username,
+                    password: values.password,
+                }
+                console.log(body)
+                const response = await coreHTTPClient.post(`auth/`, body);
+                setLoading(false);
+                const { token } = response.data;
+                console.log(token)
+                dispatch(setToken(token));
+
+                notify("Logado com sucesso!", "success");
+            } catch (err) {
+                setLoading(false);
+                console.log("Erro em passwordLogin", err);
+                notify("Ocorreu um erro ao entrar, verifique seu usuário e senha.", 'error');
+            }
+        });
+    }
+
+    const handlePasswordLogin = () => {
+        console.log(values)
+        if (values.password === '' || values.username === '') {
+            notify("Preencha os campos de usuário e senha.", 'error');
+        } else {
+            passwordLogin();
+        }
+    }
+
+    if (!loading) {
+        return (
+            <>
+                <div className="login">
+                    <div className="login__logo">
+                        <img src={LogoWShaddow} />
+                    </div>
+                    <div className="login__input">
+                        <span>
+                            <PersonIcon style={{ opacity: "50%", fontSize: "36px", marginRight: "5vw" }} />
+                        </span>
+                        <div>
+                            <div className={classes.root}>
+                                <FormControl variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-username">Usuário</InputLabel>
+                                    <OutlinedInput
+                                        id="outlined-adornment-username"
+                                        type="text"
+                                        value={values.username}
+                                        label="Usuário"
+                                        onChange={handleChange('username')}
+                                        labelWidth={70}
+                                    />
+                                </FormControl>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="login__input">
-                    <span>
-                        <LockIcon style={{ opacity: "50%", fontSize: "36px", marginRight: "5vw" }} />
-                    </span>
-                    <div>
-                        <div className={classes.root}>
-                            <FormControl variant="outlined">
-                                <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
-                                <OutlinedInput
-                                    id="outlined-adornment-password"
-                                    type={values.showPassword ? 'text' : 'password'}
-                                    value={values.password}
-                                    label="Senha"
-                                    onChange={handleChange('password')}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    labelWidth={70}
-                                />
-                            </FormControl>
+                    <div className="login__input">
+                        <span>
+                            <LockIcon style={{ opacity: "50%", fontSize: "36px", marginRight: "5vw" }} />
+                        </span>
+                        <div>
+                            <div className={classes.root}>
+                                <FormControl variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
+                                    <OutlinedInput
+                                        id="outlined-adornment-password"
+                                        type={values.showPassword ? 'text' : 'password'}
+                                        value={values.password}
+                                        label="Senha"
+                                        onChange={handleChange('password')}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                                >
+                                                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        labelWidth={70}
+                                    />
+                                </FormControl>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="login__button">
-                    <Button
-                        style={{
-                            background: "#3055D8",
-                            color: "white",
-                            width: "100%",
-                            fontSize: "0.8em",
-                            height: "50px"
-                        }}
-                        variant="contained">
-                        ENTRAR
-                    </Button>
-                </div>
-                <div className="login__password-lost">
-                    <Typography style={{ fontSize: "0.8em", fontWeight: "bold" }}>
-                        Esqueci Minha Senha
-                    </Typography>
-                </div>
-                <div className="login__or-line">
-                    <Typography>
-                        ou
-                    </Typography>
-                </div>
-                <div className="login__google-container">
-                    <button
-                        type="button"
-                        onClick={() => { }}
-                        className="login__google-button"
-                    >
-                        <div className="login__google-button__icon">
-                            <GoogleIcon />
-                        </div>
-                        <div className="login__google-button__text">
-                            <Typography>
-                                Entrar com o Google
-                            </Typography>
-                        </div>
-                        {/* <GlobalText content={TextContentID.LOGIN_GOOGLE_SIGN_IN} /> */}
-                    </button>
-                </div>
-                <div className="login__register">
-                    <Typography
-                        style={{
-                            fontSize: "0.8em",
-                            fontWeight: "bold",
-                        }}
-                    >
-                        Ainda não possui uma conta?
-                        <div
-                            style={{ color: "#3055D8" }}
+                    <div className="login__button">
+                        <Button
+                            style={{
+                                background: "#3055D8",
+                                color: "white",
+                                width: "100%",
+                                fontSize: "0.8em",
+                                height: "50px"
+                            }}
+                            variant="contained"
                             onClick={() => {
-                                setRegister(true)
-                            }} >
-                            Crie uma!
-                        </div>
+                                handlePasswordLogin();
+                            }}>
+                            ENTRAR
+                    </Button>
+                    </div>
+                    <div className="login__password-lost">
+                        <Typography style={{ fontSize: "0.8em", fontWeight: "bold" }}>
+                            Esqueci Minha Senha
                     </Typography>
+                    </div>
+                    <div className="login__or-line">
+                        <Typography>
+                            ou
+                    </Typography>
+                    </div>
+                    <div className="login__google-container">
+                        <button
+                            type="button"
+                            onClick={() => { }}
+                            className="login__google-button"
+                        >
+                            <div className="login__google-button__icon">
+                                <GoogleIcon />
+                            </div>
+                            <div className="login__google-button__text">
+                                <Typography>
+                                    Entrar com o Google
+                            </Typography>
+                            </div>
+                            {/* <GlobalText content={TextContentID.LOGIN_GOOGLE_SIGN_IN} /> */}
+                        </button>
+                    </div>
+                    <div className="login__register">
+                        <Typography
+                            style={{
+                                fontSize: "0.8em",
+                                fontWeight: "bold",
+                            }}
+                        >
+                            Ainda não possui uma conta?
+                        <div
+                                style={{ color: "#3055D8" }}
+                                onClick={() => {
+                                    setRegister(true)
+                                }} >
+                                Crie uma!
+                        </div>
+                        </Typography>
+                    </div>
                 </div>
-            </div>
-            <Dialog
-                fullWidth
-                fullScreen
-                open={register}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={() => {
-                    setRegister(!register)
-                }}
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
-            >
-                <Register setOpen={setRegister}/>
-            </Dialog>
-        </>
-    );
+                <Dialog
+                    fullWidth
+                    fullScreen
+                    open={register}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={() => {
+                        setRegister(!register)
+                    }}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <Register setOpen={setRegister} />
+                </Dialog>
+            </>
+        );
+    } else return <CustomCircularProgress />
 }
