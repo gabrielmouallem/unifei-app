@@ -1,3 +1,45 @@
+
 .add-marker {
     
+    &__step-2 {
+
+        width: 100vw;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    &__map-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__map {
+        width: 100%;
+        height: 100px; //100% - height of header and top components
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    &__marker-type {
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    &__input {
+        align-self: center;
+        justify-self: center;
+        margin: 10px 0px;
+        width: 70%;
+    }
+
 }

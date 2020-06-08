@@ -79,7 +79,7 @@ export default () => {
                 aria-describedby="alert-dialog-slide-description"
                 >
                 <BaseModal title="Criar Marcador" setOpen={setOpen}>
-                    <AddMarker />
+                    <AddMarker key={open.toString()} open={open}/>
                 </BaseModal>
             </Dialog>
         </>
