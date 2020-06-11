@@ -52,8 +52,6 @@ export default () => {
             </div>
             <div className="top-tab__container">
                 <div className="top-tab__map">
-                    {/* Podemos colocar componentes sobre o componente do mapa caso queiramos */}
-                    {/* <FilterList /> */}
                     {
                         value ? <MarkerList /> : <Map />
                     }

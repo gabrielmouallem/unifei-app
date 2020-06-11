@@ -1,35 +1,49 @@
 import React from 'react';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, ListItemText, Divider } from '@material-ui/core';
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, ListItemText, Divider, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import './FilterList.scss';
 
-export default () => {
+interface Props {
+    icon: any;
+    id_title: string;
+}
 
-    return (
-        <div className="filter-list">
-            <ExpansionPanel>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon style={{ width: "20px" }} />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                    style={{ backgroundColor: "#004780", borderRadius: "10px" }}
-                >
-                    <div className="filter-list__flex">
-                        <FilterListIcon /> FILTRAR
-                    </div>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <div>Grupo de Estudos</div>
-                    <Divider />
-                    <div>Meus Horários</div>
-                    <Divider />
-                    <div>Blocos</div>
-                    <Divider />
-                    <div>Lazer</div>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-        </div>
+export default (props: Props) => {
 
-    );
+    // console.log(props.id_title)
+
+    if (props){
+        return (
+            <div className="filter-list">
+                <div className="filter-list__flex">
+                    {
+                        props.icon?
+                            <img src={props.icon.url} />
+                        : <></>
+                    }
+                    {
+                        props.id_title ?
+                            <Typography
+                                style={{
+                                    width: "100%",
+                                    // marginLeft: "15px",
+                                    textAlign: "center",
+                                    color: "#000",
+                                    fontSize: "0.8em"
+                                }}>
+                                {props.id_title}
+                            </Typography>
+                        : <></>
+                    }
+                </div>
+            </div>
+    
+        );
+    } else {
+        return (
+            <></>
+        )
+    }
+    
 }
