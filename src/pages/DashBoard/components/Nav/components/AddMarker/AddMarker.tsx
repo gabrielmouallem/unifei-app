@@ -14,10 +14,13 @@ import MyLocationIcon from '@material-ui/icons/MyLocation';
 import { MARKER_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES } from '../../../../../../utils/consts';
 import useNotify from '../../../../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../../../../services/webclient';
+import AnimatedMarker from '../../../../../../assets/images/_animated-marker.gif';
+
 const { Geolocation } = Plugins;
 
 interface Props {
     open: boolean;
+    setOpen: (open: any) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -39,8 +42,6 @@ export default (props: Props) => {
 
     const theme = useTheme();
 
-    const [loading, setLoading] = useState(false);
-
     const [activeStep, setActiveStep] = React.useState(0);
 
     const [markerType, setmarkerType] = useState<any>(undefined);
@@ -59,15 +60,32 @@ export default (props: Props) => {
 
         construction_type: null,
 
-        group_size: null,
+        group_size: 5,
         discipline: '',
         class_group: '',
 
         activity_type: ''
     });
 
+    const clearValues = () => {
+        setValues({
+            name: null,
+            description: '',
+
+            event_type: null,
+            event_date: '',
+
+            construction_type: null,
+
+            group_size: 5,
+            discipline: '',
+            class_group: '',
+
+            activity_type: ''
+        })
+    }
+
     const handleChange = (prop: any) => (event: { target: { value: any; }; }) => {
-        console.log('teste')
         setValues({ ...values, [prop]: event.target.value });
     };
 
@@ -83,9 +101,7 @@ export default (props: Props) => {
 
 
     const checkGenericMarkerValues = () => {
-        console.log("Checking gereric")
-        if (values.name && values.description){
-            console.log("approved")
+        if (values.name && values.description) {
             setBody(
                 {
                     name: values.name,
@@ -96,11 +112,11 @@ export default (props: Props) => {
                 }
             )
             return true
-        }
+        } else return false
     }
 
     const checkEventMarkerValues = () => {
-        if (checkGenericMarkerValues() && values.event_type && values.event_date){
+        if (checkGenericMarkerValues() && values.event_type && values.event_date) {
             setBody(
                 {
                     name: values.name,
@@ -113,11 +129,11 @@ export default (props: Props) => {
                 }
             )
             return true
-        }
+        } else return false
     }
 
     const checkConstructionMarkerValues = () => {
-        if (checkGenericMarkerValues() && values.construction_type){
+        if (checkGenericMarkerValues() && values.construction_type) {
             setBody(
                 {
                     name: values.name,
@@ -129,11 +145,11 @@ export default (props: Props) => {
                 }
             )
             return true
-        }
+        } else return false
     }
 
     const checkStudyGroupMarkerMarkerValues = () => {
-        if (checkGenericMarkerValues() && values.group_size && values.discipline && values.class_group){
+        if (checkGenericMarkerValues() && values.group_size && values.discipline && values.class_group) {
             setBody(
                 {
                     name: values.name,
@@ -147,12 +163,12 @@ export default (props: Props) => {
                 }
             )
             return true
-        }
+        } else return false
     }
 
     const checkExtraActivityMarkerValues = () => {
 
-        if (checkGenericMarkerValues() && values.activity_type){
+        if (checkGenericMarkerValues() && values.activity_type) {
             setBody(
                 {
                     name: values.name,
@@ -164,7 +180,7 @@ export default (props: Props) => {
                 }
             )
             return true
-        }
+        } else return false
     }
 
     const handleMarkerRoute = () => {
@@ -175,29 +191,74 @@ export default (props: Props) => {
         if (markerType === 4) return "ConstructionMarker"
     }
 
-    useEffect(()=>{
+    const checkMarkerValues = () => {
         if (markerType === 0) checkStudyGroupMarkerMarkerValues()
         if (markerType === 1) checkExtraActivityMarkerValues()
         if (markerType === 2) checkEventMarkerValues()
         if (markerType === 3) checkGenericMarkerValues()
         if (markerType === 4) checkConstructionMarkerValues()
+    }
+
+    const handleNextStep = () => {
+        if (markerType === 0 && checkStudyGroupMarkerMarkerValues()) {
+            setActiveStep(activeStep + 1)
+            return true
+        }
+        else if (markerType === 1 && checkExtraActivityMarkerValues()) {
+            setActiveStep(activeStep + 1)
+            return true
+        }
+        else if (markerType === 2 && checkEventMarkerValues()) {
+            setActiveStep(activeStep + 1)
+            return true
+        }
+        else if (markerType === 3 && checkGenericMarkerValues()) {
+            setActiveStep(activeStep + 1)
+            return true
+        }
+        else if (markerType === 4 && checkConstructionMarkerValues()) {
+            setActiveStep(activeStep + 1)
+            return true
+        }
+        else {
+            notify("Erro. Verifique se você preencheu todos os campos e tente novamente.", 'error');
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        checkMarkerValues();
     }, [values])
 
-    async function saveMarker() {
-        console.log("markerType ", markerType)
+    useEffect(() => {
+        clearValues();
+    }, [markerType])
 
+    useEffect(()=> {
+        if (activeStep === 2){
+            setTimeout(()=>{
+                if (latitude && longitude){
+                    saveMarker();
+                } else {
+                    notify("Não foi possível obter sua localização atual.", 'error');
+                    props.setOpen(false);
+                }
+            }, 8000)
+        }
+    }, [activeStep])
+
+    async function saveMarker() {
         await new Promise(async resolve => {
-            setLoading(true)
             try {
                 console.log(body)
                 const response = await coreHTTPClient.post(`${handleMarkerRoute()}/create/`, body);
-                setLoading(false);
                 console.log(response.data)
                 notify("Marcador salvo com sucesso!", "success");
+                props.setOpen(false);
             } catch (err) {
-                setLoading(false);
                 console.log("Erro em saveMarker", err);
                 notify("Ocorreu um erro ao salvar marcador, tente novamente.", 'error');
+                props.setOpen(false);
             }
         });
     }
@@ -397,21 +458,27 @@ export default (props: Props) => {
         <div className="add-marker">
             <MobileStepper
                 variant="dots"
-                steps={2}
+                steps={3}
                 position="static"
                 activeStep={activeStep}
                 className={classes.root}
                 nextButton={
-                    <Button size="small" disabled={activeStep !== 1 || (!latitude && !longitude)}
-                        onClick={()=>{
-                            saveMarker()
+                    <Button size="small" disabled={
+                        activeStep === 0 || activeStep == 2
+                    }
+                        onClick={() => {
+                            handleNextStep();
                         }}>
-                        Finalizar
+                        Próximo
                         {theme.direction === 'rtl' ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
                     </Button>
                 }
                 backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    <Button size="small" disabled={activeStep === 0 || activeStep === 2}
+                        onClick={()=> {
+                            handleBack();
+                            clearValues();
+                        }}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
                         Voltar
                     </Button>
@@ -517,28 +584,21 @@ export default (props: Props) => {
                 <div className="add-marker__step-2">
                     <div className="add-marker__map-container">
                         <div className="add-marker__map">
-                            {
-                                latitude && longitude ?
-                                    <Map zoom={40} center={
-                                        {
-                                            lat: parseFloat(latitude),
-                                            lng: parseFloat(longitude)
-                                        }
-                                    }
-                                        satellite={true}
-                                        disableUI={true}
-                                        draggable={false} />
-                                    :
-                                    <CircularProgress
-                                        style={{
-                                            width: "50px",
-                                            marginTop: "30px",
-                                            marginLeft: "42%"
-                                        }} />
-                            }
                             {handleMarkersForm()}
                         </div>
                     </div>
+                </div>
+                : <></>
+            }
+            {activeStep === 2 ?
+                <div className="add-marker__step-2">
+                    <div className="add-marker__map-container">
+                        <img src={AnimatedMarker} alt="animated-marker" width="100%" />
+                        <div className="add-marker__marker-type">
+                            Obtendo sua localização...
+                        </div>
+                    </div>
+
                 </div>
                 : <></>
             }
