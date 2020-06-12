@@ -8,6 +8,11 @@ import greenDot from '../../../../../assets/images/green-dot.png';
 import { coreHTTPClient } from '../../../../../services/webclient';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
 import MarkerSummary from '../FilterList/FilterList';
+import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
+import { Fade } from '@material-ui/core';
+import { FilterState } from '../../../../../redux/filter/types';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '../../../../../redux';
 
 interface MarkerProps {
 
@@ -16,7 +21,7 @@ interface MarkerProps {
     // GenericMarker
     latitude: string;
     longitude: string;
-    type: string;
+    type: number;
     name: string;
     description?: string;
 
@@ -60,6 +65,8 @@ export default (props: Props) => {
     const [clickedMarker, setClickedMarker] = useState<any>(undefined)
 
     const prevClickedMarker = usePrevious(clickedMarker)
+
+    var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
     const [defaultProps, _] = useState({
         center: {
@@ -115,45 +122,48 @@ export default (props: Props) => {
         });
     }
 
+    const handleTypeIcon = (markerType: any) => {
+        return MARKER_ICON_TYPES[markerType]
+    }
+
     const handleAllMarkers = useCallback(
         (map: any) => {
 
             let markersMapsFormat: any[] = [];
     
-            let markersListeners: any[] = [];
-    
             markers.forEach((marker, index) => {
     
-                const markersMapsFormat = []
+                if (filter.data.type === marker.type || filter.data.type === undefined){
+                    const markersMapsFormat = []
     
-                const m = new google.maps.Marker({
-                    title: marker.id + "-" + marker.name,
-                    position: {
-                        lat: parseFloat(marker.latitude),
-                        lng: parseFloat(marker.longitude)
-                    },
-                    // label: marker.name,
-                    map: map,//Objeto mapa
-                    icon: { url: blueDot }, 
-                })
-    
-                markersMapsFormat.push(m)
-    
-                google.maps.event.addListener(m, 'click', function () {
-    
-                    console.log("valor de antes na func: ", clickedMarker)
-    
-                    setClickedMarker(m);
-    
-                    m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
-                    setSelectedMarkerIcon(m.getIcon());
-                    setSelectedMarkerTitle(m.getTitle());
-                });
-    
+                    const m = new google.maps.Marker({
+                        title: marker.id + "-" + marker.name,
+                        position: {
+                            lat: parseFloat(marker.latitude),
+                            lng: parseFloat(marker.longitude)
+                        },
+                        // label: marker.name,
+                        map: map,//Objeto mapa
+                        icon: { url:handleTypeIcon(marker.type) }, 
+                    })
+        
+                    markersMapsFormat.push(m)
+        
+                    google.maps.event.addListener(m, 'click', function () {
+        
+                        console.log("valor de antes na func: ", clickedMarker)
+        
+                        setClickedMarker(m);
+        
+                        m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                        setSelectedMarkerIcon(m.getIcon());
+                        setSelectedMarkerTitle(m.getTitle());
+                    });
+                }
             })
     
             return markersMapsFormat;
-        }, [clickedMarker, markers]
+        }, [clickedMarker, markers, filter]
     )
 
     useEffect(()=> {
@@ -184,7 +194,9 @@ export default (props: Props) => {
                         language: "pt",
                         region: "BR"
                     }}
-                    key={`${props.center}`}
+                    // Gambiarra que atualiza mapa sempre que sair e entrar novamente no mapa
+                    // Assim os markers nao somem misteriosamente
+                    key={`${markers.length}`}
                     options={defaultMapOptions}
                     defaultCenter={props.center ? props.center : defaultProps.center}
                     defaultZoom={props.zoom ? props.zoom : defaultProps.zoom}
@@ -193,78 +205,7 @@ export default (props: Props) => {
                     onGoogleApiLoaded={({ map, maps }) => {
 
                         returnMyPositionMarker(map)
-
                         handleAllMarkers(map)
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.413842,
-                        //         lng: -45.449007
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: blueDot }
-
-                        // })
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.413082,
-                        //         lng: -45.449207
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: redDot }
-
-                        // })
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.413082,
-                        //         lng: -45.448207
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: redDot }
-
-                        // })
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.414202,
-                        //         lng: -45.449007
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: redDot }
-
-                        // })
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.414202,
-                        //         lng: -45.449907
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: greenDot }
-
-                        // })
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.413602,
-                        //         lng: -45.449907
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: greenDot }
-
-                        // })
-
-                        // new google.maps.Marker({
-                        //     position: {
-                        //         lat: -22.413602,
-                        //         lng: -45.450907
-                        //     },
-                        //     map: map,//Objeto mapa
-                        //     icon: { url: greenDot }
-
-                        // })
                     }
                     }
                 >

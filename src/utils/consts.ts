@@ -1,5 +1,11 @@
 
 
+import BlueDot from '../assets/images/blue-dot-old.png';
+import EventIcon from '../assets/images/event-icon.png';
+import StudyGroupIcon from '../assets/images/study-group-icon.png';
+import ConstructionIcon from '../assets/images/construction-icon.png';
+import ExtraActivityIcon from '../assets/images/extra-activity-icon.png';
+
 export const MARKER_TYPES = [
     'Grupo de Estudos',     // [0]
     'Atividade Extra',      // [1]
@@ -31,4 +37,12 @@ export const CONSTRUCTION_TYPES = [
     'Em uma Rua',           // [3]
     'Em um Predio',         // [4]
     'Em um Banheiro'        // [5]
+]
+
+export const MARKER_ICON_TYPES = [
+    StudyGroupIcon,
+    ExtraActivityIcon,
+    EventIcon,
+    BlueDot,
+    ConstructionIcon
 ]

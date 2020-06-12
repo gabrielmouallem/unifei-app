@@ -27,12 +27,12 @@ export default (props: Props) => {
                             <Typography
                                 style={{
                                     width: "100%",
-                                    // marginLeft: "15px",
+                                    marginLeft: "5px",
                                     textAlign: "center",
                                     color: "#000",
                                     fontSize: "0.8em"
                                 }}>
-                                {props.id_title}
+                                {props.id_title.split("-")[1]}
                             </Typography>
                         : <></>
                     }

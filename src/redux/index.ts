@@ -7,10 +7,12 @@ import middlewares from "./middlewares";
 import { Persistor, persistStore } from "redux-persist";
 // state
 import { AuthState } from "./auth/types";
+import { FilterState } from "./filter/types";
 
 //todos os types de redux vem aqui
 export interface ApplicationState {
   auth: AuthState;
+  filter: FilterState;
 }
 
 const store: Store<ApplicationState> = createStore(

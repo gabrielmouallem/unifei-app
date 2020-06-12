@@ -10,6 +10,9 @@ import Map from '../../MainDashboard/components/Map/Map';
 import { makeStyles } from '@material-ui/core/styles';
 import MarkerList from '../../MainDashboard/components/MarkerList/MarkerList';
 import FilterList from '../../MainDashboard/components/FilterList/FilterList';
+import { FilterState } from '../../../../redux/filter/types';
+import { useSelector } from 'react-redux';
+import { ApplicationState } from '../../../../redux';
 
 const useStyles = makeStyles({
     root: {
@@ -25,6 +28,8 @@ export default () => {
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
     };
+
+    var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
     return (
         <>
@@ -53,7 +58,7 @@ export default () => {
             <div className="top-tab__container">
                 <div className="top-tab__map">
                     {
-                        value ? <MarkerList /> : <Map />
+                        value ? <MarkerList /> : <Map key={`__${filter.data.type}`}/>
                     }
                 </div>
             </div>
