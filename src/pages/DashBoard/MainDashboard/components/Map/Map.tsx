@@ -177,10 +177,10 @@ export default (props: Props) => {
 
     useEffect(() => {
         getAllMarkers();
-        // setInterval(async () => {
-        //     getAllMarkers()
-        //     //set state aqui
-        //   }, 30000);
+        setInterval(async () => {
+            getAllMarkers()
+            //set state aqui
+          }, 120000);
     }, [])
 
     if (markers) {
