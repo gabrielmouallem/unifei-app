@@ -9,7 +9,7 @@ import Map from '../../MainDashboard/components/Map/Map';
 
 import { makeStyles } from '@material-ui/core/styles';
 import MarkerList from '../../MainDashboard/components/MarkerList/MarkerList';
-import FilterList from '../../MainDashboard/components/FilterList/FilterList';
+import FilterList from '../../MainDashboard/components/FilterList/SelectedMarkerSummary';
 import { FilterState } from '../../../../redux/filter/types';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../../../redux';

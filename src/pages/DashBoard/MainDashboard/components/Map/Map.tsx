@@ -7,7 +7,7 @@ import personIcon from '../../../../../assets/images/person-icon.png';
 import greenDot from '../../../../../assets/images/green-dot.png';
 import { coreHTTPClient } from '../../../../../services/webclient';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
-import MarkerSummary from '../FilterList/FilterList';
+import MarkerSummary from '../FilterList/SelectedMarkerSummary';
 import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
 import { Fade } from '@material-ui/core';
 import { FilterState } from '../../../../../redux/filter/types';

@@ -2,7 +2,7 @@ import React from 'react';
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, List, ListItem, ListItemText, Divider, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import './FilterList.scss';
+import './SelectedMarkerSummary.scss';
 
 interface Props {
     icon: any;
@@ -15,8 +15,8 @@ export default (props: Props) => {
 
     if (props){
         return (
-            <div className="filter-list">
-                <div className="filter-list__flex">
+            <div className="summary">
+                <div className="summary__flex">
                     {
                         props.icon?
                             <img src={props.icon.url} />
