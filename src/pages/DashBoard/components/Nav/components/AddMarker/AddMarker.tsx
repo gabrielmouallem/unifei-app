@@ -55,10 +55,10 @@ export default (props: Props) => {
         name: null,
         description: '',
 
-        event_type: null,
+        event_type: 0,
         event_date: '',
 
-        construction_type: null,
+        construction_type: 0,
 
         group_size: 5,
         discipline: '',
@@ -71,16 +71,16 @@ export default (props: Props) => {
         setValues({
             name: null,
             description: '',
-
-            event_type: null,
+    
+            event_type: 0,
             event_date: '',
-
-            construction_type: null,
-
+    
+            construction_type: 0,
+    
             group_size: 5,
             discipline: '',
             class_group: '',
-
+    
             activity_type: ''
         })
     }

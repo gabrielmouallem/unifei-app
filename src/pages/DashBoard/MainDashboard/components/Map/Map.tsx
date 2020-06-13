@@ -62,9 +62,11 @@ export default (props: Props) => {
 
     const [selectedMarkerTitle, setSelectedMarkerTitle] = useState<any>(undefined);
 
-    const [clickedMarker, setClickedMarker] = useState<any>(undefined)
+    const [clickedMarker, setClickedMarker] = useState<any>(undefined);
 
-    const prevClickedMarker = usePrevious(clickedMarker)
+    const prevClickedMarker = usePrevious(clickedMarker);
+
+    const [googleMap, setGoogleMap] = useState<any>(undefined);
 
     var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
@@ -126,44 +128,43 @@ export default (props: Props) => {
         return MARKER_ICON_TYPES[markerType]
     }
 
-    const handleAllMarkers = useCallback(
-        (map: any) => {
-
-            let markersMapsFormat: any[] = [];
+    useEffect(
+        () => {
     
-            markers.forEach((marker, index) => {
+            if (markers && googleMap){
+                markers.forEach((marker, index) => {
     
-                if (filter.data.type === marker.type || filter.data.type === undefined){
-                    const markersMapsFormat = []
+                    if (filter.data.type === marker.type || filter.data.type === undefined){
+                        const markersMapsFormat = []
+        
+                        const m = new google.maps.Marker({
+                            title: marker.id + "-" + marker.name,
+                            position: {
+                                lat: parseFloat(marker.latitude),
+                                lng: parseFloat(marker.longitude)
+                            },
+                            // label: marker.name,
+                            map: googleMap,//Objeto mapa
+                            icon: { url:handleTypeIcon(marker.type) }, 
+                        })
+            
+                        markersMapsFormat.push(m)
+            
+                        google.maps.event.addListener(m, 'click', function () {
+            
+                            console.log("valor de antes na func: ", clickedMarker)
+            
+                            setClickedMarker(m);
+            
+                            m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                            setSelectedMarkerIcon(m.getIcon());
+                            setSelectedMarkerTitle(m.getTitle());
+                        });
+                    }
+                })
+            }
     
-                    const m = new google.maps.Marker({
-                        title: marker.id + "-" + marker.name,
-                        position: {
-                            lat: parseFloat(marker.latitude),
-                            lng: parseFloat(marker.longitude)
-                        },
-                        // label: marker.name,
-                        map: map,//Objeto mapa
-                        icon: { url:handleTypeIcon(marker.type) }, 
-                    })
-        
-                    markersMapsFormat.push(m)
-        
-                    google.maps.event.addListener(m, 'click', function () {
-        
-                        console.log("valor de antes na func: ", clickedMarker)
-        
-                        setClickedMarker(m);
-        
-                        m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
-                        setSelectedMarkerIcon(m.getIcon());
-                        setSelectedMarkerTitle(m.getTitle());
-                    });
-                }
-            })
-    
-            return markersMapsFormat;
-        }, [clickedMarker, markers, filter]
+        }, [clickedMarker, markers, googleMap, filter]
     )
 
     useEffect(()=> {
@@ -180,7 +181,7 @@ export default (props: Props) => {
         setInterval(async () => {
             getAllMarkers()
             //set state aqui
-          }, 120000);
+          }, 10000);
     }, [])
 
     if (markers) {
@@ -196,7 +197,7 @@ export default (props: Props) => {
                     }}
                     // Gambiarra que atualiza mapa sempre que sair e entrar novamente no mapa
                     // Assim os markers nao somem misteriosamente
-                    key={`${markers.length}`}
+                    // key={`${markers.length}`}
                     options={defaultMapOptions}
                     defaultCenter={props.center ? props.center : defaultProps.center}
                     defaultZoom={props.zoom ? props.zoom : defaultProps.zoom}
@@ -205,7 +206,7 @@ export default (props: Props) => {
                     onGoogleApiLoaded={({ map, maps }) => {
 
                         returnMyPositionMarker(map)
-                        handleAllMarkers(map)
+                        setGoogleMap(map)
                     }
                     }
                 >
