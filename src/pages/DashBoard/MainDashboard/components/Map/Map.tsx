@@ -66,6 +66,8 @@ export default (props: Props) => {
 
     const prevClickedMarker = usePrevious(clickedMarker);
 
+    const prevMarkers = usePrevious(markers);
+
     const [googleMap, setGoogleMap] = useState<any>(undefined);
 
     var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
@@ -115,7 +117,7 @@ export default (props: Props) => {
         await new Promise(async resolve => {
             try {
                 const response: any = await coreHTTPClient.get(`markers/`);
-                console.log(response)
+                // console.log(response)
                 // @ts-ignore
                 setMarkers(response.data.data);
             } catch (err) {
@@ -130,10 +132,25 @@ export default (props: Props) => {
 
     useEffect(
         () => {
+
+            var checksum: number = 0;
+            var checksum_prev: any = -1;
+
+            if (markers && prevMarkers){
+                checksum_prev = 0;
+                markers.forEach(marker=>{
+                    checksum += marker.id
+                })
+                // @ts-ignore
+                prevMarkers.forEach(marker=>{
+                    checksum_prev += marker.id
+                })
+            }
+
+            console.log(checksum_prev, checksum);
     
-            if (markers && googleMap){
+            if (markers && googleMap && (checksum !== checksum_prev)){
                 markers.forEach((marker, index) => {
-    
                     if (filter.data.type === marker.type || filter.data.type === undefined){
                         const markersMapsFormat = []
         
@@ -164,7 +181,7 @@ export default (props: Props) => {
                 })
             }
     
-        }, [clickedMarker, markers, googleMap, filter]
+        }, [clickedMarker, prevMarkers, markers, googleMap, filter]
     )
 
     useEffect(()=> {
