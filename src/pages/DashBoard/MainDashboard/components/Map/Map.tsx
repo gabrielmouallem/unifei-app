@@ -77,7 +77,7 @@ export default (props: Props) => {
             lat: -22.413042,
             lng: -45.449687
         },
-        zoom: 17
+        zoom: 18
     });
 
     const defaultMapOptions = {
@@ -133,7 +133,38 @@ export default (props: Props) => {
     useEffect(
         () => {
 
-            if (prevMarkers){
+            if (!prevMarkers && markers){
+                markers.forEach((marker, index) => {
+                    if (filter.data.type === marker.type || filter.data.type === undefined) {
+                        const markersMapsFormat = []
+
+                        const m = new google.maps.Marker({
+                            title: marker.id + "-" + marker.name,
+                            position: {
+                                lat: parseFloat(marker.latitude),
+                                lng: parseFloat(marker.longitude)
+                            },
+                            animation: google.maps.Animation.DROP,
+                            // label: marker.name,
+                            map: googleMap,//Objeto mapa
+                            icon: { url: handleTypeIcon(marker.type) },
+                        })
+
+                        markersMapsFormat.push(m)
+
+                        google.maps.event.addListener(m, 'click', function () {
+
+                            console.log("valor de antes na func: ", clickedMarker)
+
+                            setClickedMarker(m);
+
+                            m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                            setSelectedMarkerIcon(m.getIcon());
+                            setSelectedMarkerTitle(m.getTitle());
+                        });
+                    }
+                })
+            } else if (prevMarkers){
                 // @ts-ignore
                 var newMarkers = markers.filter((item: MarkerProps) => !prevMarkers.some(other => item.id == other.id));
                 newMarkers.forEach((marker, index) => {
