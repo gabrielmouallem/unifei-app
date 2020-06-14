@@ -16,6 +16,7 @@ import { FilterState } from '../../../../redux/filter/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../../../redux';
 import { storeFilter } from '../../../../redux/filter/actions';
+import { useHistory } from 'react-router-dom';
 
 const { StatusBar } = Plugins;
 
@@ -27,13 +28,15 @@ const Transition = React.forwardRef<unknown, TransitionProps>(
 
 export default () => {
 
+    const history = useHistory();
+
     const ctx = useContext(BasicsContext);
 
     const dispatch = useDispatch();
 
-    const [open, setOpen] = useState(false);
-
     const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const [open, setOpen] = useState(false);
 
     // var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
@@ -48,7 +51,6 @@ export default () => {
     useEffect(() => {
         StatusBar.setBackgroundColor({ color: "#004780" });
     });
-
 
     return (
         <>
@@ -74,7 +76,6 @@ export default () => {
                                 <Menu
                                     id="simple-menu"
                                     anchorEl={anchorEl}
-                                    keepMounted
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
@@ -132,7 +133,7 @@ export default () => {
                                 </IconButton>
                                 <IconButton
                                     onClick={() => {
-                                        setOpen(true);
+                                        setOpen(true)
                                     }}>
                                     <AddIcon />
                                 </IconButton>
@@ -146,15 +147,14 @@ export default () => {
                 fullScreen
                 open={open}
                 TransitionComponent={Transition}
-                keepMounted
                 onClose={() => {
-                    setOpen(false)
+                    setOpen(false);
                 }}
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
+                aria-labelledby="alert-dialog-slide-title---"
+                aria-describedby="alert-dialog-slide-description---"
             >
-                <BaseModal title="Criar Marcador" setOpen={setOpen}>
-                    <AddMarker key={open.toString()} open={open} setOpen={setOpen} />
+                <BaseModal setOpen={setOpen} title="Criar Marcador">
+                    <AddMarker key={open.toString()} />
                 </BaseModal>
             </Dialog>
         </>

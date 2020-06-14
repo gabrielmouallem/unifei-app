@@ -231,8 +231,8 @@ export default () => {
                     onClose={() => {
                         setRegister(!register)
                     }}
-                    aria-labelledby="alert-dialog-slide-title"
-                    aria-describedby="alert-dialog-slide-description"
+                    aria-labelledby="alert-dialog-slide-title-----"
+                    aria-describedby="alert-dialog-slide-description----"
                 >
                     <Register setOpen={setRegister} />
                 </Dialog>

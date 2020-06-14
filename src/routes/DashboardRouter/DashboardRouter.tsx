@@ -5,6 +5,7 @@ import DashboardContainer from "../../pages/DashBoard/components/DashBoardContai
 import { BasicsProvider } from "../../pages/DashBoard/components/BasicsProvider/BasicsProvider";
 import MainDashboard from "../../pages/DashBoard/MainDashboard/MainDashboard";
 import Register from "../../pages/Auth/Register/Register";
+import SelectedMarker from "../../pages/DashBoard/MainDashboard/components/SelectedMarker/SelectedMarker";
 
 export default () => (
   <BasicsProvider>
@@ -19,6 +20,11 @@ export default () => (
           exact
           path={'/register'}
           component={Register}
+        />
+        <Route
+          exact
+          path={'/markers/:marker'}
+          component={SelectedMarker}
         />
       </Switch>
     </DashboardContainer>

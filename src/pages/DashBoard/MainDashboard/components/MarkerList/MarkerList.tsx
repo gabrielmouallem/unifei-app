@@ -9,40 +9,14 @@ import { coreHTTPClient } from '../../../../../services/webclient';
 import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
 import { FilterState } from '../../../../../redux/filter/types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../../../../redux';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BaseModal from '../../../../../components/BaseModal/BaseModal';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
 import SelectedMarker from '../SelectedMarker/SelectedMarker';
-
-interface MarkerProps {
-
-    id: number;
-
-    // GenericMarker
-    latitude: string;
-    longitude: string;
-    type: number;
-    name: string;
-    description?: string;
-
-    // EventMarker
-    event_type?: number;
-    event_date?: string;
-
-    // ConstructionMarker
-    construction_type?: number;
-
-    // StudyGroupMarker
-    group_size?: number;
-    discipline?: string;
-    class_group?: string;
-
-    // ExtraActivityMarker
-    activity_type?: number;
-
-}
+import { useHistory } from 'react-router-dom';
+import { MarkerProps } from '../../../../../models/markers';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,7 +39,9 @@ export default () => {
 
     const classes = useStyles();
 
-    const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
+
+    const history = useHistory();
 
     const [markers, setMarkers] = useState<MarkerProps[]>([]);
 
@@ -86,7 +62,9 @@ export default () => {
 
     const handleOpenSelectedMarkerModal = (marker: MarkerProps) => {
         setSelectedMarker(marker);
-        setOpen(true);
+        history.push(
+            String('/markers/:marker').replace(':marker', `${marker.id}`)
+        )
     }
 
     async function getAllMarkers() {
@@ -157,7 +135,7 @@ export default () => {
                 <Menu
                     id={`popover`}
                     anchorEl={anchorEl}
-                    keepMounted
+
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
@@ -172,23 +150,23 @@ export default () => {
                         Deletar
                     </MenuItem>
                 </Menu>
-                <Dialog
+                {/* <Dialog
                     fullWidth
                     fullScreen
                     open={open}
                     TransitionComponent={Transition}
                     onClose={() => {
-                        setOpen(false)
+                        dispatch(handleModal({open: false}));
                     }}
-                    aria-labelledby="alert-dialog-slide-title-"
-                    aria-describedby="alert-dialog-slide-description-"
+                    aria-labelledby="alert-dialog-slide-title--"
+                    aria-describedby="alert-dialog-slide-description--"
                 >
                     {selectedMarker !== undefined ? (
-                        <BaseModal title={selectedMarker.name} setOpen={setOpen}>
-                            <SelectedMarker markerID={`${selectedMarker.id}`} setOpen={setOpen} />
+                        <BaseModal key={`${selectedMarker.id}`} title={selectedMarker.name} >
+                            <SelectedMarker key={`${selectedMarker.id}`} markerID={`${selectedMarker.id}`} />
                         </BaseModal>
                     ): null}
-                </Dialog>
+                </Dialog> */}
             </div>
         );
     } else return (<CustomCircularProgress />)

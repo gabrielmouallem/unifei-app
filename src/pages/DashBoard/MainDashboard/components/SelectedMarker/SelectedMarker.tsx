@@ -1,55 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import './SelectedMarker.scss';
 import { MARKER_ICON_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES } from '../../../../../utils/consts';
-import { Typography } from '@material-ui/core';
+import { Typography, Dialog, Slide } from '@material-ui/core';
 import moment from "moment";
 import MarkerList from '../MarkerList/MarkerList';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
 import { coreHTTPClient } from '../../../../../services/webclient';
+import BaseModal from '../../../../../components/BaseModal/BaseModal';
+import { ApplicationState } from '../../../../../redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { TransitionProps } from '@material-ui/core/transitions/transition';
+import { useHistory, useParams } from 'react-router-dom';
 
-interface MarkerProps {
 
-    id: number;
-
-    // GenericMarker
-    latitude: string;
-    longitude: string;
-    type: number;
-    name: string;
-    description?: string;
-
-    // EventMarker
-    event_type?: number;
-    event_date?: string;
-
-    // ConstructionMarker
-    construction_type?: number;
-
-    // StudyGroupMarker
-    group_size?: number;
-    discipline?: string;
-    class_group?: string;
-
-    // ExtraActivityMarker
-    activity_type?: number;
-
+export interface SelectedMarkerParams {
+    marker: string;
 }
 
 interface Props {
     markerID?: string;
-    setOpen: (open: any) => void;
 }
 
+const Transition = React.forwardRef<unknown, TransitionProps>(
+    function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    }
+);
+
 export default (props: Props) => {
+
+    const markerID = useParams<SelectedMarkerParams>().marker;
+
+    console.log(markerID)
+
+    const history = useHistory();
 
     const [marker, setMarker] = useState(undefined);
 
     const [markerInfos, setMarkerInfos] = useState<any>(undefined);
 
+    var [open, setOpen] = useState(true);
+
+    const dispatch = useDispatch();
+
     async function GetMarker() {
         await new Promise(async resolve => {
             try {
-                const response = await coreHTTPClient.get(`markers/${props.markerID}/`);
+                const response = await coreHTTPClient.get(`markers/${markerID}/`);
                 setMarker(response.data.data)
             } catch (err) {
                 console.log("Erro em getMarker", err);
@@ -58,11 +55,18 @@ export default (props: Props) => {
     }
 
     useEffect(() => {
+        if (!open) {
+            setTimeout(() => {
+                history.goBack();
+            }, 100)
+        }
+    }, [open])
+
+    useEffect(() => {
         GetMarker();
     }, [])
 
     useEffect(() => {
-        console.log(marker)
         if (marker) {
             // @ts-ignore
             if (marker.type === 0) {          // Grupo de Estudos
@@ -175,26 +179,44 @@ export default (props: Props) => {
 
 
     // @ts-ignore
-    if (marker && (markerInfos || marker.type === 3))
+    if (marker && (markerInfos || marker.type === 3)) {
         return (
-            <div className="selected-marker">
-                <div className="">
+            <Dialog
+                fullWidth
+                fullScreen
+                keepMounted
+                open={open}
+                TransitionComponent={Transition}
+                onClose={() => {
+                    setOpen(false);
+                }}
+                aria-labelledby="alert-dialog-slide-title--"
+                aria-describedby="alert-dialog-slide-description--"
+            >
+                {/* 
+                // @ts-ignore */}
+                <BaseModal setOpen={setOpen} title={marker.name}>
+                    <div className="selected-marker">
+                        <div className="">
 
-                </div>
-                <div className="selected-marker__between-line">
-                    {/* 
-                                // @ts-ignore */}
-                    <img src={MARKER_ICON_TYPES[marker.type]} />
-                </div>
-                <div className="selected-marker__infos">
-                    <Typography>
-                        {/* 
-                                // @ts-ignore */}
-                        {marker.description}
-                    </Typography>
-                </div>
-                {markerInfos}
-            </div>
+                        </div>
+                        <div className="selected-marker__between-line">
+                            {/* 
+                                        // @ts-ignore */}
+                            <img src={MARKER_ICON_TYPES[marker.type]} />
+                        </div>
+                        <div className="selected-marker__infos">
+                            <Typography>
+                                {/* 
+                                        // @ts-ignore */}
+                                {marker.description}
+                            </Typography>
+                        </div>
+                        {markerInfos}
+                    </div>
+                </BaseModal>
+            </Dialog>
         )
-    else return <CustomCircularProgress />
+
+    } else return <CustomCircularProgress />
 }

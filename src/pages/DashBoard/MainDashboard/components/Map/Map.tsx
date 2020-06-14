@@ -13,34 +13,7 @@ import { Fade } from '@material-ui/core';
 import { FilterState } from '../../../../../redux/filter/types';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../../../../redux';
-
-interface MarkerProps {
-
-    id: number;
-
-    // GenericMarker
-    latitude: string;
-    longitude: string;
-    type: number;
-    name: string;
-    description?: string;
-
-    // EventMarker
-    event_type?: number;
-    event_date?: string;
-
-    // ConstructionMarker
-    construction_type?: number;
-
-    // StudyGroupMarker
-    group_size?: number;
-    discipline?: string;
-    class_group?: string;
-
-    // ExtraActivityMarker
-    activity_type?: number;
-
-}
+import { MarkerProps } from '../../../../../models/markers';
 
 interface Props {
     center?: {
@@ -147,7 +120,7 @@ export default (props: Props) => {
                                     lat: parseFloat(marker.latitude),
                                     lng: parseFloat(marker.longitude)
                                 },
-                                animation: google.maps.Animation.DROP,
+                                // animation: google.maps.Animation.DROP,
                                 // label: marker.name,
                                 map: googleMap,//Objeto mapa
                                 icon: { url: handleTypeIcon(marker.type) },
@@ -180,7 +153,7 @@ export default (props: Props) => {
                                     lat: parseFloat(marker.latitude),
                                     lng: parseFloat(marker.longitude)
                                 },
-                                animation: google.maps.Animation.DROP,
+                                // animation: google.maps.Animation.DROP,
                                 // label: marker.name,
                                 map: googleMap,//Objeto mapa
                                 icon: { url: handleTypeIcon(marker.type) },
@@ -234,6 +207,7 @@ export default (props: Props) => {
         return (
             // Important! Always set the container height explicitly
             <>
+            {console.log("re-render")}
                 <MarkerSummary icon={selectedMarkerIcon} id_title={selectedMarkerTitle} />
                 <GoogleMapReact
                     bootstrapURLKeys={{

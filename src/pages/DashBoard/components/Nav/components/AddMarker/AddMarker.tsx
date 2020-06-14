@@ -15,12 +15,12 @@ import { MARKER_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES } from '../../../../../..
 import useNotify from '../../../../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../../../../services/webclient';
 import AnimatedMarker from '../../../../../../assets/images/_animated-marker.gif';
+import { useDispatch } from 'react-redux';
 
 const { Geolocation } = Plugins;
 
 interface Props {
-    open: boolean;
-    setOpen: (open: any) => void;
+
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -42,9 +42,13 @@ export default (props: Props) => {
 
     const theme = useTheme();
 
+    const dispatch = useDispatch();
+
     const [activeStep, setActiveStep] = React.useState(0);
 
     const [markerType, setmarkerType] = useState<any>(undefined);
+
+    const [open, setOpen] = useState(false);
 
     const [body, setBody] = useState<any>(undefined);
 
@@ -241,7 +245,7 @@ export default (props: Props) => {
                     saveMarker();
                 } else {
                     notify("Não foi possível obter sua localização atual.", 'error');
-                    props.setOpen(false);
+                    setOpen(false);
                 }
             }, 8000)
         }
@@ -254,11 +258,11 @@ export default (props: Props) => {
                 const response = await coreHTTPClient.post(`${handleMarkerRoute()}/create/`, body);
                 console.log(response.data)
                 notify("Marcador salvo com sucesso!", "success");
-                props.setOpen(false);
+                setOpen(false);
             } catch (err) {
                 console.log("Erro em saveMarker", err);
                 notify("Ocorreu um erro ao salvar marcador, tente novamente.", 'error');
-                props.setOpen(false);
+                setOpen(false);
             }
         });
     }
