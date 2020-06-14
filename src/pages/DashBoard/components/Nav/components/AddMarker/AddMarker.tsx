@@ -438,7 +438,7 @@ export default (props: Props) => {
     }
 
     useEffect(() => {
-        if (activeStep === 1) {
+        if (activeStep === 0) {
             getHighAccuracyPosition();
         }
     }, [activeStep])

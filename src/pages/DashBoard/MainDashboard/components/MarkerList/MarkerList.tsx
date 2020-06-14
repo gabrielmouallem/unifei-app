@@ -101,8 +101,8 @@ export default () => {
           title: 'Atenção',
           message: 'Você tem certeza que deseja deletar este marcador?'
         });
-        if (confirmRet){
-            console.log("confirmado")
+        console.log(confirmRet)
+        if (confirmRet.value){
             deleteMarker();
             getAllMarkers();
         }
@@ -168,7 +168,6 @@ export default () => {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={() => {
-                        showConfirm()
                         handleClose();
                     }}>
                         Editar
