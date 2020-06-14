@@ -20,7 +20,7 @@ import { useDispatch } from 'react-redux';
 const { Geolocation } = Plugins;
 
 interface Props {
-
+    setOpen: (open: any) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -47,8 +47,6 @@ export default (props: Props) => {
     const [activeStep, setActiveStep] = React.useState(0);
 
     const [markerType, setmarkerType] = useState<any>(undefined);
-
-    const [open, setOpen] = useState(false);
 
     const [body, setBody] = useState<any>(undefined);
 
@@ -245,7 +243,7 @@ export default (props: Props) => {
                     saveMarker();
                 } else {
                     notify("Não foi possível obter sua localização atual.", 'error');
-                    setOpen(false);
+                    props.setOpen(false);
                 }
             }, 8000)
         }
@@ -258,11 +256,11 @@ export default (props: Props) => {
                 const response = await coreHTTPClient.post(`${handleMarkerRoute()}/create/`, body);
                 console.log(response.data)
                 notify("Marcador salvo com sucesso!", "success");
-                setOpen(false);
+                props.setOpen(false);
             } catch (err) {
                 console.log("Erro em saveMarker", err);
                 notify("Ocorreu um erro ao salvar marcador, tente novamente.", 'error');
-                setOpen(false);
+                props.setOpen(false);
             }
         });
     }

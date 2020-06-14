@@ -17,6 +17,9 @@ import { TransitionProps } from '@material-ui/core/transitions/transition';
 import SelectedMarker from '../SelectedMarker/SelectedMarker';
 import { useHistory } from 'react-router-dom';
 import { MarkerProps } from '../../../../../models/markers';
+import { Plugins } from '@capacitor/core';
+
+const { Modals } = Plugins;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,12 +50,14 @@ export default () => {
 
     const [selectedMarker, setSelectedMarker] = useState<any>(undefined);
 
+    const [isDeleted, setIsDeleted] = useState<any>(undefined);
+
     var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleClick = (event: any, markerID: number) => {
-        console.log(markerID)
+    const handleClick = (event: any, selMarker: MarkerProps) => {
+        setSelectedMarker(selMarker);
         setAnchorEl(event.currentTarget);
     };
 
@@ -67,6 +72,17 @@ export default () => {
         )
     }
 
+    async function deleteMarker() {
+        await new Promise(async resolve => {
+            try {
+                const response: any = await coreHTTPClient.delete(`GenericMarker/${selectedMarker.id}/delete/`);
+                setIsDeleted(selectedMarker.id)
+            } catch (err) {
+                console.log("Erro em deleteMarker", err);
+            }
+        });
+    }
+
     async function getAllMarkers() {
         await new Promise(async resolve => {
             try {
@@ -79,6 +95,18 @@ export default () => {
             }
         });
     }
+
+    async function showConfirm() {
+        let confirmRet = await Modals.confirm({
+          title: 'Atenção',
+          message: 'Você tem certeza que deseja deletar este marcador?'
+        });
+        if (confirmRet){
+            console.log("confirmado")
+            deleteMarker();
+            getAllMarkers();
+        }
+      }
 
     useEffect(() => {
         getAllMarkers();
@@ -97,7 +125,7 @@ export default () => {
             <div className="marker-list">
                 <List className={classes.root}>
                     {markers.map((marker: MarkerProps) => {
-                        if (filter.data.type === marker.type || filter.data.type === undefined) {
+                        if (filter.data.type === marker.type || filter.data.type === undefined && marker.id !== isDeleted) {
                             return (
                                 <>
                                     <ListItem alignItems="flex-start">
@@ -123,7 +151,7 @@ export default () => {
                                             }
                                         />
                                         <MoreVertIcon onClick={(e) => {
-                                            handleClick(e, marker.id);
+                                            handleClick(e, marker);
                                         }} />
                                     </ListItem>
                                     <Divider variant="inset" component="li" />
@@ -140,11 +168,13 @@ export default () => {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={() => {
+                        showConfirm()
                         handleClose();
                     }}>
                         Editar
                     </MenuItem>
                     <MenuItem onClick={() => {
+                        showConfirm()
                         handleClose();
                     }}>
                         Deletar

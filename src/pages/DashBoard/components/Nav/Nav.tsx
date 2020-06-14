@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ApplicationState } from '../../../../redux';
 import { storeFilter } from '../../../../redux/filter/actions';
 import { useHistory } from 'react-router-dom';
+import { selectTab } from '../../../../redux/tab/actions';
 
 const { StatusBar } = Plugins;
 
@@ -50,7 +51,8 @@ export default () => {
 
     useEffect(() => {
         StatusBar.setBackgroundColor({ color: "#004780" });
-    });
+        dispatch(selectTab({value: 0}))
+    },[]);
 
     return (
         <>
@@ -154,7 +156,7 @@ export default () => {
                 aria-describedby="alert-dialog-slide-description---"
             >
                 <BaseModal setOpen={setOpen} title="Criar Marcador">
-                    <AddMarker key={open.toString()} />
+                    <AddMarker key={open.toString()} setOpen={setOpen}/>
                 </BaseModal>
             </Dialog>
         </>
