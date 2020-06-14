@@ -13,7 +13,7 @@ export default () => (
       <Switch>
         <Route
           exact
-          path={'/dashboard'}
+          path={'/marker-list'}
           component={MainDashboard}
         />
         <Route
