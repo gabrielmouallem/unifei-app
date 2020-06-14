@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MarkerList.scss';
-import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider } from '@material-ui/core';
+import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider, Menu, MenuItem, IconButton } from '@material-ui/core';
 
 import blueDot from '../../../../../assets/images/blue-dot.png';
 import redDot from '../../../../../assets/images/red-dot.png';
@@ -11,6 +11,7 @@ import CustomCircularProgress from '../../../../../components/CustomCircularProg
 import { FilterState } from '../../../../../redux/filter/types';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../../../../redux';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 interface MarkerProps {
 
@@ -61,6 +62,17 @@ export default () => {
 
     var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event: any, markerID: number) => {
+        console.log(markerID)
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     async function getAllMarkers() {
         await new Promise(async resolve => {
             try {
@@ -76,10 +88,14 @@ export default () => {
 
     useEffect(() => {
         getAllMarkers();
-        setInterval(async () => {
+        let intervalID = setInterval(async () => {
             getAllMarkers()
             //set state aqui
-        }, 120000);
+        }, 10000);
+
+        return () => {
+            clearInterval(intervalID);
+        }
     }, [])
 
     if (markers) {
@@ -92,7 +108,7 @@ export default () => {
                                 <>
                                     <ListItem alignItems="flex-start">
                                         <ListItemAvatar>
-                                            <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]} />
+                                            <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]} onClick={()=> {console.log("clico")}} />
                                         </ListItemAvatar>
                                         <ListItemText
                                             primary={marker.name}
@@ -110,6 +126,9 @@ export default () => {
                                                 </React.Fragment>
                                             }
                                         />
+                                        <MoreVertIcon onClick={(e)=>{
+                                            handleClick(e, marker.id);
+                                        }} />
                                     </ListItem>
                                     <Divider variant="inset" component="li" />
                                 </>
@@ -117,6 +136,24 @@ export default () => {
                         } else return <></>
                     })}
                 </List>
+                <Menu
+                    id={`popover`}
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={() => {
+                        handleClose();
+                    }}>
+                        Editar
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                        handleClose();
+                    }}>
+                        Deletar
+                    </MenuItem>
+                </Menu>
             </div>
         );
     } else return (<CustomCircularProgress />)

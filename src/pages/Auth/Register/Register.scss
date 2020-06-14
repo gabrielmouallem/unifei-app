@@ -122,14 +122,8 @@
     }
 
     &__login {
-        width: 270px;
-        margin-top: 1.5vh;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-        opacity: 70%;
+        opacity: 0.6;
+        padding: 10px 0px 5px 0px;
     }
 
     .MuiOutlinedInput-input {

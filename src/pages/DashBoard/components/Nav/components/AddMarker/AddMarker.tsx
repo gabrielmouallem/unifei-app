@@ -116,7 +116,7 @@ export default (props: Props) => {
     }
 
     const checkEventMarkerValues = () => {
-        if (checkGenericMarkerValues() && values.event_type && values.event_date) {
+        if (checkGenericMarkerValues() && values.event_type !== undefined && values.event_date) {
             setBody(
                 {
                     name: values.name,
@@ -133,7 +133,7 @@ export default (props: Props) => {
     }
 
     const checkConstructionMarkerValues = () => {
-        if (checkGenericMarkerValues() && values.construction_type) {
+        if (checkGenericMarkerValues() && values.construction_type !== undefined) {
             setBody(
                 {
                     name: values.name,
@@ -337,7 +337,7 @@ export default (props: Props) => {
                             }}
                         >
                             {EVENT_TYPES.map(option => {
-                                return (<option key={option} value={option}>{option}</option>)
+                                return (<option key={option} value={EVENT_TYPES.indexOf(option)}>{option}</option>)
                             })}
                         </TextField>
                     </div>
@@ -374,7 +374,7 @@ export default (props: Props) => {
                         }}
                     >
                         {CONSTRUCTION_TYPES.map(option => {
-                            return (<option key={option} value={option}>{option}</option>)
+                            return (<option key={option} value={CONSTRUCTION_TYPES.indexOf(option)}>{option}</option>)
                         })}
                     </TextField>
                 </div>

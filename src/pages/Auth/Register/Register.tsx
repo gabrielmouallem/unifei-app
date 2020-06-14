@@ -237,21 +237,15 @@ export default (props: Props) => {
                     {/* <GlobalText content={TextContentID.LOGIN_GOOGLE_SIGN_IN} /> */}
                 </button>
             </div>
-            <div className="register__login">
-                <Typography
-                    style={{
-                        fontSize: "0.8em",
-                        fontWeight: "bold",
-                    }}
-                >
+            <div className="register__login" style={{ textAlign: "center" }}
+                onClick={() => {
+                    props.setOpen(false)
+                }} >
+                <Typography style={{ fontSize: "0.8em", fontWeight: "bold" }}>
                     Já possui uma conta?
-                        <div
-                        style={{ color: "#3055D8" }}
-                        onClick={() => {
-                            props.setOpen(false)
-                        }}>
-                        Entre!
-                        </div>
+                        </Typography>
+                <Typography style={{ fontSize: "0.8em", fontWeight: "bold", color: "#3055D8" }}>
+                    Entre!
                 </Typography>
             </div>
         </div>
