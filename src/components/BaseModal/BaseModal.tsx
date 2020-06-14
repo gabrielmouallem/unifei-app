@@ -17,6 +17,7 @@ export default (props: Props) => {
             <div
                 className="modal__back"
                 onClick={() => {
+                    console.log("click")
                     props.setOpen(false)
                 }}>
                 <ArrowBackIcon />

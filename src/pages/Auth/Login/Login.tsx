@@ -228,7 +228,6 @@ export default () => {
                     fullScreen
                     open={register}
                     TransitionComponent={Transition}
-                    keepMounted
                     onClose={() => {
                         setRegister(!register)
                     }}

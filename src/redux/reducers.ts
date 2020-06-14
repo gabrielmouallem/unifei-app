@@ -3,6 +3,8 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import filter from './filter/reducer';
+import modal from './modal/reducer';
+
 // reducers
 import auth from "./auth/reducer";
 
@@ -14,5 +16,6 @@ const persistConfig = {
 
 export default combineReducers({
   auth: persistReducer(persistConfig, auth),
-  filter: filter
+  filter: filter,
+  modal: modal,
 });

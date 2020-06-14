@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MarkerList.scss';
-import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider, Menu, MenuItem, IconButton } from '@material-ui/core';
+import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider, Menu, MenuItem, IconButton, Dialog, Slide } from '@material-ui/core';
 
 import blueDot from '../../../../../assets/images/blue-dot.png';
 import redDot from '../../../../../assets/images/red-dot.png';
@@ -12,6 +12,9 @@ import { FilterState } from '../../../../../redux/filter/types';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../../../../redux';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import BaseModal from '../../../../../components/BaseModal/BaseModal';
+import { TransitionProps } from '@material-ui/core/transitions/transition';
+import SelectedMarker from '../SelectedMarker/SelectedMarker';
 
 interface MarkerProps {
 
@@ -52,13 +55,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
+const Transition = React.forwardRef<unknown, TransitionProps>(
+    function Transition(props, ref) {
+        return <Slide direction="up" ref={ref} {...props} />;
+    }
+);
 
 export default () => {
 
     const classes = useStyles();
 
+    const [open, setOpen] = useState(false);
+
     const [markers, setMarkers] = useState<MarkerProps[]>([]);
+
+    const [selectedMarker, setSelectedMarker] = useState<any>(undefined);
 
     var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
@@ -73,11 +84,16 @@ export default () => {
         setAnchorEl(null);
     };
 
+    const handleOpenSelectedMarkerModal = (marker: MarkerProps) => {
+        setSelectedMarker(marker);
+        setOpen(true);
+    }
+
     async function getAllMarkers() {
         await new Promise(async resolve => {
             try {
                 const response: any = await coreHTTPClient.get(`markers/`);
-                console.log(response)
+                // console.log(response)
                 // @ts-ignore
                 setMarkers(response.data.data);
             } catch (err) {
@@ -108,9 +124,11 @@ export default () => {
                                 <>
                                     <ListItem alignItems="flex-start">
                                         <ListItemAvatar>
-                                            <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]} onClick={()=> {console.log("clico")}} />
+                                            <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]}
+                                                onClick={() => { handleOpenSelectedMarkerModal(marker) }} />
                                         </ListItemAvatar>
                                         <ListItemText
+                                            onClick={() => { handleOpenSelectedMarkerModal(marker) }}
                                             primary={marker.name}
                                             secondary={
                                                 <React.Fragment>
@@ -126,7 +144,7 @@ export default () => {
                                                 </React.Fragment>
                                             }
                                         />
-                                        <MoreVertIcon onClick={(e)=>{
+                                        <MoreVertIcon onClick={(e) => {
                                             handleClick(e, marker.id);
                                         }} />
                                     </ListItem>
@@ -154,6 +172,23 @@ export default () => {
                         Deletar
                     </MenuItem>
                 </Menu>
+                <Dialog
+                    fullWidth
+                    fullScreen
+                    open={open}
+                    TransitionComponent={Transition}
+                    onClose={() => {
+                        setOpen(false)
+                    }}
+                    aria-labelledby="alert-dialog-slide-title-"
+                    aria-describedby="alert-dialog-slide-description-"
+                >
+                    {selectedMarker !== undefined ? (
+                        <BaseModal title={selectedMarker.name} setOpen={setOpen}>
+                            <SelectedMarker markerID={`${selectedMarker.id}`} setOpen={setOpen} />
+                        </BaseModal>
+                    ): null}
+                </Dialog>
             </div>
         );
     } else return (<CustomCircularProgress />)

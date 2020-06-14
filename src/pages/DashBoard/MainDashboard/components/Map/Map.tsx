@@ -190,8 +190,6 @@ export default (props: Props) => {
 
                             google.maps.event.addListener(m, 'click', function () {
 
-                                console.log("valor de antes na func: ", clickedMarker)
-
                                 setClickedMarker(m);
 
                                 m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
