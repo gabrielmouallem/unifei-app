@@ -6,6 +6,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
 import GoogleIcon from '../components/GoogleIcon';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import EmailIcon from '@material-ui/icons/Email';
 import useNotify from '../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../services/webclient';
@@ -80,7 +81,7 @@ export default (props: Props) => {
                 onClick={() => {
                     props.setOpen(false)
                 }}>
-                <ArrowBackIcon />
+                <KeyboardArrowDownIcon />
             </div>
             <div className="register__title">
                 <Typography

@@ -5,11 +5,13 @@ import './BaseModal.scss';
 import { Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 interface Props {
     title?: string;
     children: ReactJSX;
     setOpen: (open: any) => void;
+    closeIconDirection?: string;
 }
 
 export default (props: Props) => {
@@ -37,7 +39,7 @@ export default (props: Props) => {
                     setOpen(false);
                     props.setOpen(false);
                 }}>
-                <ArrowBackIcon />
+                {props.closeIconDirection === "down" ? <ArrowBackIcon /> : <KeyboardArrowDownIcon />}
             </div>
             <div className="modal__title">
                 <Typography
