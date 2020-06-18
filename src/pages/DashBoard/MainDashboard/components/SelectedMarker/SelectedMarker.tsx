@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SelectedMarker.scss';
 import { MARKER_ICON_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES } from '../../../../../utils/consts';
-import { Typography, Dialog, Slide } from '@material-ui/core';
+import { Typography, Dialog, Slide, Fade } from '@material-ui/core';
 import moment from "moment";
 import MarkerList from '../MarkerList/MarkerList';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
@@ -11,6 +11,7 @@ import { ApplicationState } from '../../../../../redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
 import { useHistory, useParams } from 'react-router-dom';
+import AbsoluteWrapper from '../../../../../components/AbsoluteWrapper/AbsoluteWrapper';
 
 
 export interface SelectedMarkerParams {
@@ -181,42 +182,33 @@ export default (props: Props) => {
     // @ts-ignore
     if (marker && (markerInfos || marker.type === 3)) {
         return (
-            <Dialog
-                fullWidth
-                fullScreen
-                keepMounted
-                open={open}
-                TransitionComponent={Transition}
-                onClose={() => {
-                    setOpen(false);
-                }}
-                aria-labelledby="alert-dialog-slide-title--"
-                aria-describedby="alert-dialog-slide-description--"
-            >
-                {/* 
-                // @ts-ignore */}
-                <BaseModal setOpen={setOpen} title={marker.name}>
-                    <div className="selected-marker">
-                        <div className="">
+            <AbsoluteWrapper>
+                <div>
+                    {/* 
+                    // @ts-ignore */}
+                    <BaseModal setOpen={setOpen} title={marker.name} closeIconDirection="down">
+                        <div className="selected-marker">
+                            <div className="">
 
-                        </div>
-                        <div className="selected-marker__between-line">
-                            {/* 
-                                        // @ts-ignore */}
-                            <img src={MARKER_ICON_TYPES[marker.type]} />
-                        </div>
-                        <div className="selected-marker__infos">
-                            <Typography>
+                            </div>
+                            <div className="selected-marker__between-line">
                                 {/* 
                                         // @ts-ignore */}
-                                {marker.description}
-                            </Typography>
+                                <img src={MARKER_ICON_TYPES[marker.type]} />
+                            </div>
+                            <div className="selected-marker__infos">
+                                <Typography>
+                                    {/* 
+                                        // @ts-ignore */}
+                                    {marker.description}
+                                </Typography>
+                            </div>
+                            {markerInfos}
                         </div>
-                        {markerInfos}
-                    </div>
-                </BaseModal>
-            </Dialog>
+                    </BaseModal>
+                </div>
+            </AbsoluteWrapper>
         )
 
-    } else return <CustomCircularProgress />
+    } else return <></>
 }
