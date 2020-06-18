@@ -36,34 +36,39 @@ export default (props: Props) => {
     // })
 
     return (
-        <div className="summary"
-            onClick={() => {
-                history.push(
-                    String('markers/:marker').replace(':marker', props.id_title.split('-')[0])
-                )
-            }}>
-            <div className="summary__flex">
-                {
-                    props.icon ?
-                        <img src={props.icon.url} />
-                        : <></>
-                }
-                {
-                    props.id_title ?
-                        <Typography
-                            style={{
-                                width: "100%",
-                                marginLeft: "5px",
-                                textAlign: "center",
-                                color: "#000",
-                                fontSize: "0.8em"
-                            }}>
-                            {props.id_title.split("-")[1]}
-                        </Typography>
-                        : <></>
-                }
-            </div>
-        </div>
+        <>
+            {
+                props.id_title ?
+                    <div className="summary"
+                        onClick={() => {
+                            history.push(
+                                String('markers/:marker').replace(':marker', props.id_title.split('-')[0])
+                            )
+                        }}>
+                        <div className="summary__flex">
+                            {
+                                props.icon ?
+                                    <img src={props.icon.url} />
+                                    : <></>
+                            }
+                            {
+                                props.id_title ?
+                                    <Typography
+                                        style={{
+                                            width: "100%",
+                                            marginLeft: "5px",
+                                            textAlign: "center",
+                                            color: "#000",
+                                            fontSize: "0.8em"
+                                        }}>
+                                        {props.id_title.split("-")[1]}
+                                    </Typography>
+                                    : <></>
+                            }
+                        </div>
+                    </div> : null
+            }
+        </>
     );
 
 }
