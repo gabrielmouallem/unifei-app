@@ -1,26 +1,50 @@
-import React from "react";
-import { Route, Switch } from "react-router";
+import React, { useContext } from "react";
+import { Route, Switch, __RouterContext } from "react-router";
+import { useTransition, animated } from 'react-spring';
 
 import DashboardContainer from "../../pages/DashBoard/components/DashBoardContainer/DashboardContainer";
 import { BasicsProvider } from "../../pages/DashBoard/components/BasicsProvider/BasicsProvider";
 import MainDashboard from "../../pages/DashBoard/MainDashboard/MainDashboard";
 import Register from "../../pages/Auth/Register/Register";
+import SelectedMarker from "../../pages/DashBoard/MainDashboard/components/SelectedMarker/SelectedMarker";
 
-export default () => (
-  <BasicsProvider>
-    <DashboardContainer>
-      <Switch>
-        <Route
-          exact
-          path={'/dashboard'}
-          component={MainDashboard}
-        />
-        <Route
-          exact
-          path={'/register'}
-          component={Register}
-        />
-      </Switch>
-    </DashboardContainer>
-  </BasicsProvider>
-);
+export default () => {
+
+  const { location } = useContext(__RouterContext);
+  const transitions = useTransition(location, location => location.pathname, {
+    // from:  { opacity: 0},
+    // enter: { opacity: 1},
+    // leave: { opacity: 0}
+    from: { opacity: 0, transform: "translateX(100%)" },
+    enter: { opacity: 1, transform: "translateX(0%)" },
+    leave: { opacity: 0, transform: "translateX(-50%)" }
+  })
+
+  return (
+    <BasicsProvider>
+      <DashboardContainer>
+        {transitions.map(({ item, props, key }) => (
+          <animated.div key={key} style={props}>
+            <Switch location={item}>
+              <Route
+                exact
+                path={'/marker-list'}
+                component={MainDashboard}
+              />
+              <Route
+                exact
+                path={'/register'}
+                component={Register}
+              />
+              <Route
+                exact
+                path={'/markers/:marker'}
+                component={SelectedMarker}
+              />
+            </Switch>
+          </animated.div>
+        ))}
+      </DashboardContainer>
+    </BasicsProvider>
+  );
+};

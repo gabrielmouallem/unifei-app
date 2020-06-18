@@ -1,0 +1,7 @@
+{
+  "name": "Unifei App",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

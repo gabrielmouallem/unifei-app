@@ -1,0 +1,47 @@
+.selected-marker {
+
+    margin: 0px 25px 25px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+
+    &__between-line {
+        display: inline-block;
+        position: relative;
+        margin: 10px 0px 10px 0px;
+        color: rgb(139, 139, 139);
+    
+        &:before {
+          content: "";
+          position: absolute;
+          height: 5px;
+          border-bottom: 1px solid #aaa;
+          top: 25%;
+          width: 35vw;
+        }
+        &:after {
+          content: "";
+          position: absolute;
+          height: 5px;
+          border-bottom: 1px solid #aaa;
+          top: 25%;
+          width: 35vw;
+        }
+    
+        &:before {
+          right: 100%;
+          margin-right: 15px;
+        }
+    
+        &:after {
+          left: 100%;
+          margin-left: 15px;
+        }
+    }
+
+    &__infos {
+        margin-bottom: 20px;
+    }
+}

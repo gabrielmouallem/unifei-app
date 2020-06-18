@@ -188,7 +188,7 @@ export default () => {
                     <div className="login__password-lost">
                         <Typography style={{ fontSize: "0.8em", fontWeight: "bold" }}>
                             Esqueci Minha Senha
-                    </Typography>
+                        </Typography>
                     </div>
                     <div className="login__or-line">
                         <Typography>
@@ -209,24 +209,17 @@ export default () => {
                                     Entrar com o Google
                             </Typography>
                             </div>
-                            {/* <GlobalText content={TextContentID.LOGIN_GOOGLE_SIGN_IN} /> */}
                         </button>
                     </div>
-                    <div className="login__register">
-                        <Typography
-                            style={{
-                                fontSize: "0.8em",
-                                fontWeight: "bold",
-                            }}
-                        >
+                    <div className="login__password-lost" style={{textAlign: "center"}}
+                        onClick={() => {
+                            setRegister(true)
+                        }} >
+                        <Typography style={{ fontSize: "0.8em", fontWeight: "bold" }}>
                             Ainda não possui uma conta?
-                        <div
-                                style={{ color: "#3055D8" }}
-                                onClick={() => {
-                                    setRegister(true)
-                                }} >
-                                Crie uma!
-                        </div>
+                        </Typography>
+                        <Typography style={{ fontSize: "0.8em", fontWeight: "bold", color: "#3055D8" }}>
+                            Crie Uma!
                         </Typography>
                     </div>
                 </div>
@@ -235,12 +228,11 @@ export default () => {
                     fullScreen
                     open={register}
                     TransitionComponent={Transition}
-                    keepMounted
                     onClose={() => {
                         setRegister(!register)
                     }}
-                    aria-labelledby="alert-dialog-slide-title"
-                    aria-describedby="alert-dialog-slide-description"
+                    aria-labelledby="alert-dialog-slide-title-----"
+                    aria-describedby="alert-dialog-slide-description----"
                 >
                     <Register setOpen={setRegister} />
                 </Dialog>

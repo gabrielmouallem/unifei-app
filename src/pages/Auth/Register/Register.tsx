@@ -6,6 +6,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import PersonIcon from '@material-ui/icons/Person';
 import GoogleIcon from '../components/GoogleIcon';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import EmailIcon from '@material-ui/icons/Email';
 import useNotify from '../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../services/webclient';
@@ -80,7 +81,7 @@ export default (props: Props) => {
                 onClick={() => {
                     props.setOpen(false)
                 }}>
-                <ArrowBackIcon />
+                <KeyboardArrowDownIcon />
             </div>
             <div className="register__title">
                 <Typography
@@ -237,21 +238,15 @@ export default (props: Props) => {
                     {/* <GlobalText content={TextContentID.LOGIN_GOOGLE_SIGN_IN} /> */}
                 </button>
             </div>
-            <div className="register__login">
-                <Typography
-                    style={{
-                        fontSize: "0.8em",
-                        fontWeight: "bold",
-                    }}
-                >
+            <div className="register__login" style={{ textAlign: "center" }}
+                onClick={() => {
+                    props.setOpen(false)
+                }} >
+                <Typography style={{ fontSize: "0.8em", fontWeight: "bold" }}>
                     Já possui uma conta?
-                        <div
-                        style={{ color: "#3055D8" }}
-                        onClick={() => {
-                            props.setOpen(false)
-                        }}>
-                        Entre!
-                        </div>
+                        </Typography>
+                <Typography style={{ fontSize: "0.8em", fontWeight: "bold", color: "#3055D8" }}>
+                    Entre!
                 </Typography>
             </div>
         </div>

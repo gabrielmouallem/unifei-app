@@ -86,3 +86,58 @@ export const arrCompare = (a: any[], b: any[]) => {
     return true;
   }
 };
+
+/**
+ *  Models
+ */
+
+export interface GenericMarker {
+  name: string;
+  type: number;
+  description: string;
+  latitude: string;
+  longitude: string;
+}
+
+export interface EventMarker {
+  name: string;
+  type: number;
+  description: string;
+  latitude: string;
+  longitude: string;
+
+  event_type: number;
+  event_date: string;
+}
+
+export interface ConstructionMarker {
+  name: string;
+  type: number;
+  description: string;
+  latitude: string;
+  longitude: string;
+
+  construction_type: number;
+}
+
+export interface StudyGroupMarker {
+  name: string;
+  type: number;
+  description: string;
+  latitude: string;
+  longitude: string;
+
+  group_size: number;
+  discipline: string;
+  class_group: string;
+}
+
+export interface ExtraActivityMarker {
+  name: string;
+  type: number;
+  description: string;
+  latitude: string;
+  longitude: string;
+
+  activity_type: number;
+}

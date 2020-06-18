@@ -34,7 +34,7 @@ const BaseRouter = () => {
             ) : (
               <Redirect
                 to={{
-                  pathname: '/dashboard'
+                  pathname: '/marker-list'
                 }}
               />
             )

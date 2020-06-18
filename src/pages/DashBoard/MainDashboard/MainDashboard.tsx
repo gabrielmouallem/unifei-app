@@ -3,16 +3,19 @@ import './MainDashboard.scss';
 
 import Map from './components/Map/Map';
 import TopTab from '../components/TopTab/TopTab';
+import AbsoluteWrapper from '../../../components/AbsoluteWrapper/AbsoluteWrapper';
 
 export default () => {
 
     return (
-        <div className="main-dashboard">
-            <div className="main-dashboard__map-container">
-                <div className="main-dashboard__map">
-                    <TopTab />
+        <AbsoluteWrapper>
+            <div className="main-dashboard">
+                <div className="main-dashboard__map-container">
+                    <div className="main-dashboard__map">
+                        <TopTab />
+                    </div>
                 </div>
             </div>
-        </div>
+        </AbsoluteWrapper>
     )
 }

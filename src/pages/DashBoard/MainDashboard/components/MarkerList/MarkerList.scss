@@ -8,8 +8,10 @@
 }
 
 .marker-list {
-    padding-top: 30px;
+    width: 100%;
+    padding-top: 10px;
     animation: 1.3s ease-out 0s 1 fadeIn;
-    height: 100%;
     background-color: white;
+    height: 100%;
+    overflow: scroll;
 }

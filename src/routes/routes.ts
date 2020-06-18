@@ -5,7 +5,7 @@ export enum AuthRoutes {
   }
   
   export enum DashboardRoutes {
-    MAIN = "/dashboard",
+    MAIN = "/marker-list",
   }
   
   export default {
