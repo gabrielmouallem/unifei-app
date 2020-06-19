@@ -190,6 +190,7 @@ export default () => {
                 fullScreen
                 open={open}
                 TransitionComponent={Transition}
+                keepMounted={false}
                 onClose={() => {
                     setOpen(false);
                 }}
