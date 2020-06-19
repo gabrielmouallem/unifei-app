@@ -64,7 +64,9 @@ export default () => {
             <div className="top-tab__container">
                 <div className="top-tab__map">
                     {
-                        selectedTab ? <MarkerList /> : <Map key={`__${filter.data.type}`}/>
+                        selectedTab 
+                            ? <MarkerList />
+                            : <Map key={`${JSON.stringify(filter.data)}`}/>
                     }
                 </div>
             </div>

@@ -14,6 +14,7 @@ import { FilterState } from '../../../../../redux/filter/types';
 import { useSelector } from 'react-redux';
 import { ApplicationState } from '../../../../../redux';
 import { MarkerProps } from '../../../../../models/markers';
+import { handleFilter } from '../../../../../utils/utils';
 
 interface Props {
     center?: {
@@ -114,7 +115,7 @@ export default (props: Props) => {
                     var newMarkers = markers.filter((item: MarkerProps) => !prevMarkers.some(other => item.id == other.id));
                     if (JSON.stringify(newMarkers) !== JSON.stringify(markers))
                         newMarkers.forEach((marker, index) => {
-                            if (filter.data.type === marker.type || filter.data.type === undefined) {
+                            if (handleFilter(filter.data, marker.type)) {
                                 const markersMapsFormat = []
 
                                 const m = new google.maps.Marker({
@@ -143,7 +144,7 @@ export default (props: Props) => {
                         })
                     else {
                         markers.forEach((marker, index) => {
-                            if (filter.data.type === marker.type || filter.data.type === undefined) {
+                            if (handleFilter(filter.data, marker.type)) {
                                 const markersMapsFormat = []
     
                                 const m = new google.maps.Marker({

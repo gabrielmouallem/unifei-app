@@ -210,5 +210,5 @@ export default (props: Props) => {
             </AbsoluteWrapper>
         )
 
-    } else return <></>
+    } else return <CustomCircularProgress />
 }

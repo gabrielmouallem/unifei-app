@@ -3,7 +3,12 @@ import { FilterActions } from "./actions";
 
 const INITIAL_STATE: FilterState = {
   data: {
-    type: undefined
+    genericMarkers: false,
+    eventMarkers: false,
+    studyGroupMarkers: false,
+    extraActivityMarkers: false,
+    constructionMarkers: false,
+    scheduleMarkers: false
   }
 };
 

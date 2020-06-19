@@ -3,7 +3,7 @@ import './Nav.scss';
 
 import { Plugins } from '@capacitor/core';
 
-import { AppBar, Toolbar, IconButton, Typography, Button, Icon, Dialog, Slide, Menu, MenuItem, Divider } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Button, Icon, Dialog, Slide, Menu, MenuItem, Divider, FormControlLabel, Checkbox } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -39,7 +39,30 @@ export default () => {
 
     const [open, setOpen] = useState(false);
 
-    // var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
+    var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
+
+    const [state, setState] = React.useState({
+        genericMarkers: false,
+        eventMarkers: false,
+        studyGroupMarkers: false,
+        extraActivityMarkers: false,
+        constructionMarkers: false,
+        scheduleMarkers: false
+
+    });
+
+    const handleChange = (event: any) => {
+        setState({ ...state, [event.target.name]: event.target.checked });
+    };
+
+    const {
+        genericMarkers,
+        eventMarkers,
+        studyGroupMarkers,
+        extraActivityMarkers,
+        constructionMarkers,
+        scheduleMarkers
+    } = state;
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -51,8 +74,12 @@ export default () => {
 
     useEffect(() => {
         StatusBar.setBackgroundColor({ color: "#004780" });
-        dispatch(selectTab({value: 0}))
-    },[]);
+        dispatch(selectTab({ value: 0 }))
+    }, []);
+
+    useEffect(()=> {
+        console.log(filter)
+    }, [filter])
 
     return (
         <>
@@ -81,53 +108,65 @@ export default () => {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: undefined}))
-                                        handleClose();
-                                    }} >
-                                        Todos Marcadores
+                                    <MenuItem>
+                                        <b style={{marginLeft: "35%"}}>Filtros:</b>
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: 2}))
-                                        handleClose();
-                                    }} >
-                                        Eventos
+                                    <MenuItem>
+                                        <FormControlLabel
+                                            control={<Checkbox color="default" checked={eventMarkers} onChange={handleChange} name="eventMarkers" />}
+                                            label={<span style={{ fontSize: '0.8em' }}>Eventos</span>}
+                                        />
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: 0}))
-                                        handleClose();
-                                    }}>
-                                        Grupos de Estudo
+                                    <MenuItem>
+                                        <FormControlLabel
+                                            control={<Checkbox color="default" checked={studyGroupMarkers} onChange={handleChange} name="studyGroupMarkers" />}
+                                            label={<span style={{ fontSize: '0.8em' }}>Grupos de Estudo</span>}
+                                        />
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: 1}))
-                                        handleClose();
-                                    }}>
-                                        Atividades Extras
+                                    <MenuItem>
+                                        <FormControlLabel
+                                            control={<Checkbox color="default" checked={extraActivityMarkers} onChange={handleChange} name="extraActivityMarkers" />}
+                                            label={<span style={{ fontSize: '0.8em' }}>Atividades Extras</span>}
+                                        />
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: 4}))
-                                        handleClose();
-                                    }}>
-                                        Obras
+                                    <MenuItem>
+                                        <FormControlLabel
+                                            control={<Checkbox color="default" checked={constructionMarkers} onChange={handleChange} name="constructionMarkers" />}
+                                            label={<span style={{ fontSize: '0.8em' }}>Obras</span>}
+                                        />
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: 3}))
-                                        handleClose();
-                                    }}>
-                                        Salas e Locais
+                                    <MenuItem>
+                                        <FormControlLabel
+                                            control={<Checkbox color="default" checked={genericMarkers} onChange={handleChange} name="genericMarkers" />}
+                                            label={<span style={{ fontSize: '0.8em' }}>Salas e Locais</span>}
+                                        />
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem onClick={() => {
-                                        dispatch(storeFilter({type: 5}))
-                                        handleClose();
-                                    }}>
-                                        Meus Horarios
+                                    <MenuItem>
+                                        <FormControlLabel
+                                            control={<Checkbox color="default" checked={scheduleMarkers} onChange={handleChange} name="scheduleMarkers" />}
+                                            label={<span style={{ fontSize: '0.8em' }}>Meus Horarios</span>}
+                                        />
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem>
+                                        <Button
+                                            variant="contained"
+                                            style={{
+                                                fontSize: "0.8em",
+                                                marginLeft: "28%"
+                                            }}
+                                            onClick={()=>{
+                                                dispatch(storeFilter(state));
+                                                handleClose();
+                                            }}>
+                                            Salvar
+                                        </Button>
                                     </MenuItem>
                                 </Menu>
                                 <IconButton>
@@ -156,7 +195,7 @@ export default () => {
                 aria-describedby="alert-dialog-slide-description---"
             >
                 <BaseModal setOpen={setOpen} title="Criar Marcador">
-                    <AddMarker key={open.toString()} setOpen={setOpen}/>
+                    <AddMarker key={open.toString()} setOpen={setOpen} />
                 </BaseModal>
             </Dialog>
         </>
