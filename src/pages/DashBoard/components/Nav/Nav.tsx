@@ -39,6 +39,8 @@ export default () => {
 
     const [open, setOpen] = useState(false);
 
+    const [showAllMarkers, setShowAllMarkers] = useState(undefined);
+
     var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
 
     const [state, setState] = React.useState({
@@ -78,8 +80,8 @@ export default () => {
     }, []);
 
     useEffect(()=> {
-        console.log(filter)
-    }, [filter])
+        dispatch(storeFilter(state));
+    }, [state])
 
     return (
         <>
@@ -154,7 +156,7 @@ export default () => {
                                         />
                                     </MenuItem>
                                     <Divider />
-                                    <MenuItem>
+                                    {/* <MenuItem>
                                         <Button
                                             variant="contained"
                                             style={{
@@ -167,7 +169,7 @@ export default () => {
                                             }}>
                                             Salvar
                                         </Button>
-                                    </MenuItem>
+                                    </MenuItem> */}
                                 </Menu>
                                 <IconButton>
                                     <NotificationsIcon />
