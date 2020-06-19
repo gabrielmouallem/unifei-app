@@ -111,7 +111,7 @@ export default () => {
                                     onClose={handleClose}
                                 >
                                     <MenuItem>
-                                        <b style={{marginLeft: "35%"}}>Filtros:</b>
+                                        <b style={{marginLeft: "28%"}}>Filtrar por:</b>
                                     </MenuItem>
                                     <Divider />
                                     <MenuItem>
