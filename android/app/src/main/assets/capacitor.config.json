@@ -1,0 +1,18 @@
+{
+  "appId": "app.unifei",
+  "appName": "Unifei App",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "build",
+  "cordova": {},
+  "plugins": {
+    "GoogleAuth": {
+      "scopes": [
+        "profile",
+        "email"
+      ],
+      "serverClientId": "410043933012-2op2u0o4hda7eaouh46ho2fvujtt3ee8.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
+    }
+  }
+}
