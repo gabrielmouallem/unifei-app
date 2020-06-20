@@ -15,6 +15,10 @@ import useNotify from '../../../hooks/tools/useNotify';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../../redux/auth/actions';
 import CustomCircularProgress from '../../../components/CustomCircularProgress/CustomCircularProgress';
+import "@codetrix-studio/capacitor-google-auth";
+
+import { Plugins } from '@capacitor/core';
+const { GoogleAuth } = Plugins;
 
 interface LoginProps {
     username: string;
@@ -99,6 +103,12 @@ export default () => {
                 notify("Ocorreu um erro ao entrar, verifique seu usuário e senha.", 'error');
             }
         });
+    }
+
+    async function  handleGoogleLoginToken() {
+        let googleUser = await GoogleAuth.signIn();
+        var username = googleUser.name;
+        console.log("signIn:", googleUser)
     }
 
     const handlePasswordLogin = () => {
@@ -198,7 +208,7 @@ export default () => {
                     <div className="login__google-container">
                         <button
                             type="button"
-                            onClick={() => { }}
+                            onClick={() => { handleGoogleLoginToken() }}
                             className="login__google-button"
                         >
                             <div className="login__google-button__icon">
@@ -211,7 +221,7 @@ export default () => {
                             </div>
                         </button>
                     </div>
-                    <div className="login__password-lost" style={{textAlign: "center"}}
+                    <div className="login__password-lost" style={{ textAlign: "center" }}
                         onClick={() => {
                             setRegister(true)
                         }} >

@@ -932,6 +932,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@capacitor/core@latest":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-2.2.0.tgz#60f7b2126a5a223cb1ede055a65df6ad0d719f4b"
+  integrity sha512-ClxXjOUCF0wZpznZI6f6uXK2LLzWBx5Ly/g7Hqu8R8wNdaKYoh83eMuT+m5G1gfxhcALAAJNUhHccnCW3ohftg==
+  dependencies:
+    tslib "^1.9.0"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -939,6 +946,13 @@
   dependencies:
     exec-sh "^0.3.2"
     minimist "^1.2.0"
+
+"@codetrix-studio/capacitor-google-auth@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@codetrix-studio/capacitor-google-auth/-/capacitor-google-auth-2.1.1.tgz#d8709e4547ea3b688f0ae45dc993ac57d508f4bb"
+  integrity sha512-lQfo/X/MzhlmFlvjSRvMsAS9WRUi6Oucs1Zu1OomM4WQCIEOqWzdFqGbznzjKnIfGN1pZeJ2bqmuGydjue3eSA==
+  dependencies:
+    "@capacitor/core" latest
 
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
