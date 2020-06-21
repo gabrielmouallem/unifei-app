@@ -105,7 +105,6 @@ export default () => {
     async function googleSignOnOrLogin() {
         await new Promise(async resolve => {
             try {
-                setLoading(true);
                 await handleGoogleLoginToken(
                     (googleUser) => {
                         const body = {
@@ -121,16 +120,13 @@ export default () => {
                         }).catch(err => {
                             console.log("Erro em googleSignInOrLogin", err);
                             notify("Ocorreu um erro ao entrar com o Google.", 'error');
-                            setLoading(false);
                         });
-                        setLoading(false);
                         notify("Logado com sucesso!", "success");
                     }
                 );
             } catch (err) {
                 console.log("Erro em googleSignInOrLogin", err);
                 notify("Ocorreu um erro ao entrar com o Google.", 'error');
-                setLoading(false);
             }
         });
     }
