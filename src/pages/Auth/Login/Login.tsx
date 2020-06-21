@@ -82,7 +82,6 @@ export default () => {
 
     async function passwordLogin() {
         await new Promise(async resolve => {
-            setLoading(true)
             try {
                 const body = {
                     method: "password",
@@ -91,24 +90,55 @@ export default () => {
                 }
                 console.log(body)
                 const response = await coreHTTPClient.post(`auth/`, body);
-                setLoading(false);
                 const { token } = response.data;
                 console.log(token)
                 dispatch(setToken(token));
 
                 notify("Logado com sucesso!", "success");
             } catch (err) {
-                setLoading(false);
                 console.log("Erro em passwordLogin", err);
                 notify("Ocorreu um erro ao entrar, verifique seu usuário e senha.", 'error');
             }
         });
     }
 
-    async function  handleGoogleLoginToken() {
-        let googleUser = await GoogleAuth.signIn();
-        var username = googleUser.name;
-        console.log("signIn:", googleUser)
+    async function googleSignOnOrLogin() {
+        await new Promise(async resolve => {
+            try {
+                setLoading(true);
+                await handleGoogleLoginToken(
+                    (googleUser) => {
+                        const body = {
+                            method: "google",
+                            id_token: googleUser.authentication.idToken,
+                            email: googleUser.email
+                        }
+                        console.log(body);
+                        coreHTTPClient.post(`auth/`, body).then((response: any) => {
+                            console.log(response)
+                            const { token } = response.data;
+                            dispatch(setToken(token));
+                        }).catch(err => {
+                            console.log("Erro em googleSignInOrLogin", err);
+                            notify("Ocorreu um erro ao entrar com o Google.", 'error');
+                            setLoading(false);
+                        });
+                        setLoading(false);
+                        notify("Logado com sucesso!", "success");
+                    }
+                );
+            } catch (err) {
+                console.log("Erro em googleSignInOrLogin", err);
+                notify("Ocorreu um erro ao entrar com o Google.", 'error');
+                setLoading(false);
+            }
+        });
+    }
+
+    async function handleGoogleLoginToken(callback: (data: any) => void) {
+        GoogleAuth.signIn().then((res: any) => {
+            callback(res);
+        });
     }
 
     const handlePasswordLogin = () => {
@@ -208,7 +238,7 @@ export default () => {
                     <div className="login__google-container">
                         <button
                             type="button"
-                            onClick={() => { handleGoogleLoginToken() }}
+                            onClick={() => { googleSignOnOrLogin() }}
                             className="login__google-button"
                         >
                             <div className="login__google-button__icon">

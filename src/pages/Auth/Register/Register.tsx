@@ -10,7 +10,13 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import EmailIcon from '@material-ui/icons/Email';
 import useNotify from '../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../services/webclient';
+import { setToken } from '../../../redux/auth/actions';
+import { useDispatch } from 'react-redux';
 import CustomCircularProgress from '../../../components/CustomCircularProgress/CustomCircularProgress';
+
+import "@codetrix-studio/capacitor-google-auth";
+import { Plugins } from '@capacitor/core';
+const { GoogleAuth } = Plugins;
 
 interface Props {
     setOpen: (open: any) => void;
@@ -39,6 +45,8 @@ export default (props: Props) => {
 
     const notify = useNotify();
 
+    const dispatch = useDispatch();
+
     const [values, setValues] = React.useState({
         username: '',
         email: '',
@@ -53,6 +61,41 @@ export default (props: Props) => {
     const validateEmailFormat = (email: string) => {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return !re.test(String(email).toLowerCase());
+    }
+
+    async function googleSignOnOrLogin() {
+        await new Promise(async resolve => {
+            try {
+                await handleGoogleLoginToken(
+                    (googleUser) => {
+                        const body = {
+                            method: "google",
+                            id_token: googleUser.authentication.idToken,
+                            email: googleUser.email
+                        }
+                        console.log(body);
+                        coreHTTPClient.post(`auth/`, body).then((response: any) => {
+                            console.log(response)
+                            const { token } = response.data;
+                            dispatch(setToken(token));
+                        }).catch(err => {
+                            console.log("Erro em googleSignInOrLogin", err);
+                            notify("Ocorreu um erro ao entrar com o Google.", 'error');
+                        });
+                        notify("Logado com sucesso!", "success");
+                    }
+                );
+            } catch (err) {
+                console.log("Erro em googleSignInOrLogin", err);
+                notify("Ocorreu um erro ao entrar com o Google.", 'error');
+            }
+        });
+    }
+
+    async function handleGoogleLoginToken(callback: (data: any) => void) {
+        GoogleAuth.signIn().then((res: any)=> {
+            callback(res);
+        }); 
     }
 
     async function doRegister() {
@@ -224,7 +267,7 @@ export default (props: Props) => {
             <div className="register__google-container">
                 <button
                     type="button"
-                    onClick={() => { }}
+                    onClick={() => { googleSignOnOrLogin() }}
                     className="register__google-button"
                 >
                     <div className="register__google-button__icon">

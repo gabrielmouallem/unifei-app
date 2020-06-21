@@ -10,6 +10,10 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ListIcon from '@material-ui/icons/List';
 import './MenuDrawer.scss'
 
+import "@codetrix-studio/capacitor-google-auth";
+import { Plugins } from '@capacitor/core';
+const { GoogleAuth } = Plugins;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -59,6 +63,7 @@ const MenuDrawer = () => {
               <span className="menu-drawer__code">2017017731</span>
               <span className="menu-drawer__logout"
                 onClick={() => {
+                  GoogleAuth.signOut()
                   dispatch(clearToken());
                 }}>
                 <ArrowForwardIosIcon
