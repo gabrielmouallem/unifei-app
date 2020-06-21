@@ -7,6 +7,7 @@ import { BasicsProvider } from "../../pages/DashBoard/components/BasicsProvider/
 import MainDashboard from "../../pages/DashBoard/MainDashboard/MainDashboard";
 import Register from "../../pages/Auth/Register/Register";
 import SelectedMarker from "../../pages/DashBoard/MainDashboard/components/SelectedMarker/SelectedMarker";
+import Profile from "../../pages/DashBoard/Profile/Profile";
 
 export default () => {
 
@@ -40,6 +41,11 @@ export default () => {
                 exact
                 path={'/markers/:marker'}
                 component={SelectedMarker}
+              />
+              <Route
+                exact
+                path={'/profile/'}
+                component={Profile}
               />
             </Switch>
           </animated.div>

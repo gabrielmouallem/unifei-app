@@ -42,7 +42,7 @@ export default (props: Props) => {
                     <div className="summary"
                         onClick={() => {
                             history.push(
-                                String('markers/:marker').replace(':marker', props.id_title.split('-')[0])
+                                String('/markers/:marker').replace(':marker', props.id_title.split('-')[0])
                             )
                         }}>
                         <div className="summary__flex">
