@@ -152,7 +152,7 @@ export default () => {
                                     <MenuItem>
                                         <FormControlLabel
                                             control={<Checkbox color="default" checked={scheduleMarkers} onChange={handleChange} name="scheduleMarkers" />}
-                                            label={<span style={{ fontSize: '0.8em' }}>Meus Horarios</span>}
+                                            label={<span style={{ fontSize: '0.8em' }}>Meus Horários</span>}
                                         />
                                     </MenuItem>
                                     <Divider />

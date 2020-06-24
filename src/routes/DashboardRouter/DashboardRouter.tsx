@@ -8,6 +8,7 @@ import MainDashboard from "../../pages/DashBoard/MainDashboard/MainDashboard";
 import Register from "../../pages/Auth/Register/Register";
 import SelectedMarker from "../../pages/DashBoard/MainDashboard/components/SelectedMarker/SelectedMarker";
 import Profile from "../../pages/DashBoard/Profile/Profile";
+import MySchedule from "../../pages/DashBoard/MySchedule/MySchedule";
 
 export default () => {
 
@@ -46,6 +47,11 @@ export default () => {
                 exact
                 path={'/profile/'}
                 component={Profile}
+              />
+              <Route
+                exact
+                path={'/my-schedule/'}
+                component={MySchedule}
               />
             </Switch>
           </animated.div>

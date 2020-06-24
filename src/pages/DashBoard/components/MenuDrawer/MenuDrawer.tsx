@@ -90,11 +90,14 @@ const MenuDrawer = () => {
                   <ListItemText primary="Meu Perfil" />
                 </ListItem>
                 <Divider />
-                <ListItem button>
+                <ListItem button onClick={()=>{
+                  ctx.closeDrawer();
+                  history.push('/my-schedule/');
+                }}>
                   <ListItemIcon>
                     <ListIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Meu Horários" />
+                  <ListItemText primary="Meus Horários" />
                 </ListItem>
                 <Divider />
               </List>

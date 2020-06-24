@@ -117,11 +117,11 @@ export default () => {
                             console.log(response)
                             const { token } = response.data;
                             dispatch(setToken(token));
+                            notify("Logado com sucesso!", "success");
                         }).catch(err => {
                             console.log("Erro em googleSignInOrLogin", err);
                             notify("Ocorreu um erro ao entrar com o Google.", 'error');
-                        });
-                        notify("Logado com sucesso!", "success");
+                        })
                     }
                 );
             } catch (err) {
