@@ -18,6 +18,7 @@ import SelectedMarker from '../SelectedMarker/SelectedMarker';
 import { useHistory } from 'react-router-dom';
 import { MarkerProps } from '../../../../../models/markers';
 import { Plugins } from '@capacitor/core';
+import { handleFilter } from '../../../../../utils/utils';
 
 const { Modals } = Plugins;
 
@@ -125,7 +126,7 @@ export default () => {
             <div className="marker-list">
                 <List className={classes.root}>
                     {markers.map((marker: MarkerProps) => {
-                        if (filter.data.type === marker.type || filter.data.type === undefined && marker.id !== isDeleted) {
+                        if (handleFilter(filter.data, marker.type) && marker.id !== isDeleted) {
                             return (
                                 <>
                                     <ListItem alignItems="flex-start">
@@ -172,6 +173,7 @@ export default () => {
                     }}>
                         Editar
                     </MenuItem>
+                    <Divider />
                     <MenuItem onClick={() => {
                         showConfirm()
                         handleClose();

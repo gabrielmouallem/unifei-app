@@ -5,7 +5,12 @@ export enum FilterTypes {
 }
 
 export interface FilterRedux {
-    type: any;
+    genericMarkers: boolean,
+    eventMarkers: boolean,
+    studyGroupMarkers: boolean,
+    extraActivityMarkers: boolean,
+    constructionMarkers: boolean,
+    scheduleMarkers: boolean
 }
 
 export interface FilterState {

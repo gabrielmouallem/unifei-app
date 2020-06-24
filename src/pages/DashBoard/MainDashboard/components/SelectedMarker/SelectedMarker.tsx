@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './SelectedMarker.scss';
 import { MARKER_ICON_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES } from '../../../../../utils/consts';
-import { Typography, Dialog, Slide, Fade } from '@material-ui/core';
+import { Typography, Dialog, Slide, Fade, Button } from '@material-ui/core';
 import moment from "moment";
 import MarkerList from '../MarkerList/MarkerList';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
@@ -204,11 +204,21 @@ export default (props: Props) => {
                                 </Typography>
                             </div>
                             {markerInfos}
+                            {
+                                // @ts-ignore
+                                marker.type === 0
+                                    ? <Button
+                                    style={{width: "90%", boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}}
+                                        variant="contained">
+                                        Confirmar Participação
+                                        </Button>
+                                    : <></>
+                            }
                         </div>
                     </BaseModal>
                 </div>
             </AbsoluteWrapper>
         )
 
-    } else return <></>
+    } else return <CustomCircularProgress />
 }

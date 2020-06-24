@@ -15,6 +15,10 @@ import useNotify from '../../../hooks/tools/useNotify';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../../redux/auth/actions';
 import CustomCircularProgress from '../../../components/CustomCircularProgress/CustomCircularProgress';
+import "@codetrix-studio/capacitor-google-auth";
+
+import { Plugins } from '@capacitor/core';
+const { GoogleAuth } = Plugins;
 
 interface LoginProps {
     username: string;
@@ -78,7 +82,6 @@ export default () => {
 
     async function passwordLogin() {
         await new Promise(async resolve => {
-            setLoading(true)
             try {
                 const body = {
                     method: "password",
@@ -87,17 +90,50 @@ export default () => {
                 }
                 console.log(body)
                 const response = await coreHTTPClient.post(`auth/`, body);
-                setLoading(false);
                 const { token } = response.data;
                 console.log(token)
                 dispatch(setToken(token));
 
                 notify("Logado com sucesso!", "success");
             } catch (err) {
-                setLoading(false);
                 console.log("Erro em passwordLogin", err);
                 notify("Ocorreu um erro ao entrar, verifique seu usuário e senha.", 'error');
             }
+        });
+    }
+
+    async function googleSignOnOrLogin() {
+        await new Promise(async resolve => {
+            try {
+                await handleGoogleLoginToken(
+                    (googleUser) => {
+                        const body = {
+                            method: "google",
+                            id_token: googleUser.authentication.idToken,
+                            email: googleUser.email
+                        }
+                        console.log(body);
+                        coreHTTPClient.post(`auth/`, body).then((response: any) => {
+                            console.log(response)
+                            const { token } = response.data;
+                            dispatch(setToken(token));
+                        }).catch(err => {
+                            console.log("Erro em googleSignInOrLogin", err);
+                            notify("Ocorreu um erro ao entrar com o Google.", 'error');
+                        });
+                        notify("Logado com sucesso!", "success");
+                    }
+                );
+            } catch (err) {
+                console.log("Erro em googleSignInOrLogin", err);
+                notify("Ocorreu um erro ao entrar com o Google.", 'error');
+            }
+        });
+    }
+
+    async function handleGoogleLoginToken(callback: (data: any) => void) {
+        GoogleAuth.signIn().then((res: any) => {
+            callback(res);
         });
     }
 
@@ -198,7 +234,7 @@ export default () => {
                     <div className="login__google-container">
                         <button
                             type="button"
-                            onClick={() => { }}
+                            onClick={() => { googleSignOnOrLogin() }}
                             className="login__google-button"
                         >
                             <div className="login__google-button__icon">
@@ -211,7 +247,7 @@ export default () => {
                             </div>
                         </button>
                     </div>
-                    <div className="login__password-lost" style={{textAlign: "center"}}
+                    <div className="login__password-lost" style={{ textAlign: "center" }}
                         onClick={() => {
                             setRegister(true)
                         }} >
