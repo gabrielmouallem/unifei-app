@@ -48,8 +48,11 @@ export default () => {
                 alert(uri); 
                 var result = Filesystem.readFile({
                   path: uri,
+                }).then(res=>{
+                  alert('Arquivo localizado ' + res);
+                }).catch(err=> {
+                  alert("Erro " + err);
                 });
-                alert('Arquivo localizado ' + result);
               })
               .catch(e => alert(e));
           }}>
