@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './MySchedule.scss';
 import { Button } from '@material-ui/core';
 import AbsoluteWrapper from '../../../components/AbsoluteWrapper/AbsoluteWrapper';
+import { FileChooser } from '@ionic-native/file-chooser';
 import { Plugins, FilesystemDirectory, FilesystemEncoding } from '@capacitor/core';
 const { Filesystem } = Plugins;
 const { Clipboard } = Plugins;
@@ -19,7 +20,7 @@ export default () => {
         encoding: FilesystemEncoding.UTF8
       })
       console.log('Wrote file', result);
-    } catch(e) {
+    } catch (e) {
       console.error('Unable to write file', e);
     }
   }
@@ -42,15 +43,18 @@ export default () => {
       <div className="my-schedule">
         <Button variant="contained"
           onClick={() => {
-            alert(String('Sistema Integrado de Gestão de Atividades Acadêmicas.pdf').replace(/ /g, "%20"))
-            fileRead().then(res => {
-              alert(res)
-            }).catch(err => {
-              alert(err)
-            })
+            FileChooser.open()
+              .then(uri => {
+                alert(uri); 
+                var result = Filesystem.readFile({
+                  path: uri,
+                });
+                alert('Arquivo localizado ' + result);
+              })
+              .catch(e => alert(e));
           }}>
-            ----------------- IMPORTAR -----------------
-        </Button> 
+          ----------------- IMPORTAR -----------------
+        </Button>
       </div>
     </AbsoluteWrapper>
   )
