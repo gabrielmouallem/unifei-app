@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './MarkerList.scss';
-import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider, Menu, MenuItem, IconButton, Dialog, Slide } from '@material-ui/core';
+import { makeStyles, List, ListItem, Avatar, ListItemText, ListItemAvatar, Typography, Divider, Menu, MenuItem, IconButton, Dialog, Slide, TextField, InputAdornment } from '@material-ui/core';
 
 import blueDot from '../../../../../assets/images/blue-dot.png';
 import redDot from '../../../../../assets/images/red-dot.png';
@@ -19,6 +19,7 @@ import { useHistory } from 'react-router-dom';
 import { MarkerProps } from '../../../../../models/markers';
 import { Plugins } from '@capacitor/core';
 import { handleFilter } from '../../../../../utils/utils';
+import SearchIcon from '@material-ui/icons/Search';
 
 const { Modals } = Plugins;
 
@@ -46,6 +47,8 @@ export default () => {
     const dispatch = useDispatch();
 
     const history = useHistory();
+
+    const [searchInput, setSearchInput] = useState<string>("");
 
     const [markers, setMarkers] = useState<MarkerProps[]>([]);
 
@@ -99,15 +102,15 @@ export default () => {
 
     async function showConfirm() {
         let confirmRet = await Modals.confirm({
-          title: 'Atenção',
-          message: 'Você tem certeza que deseja deletar este marcador?'
+            title: 'Atenção',
+            message: 'Você tem certeza que deseja deletar este marcador?'
         });
         console.log(confirmRet)
-        if (confirmRet.value){
+        if (confirmRet.value) {
             deleteMarker();
             getAllMarkers();
         }
-      }
+    }
 
     useEffect(() => {
         getAllMarkers();
@@ -124,42 +127,106 @@ export default () => {
     if (markers) {
         return (
             <div className="marker-list">
+                <div className="marker-list__search">
+                    <TextField
+                        id="marker-search-input"
+                        label="Pesquisar marcador"
+                        value={searchInput}
+                        onChange={value => setSearchInput(value.target.value)}
+                        style={{ alignSelf: "center", paddingBottom: "10px" }}
+                        color="secondary"
+                        InputProps={{
+                            endAdornment:
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="search"
+                                        edge="end"
+                                    >
+                                        <SearchIcon />
+                                    </IconButton>
+                                </InputAdornment>,
+                        }}
+                    />
+                    <Divider />
+                </div>
                 <List className={classes.root}>
-                    {markers.map((marker: MarkerProps) => {
-                        if (handleFilter(filter.data, marker.type) && marker.id !== isDeleted) {
-                            return (
-                                <>
-                                    <ListItem alignItems="flex-start">
-                                        <ListItemAvatar>
-                                            <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]}
-                                                onClick={() => { handleOpenSelectedMarkerModal(marker) }} />
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            onClick={() => { handleOpenSelectedMarkerModal(marker) }}
-                                            primary={marker.name}
-                                            secondary={
-                                                <React.Fragment>
-                                                    {/* <Typography
-                                                        component="span"
-                                                        variant="body2"
-                                                        className={classes.inline}
-                                                        color="textPrimary"
-                                                    >
+                    {searchInput === ""
+                        ? markers.map((marker: MarkerProps) => {
+                            if (handleFilter(filter.data, marker.type) && marker.id !== isDeleted) {
+                                return (
+                                    <>
+                                        <ListItem alignItems="flex-start">
+                                            <ListItemAvatar>
+                                                <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]}
+                                                    onClick={() => { handleOpenSelectedMarkerModal(marker) }} />
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                                onClick={() => { handleOpenSelectedMarkerModal(marker) }}
+                                                primary={marker.name}
+                                                secondary={
+                                                    <React.Fragment>
+                                                        {/* <Typography
+                                                            component="span"
+                                                            variant="body2"
+                                                            className={classes.inline}
+                                                            color="textPrimary"
+                                                        >
+                                                            {marker.description}
+                                                        </Typography> */}
                                                         {marker.description}
-                                                    </Typography> */}
-                                                    {marker.description}
-                                                </React.Fragment>
-                                            }
-                                        />
-                                        <MoreVertIcon onClick={(e) => {
-                                            handleClick(e, marker);
-                                        }} />
-                                    </ListItem>
-                                    <Divider variant="inset" component="li" />
-                                </>
-                            )
-                        } else return <></>
-                    })}
+                                                    </React.Fragment>
+                                                }
+                                            />
+                                            <MoreVertIcon onClick={(e) => {
+                                                handleClick(e, marker);
+                                            }} />
+                                        </ListItem>
+                                        <Divider variant="inset" component="li" />
+                                    </>
+                                )
+                            } else return <></>
+                        })
+                        : markers
+                            .filter(marker => {
+                                return marker.name
+                                    .toLowerCase()
+                                    .includes(searchInput.toLowerCase());
+                            })
+                            .map((marker: MarkerProps) => {
+                                if (handleFilter(filter.data, marker.type) && marker.id !== isDeleted) {
+                                    return (
+                                        <>
+                                            <ListItem alignItems="flex-start">
+                                                <ListItemAvatar>
+                                                    <Avatar alt="marker" src={MARKER_ICON_TYPES[marker.type]}
+                                                        onClick={() => { handleOpenSelectedMarkerModal(marker) }} />
+                                                </ListItemAvatar>
+                                                <ListItemText
+                                                    onClick={() => { handleOpenSelectedMarkerModal(marker) }}
+                                                    primary={marker.name}
+                                                    secondary={
+                                                        <React.Fragment>
+                                                            {/* <Typography
+                                                                component="span"
+                                                                variant="body2"
+                                                                className={classes.inline}
+                                                                color="textPrimary"
+                                                            >
+                                                                {marker.description}
+                                                            </Typography> */}
+                                                            {marker.description}
+                                                        </React.Fragment>
+                                                    }
+                                                />
+                                                <MoreVertIcon onClick={(e) => {
+                                                    handleClick(e, marker);
+                                                }} />
+                                            </ListItem>
+                                            <Divider variant="inset" component="li" />
+                                        </>
+                                    )
+                                } else return <></>
+                            })}
                 </List>
                 <Menu
                     id={`popover`}
@@ -171,7 +238,7 @@ export default () => {
                     <MenuItem onClick={() => {
                         console.log(selectedMarker.id)
                         history.push(
-                            String('/markers/:marker/edit').replace(':marker',`${selectedMarker.id}`)
+                            String('/markers/:marker/edit').replace(':marker', `${selectedMarker.id}`)
                         )
                         handleClose();
                     }}>
