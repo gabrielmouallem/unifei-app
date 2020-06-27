@@ -169,6 +169,10 @@ export default () => {
                     onClose={handleClose}
                 >
                     <MenuItem onClick={() => {
+                        console.log(selectedMarker.id)
+                        history.push(
+                            String('/markers/:marker/edit').replace(':marker',`${selectedMarker.id}`)
+                        )
                         handleClose();
                     }}>
                         Editar

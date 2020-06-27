@@ -56,16 +56,16 @@ export default (props: Props) => {
     }
 
     useEffect(() => {
+        GetMarker();
+    }, [])
+
+    useEffect(() => {
         if (!open) {
             setTimeout(() => {
                 history.goBack();
             }, 100)
         }
     }, [open])
-
-    useEffect(() => {
-        GetMarker();
-    }, [])
 
     useEffect(() => {
         if (marker) {
