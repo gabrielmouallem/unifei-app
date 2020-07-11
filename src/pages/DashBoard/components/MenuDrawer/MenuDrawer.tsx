@@ -15,6 +15,8 @@ import { Plugins } from '@capacitor/core';
 import { useHistory } from "react-router-dom";
 import { ProfileState } from "../../../../redux/profile/types";
 import { ApplicationState } from "../../../../redux";
+import UnknownProfile from '../../../../assets/images/unknown-avatar.jpg';
+
 const { GoogleAuth } = Plugins;
 
 const useStyles = makeStyles((theme) => ({
@@ -54,10 +56,7 @@ const MenuDrawer = () => {
         <div className="menu-drawer">
           <div className="menu-drawer__grey"></div>
           <div className="menu-drawer__profile-pic">
-            <PersonIcon
-              style={{
-                fontSize: "80px"
-              }} />
+            <img src={UnknownProfile} height="80px" />
           </div>
           <div>
             <div className="menu-drawer__profile-name">

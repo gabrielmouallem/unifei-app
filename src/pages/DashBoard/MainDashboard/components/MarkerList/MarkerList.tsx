@@ -270,5 +270,8 @@ export default () => {
                 </Dialog> */}
             </div>
         );
-    } else return (<CustomCircularProgress />)
+    } else {
+        console.log("----------> LOADING")
+        return (<CustomCircularProgress />)
+    }
 }
