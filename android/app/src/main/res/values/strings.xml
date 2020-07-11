@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Unifei App</string>
-    <string name="title_activity_main">Unifei App</string>
-    <string name="package_name">app.unifei</string>
-    <string name="custom_url_scheme">app.unifei</string>
-    <string name="server_client_id">410043933012-2op2u0o4hda7eaouh46ho2fvujtt3ee8.apps.googleusercontent.com</string>
-</resources>
