@@ -32,25 +32,27 @@ export default (props: Props) => {
 
     return (
         <div className="modal">
-            <div
-                className="modal__back"
-                onClick={() => {
-                    console.log("click")
-                    setOpen(false);
-                    props.setOpen(false);
-                }}>
-                {props.closeIconDirection === "down" ? <ArrowBackIcon /> : <KeyboardArrowDownIcon />}
-            </div>
-            <div className="modal__title">
-                <Typography
-                    style={{
-                        fontSize: "1.35em",
-                        fontWeight: "bold",
-                        color: "#0D2A54"
-                    }}
-                >
-                    {props.title}
-                </Typography>
+            <div className="modal__container">
+                <div
+                    className="modal__back"
+                    onClick={() => {
+                        console.log("click")
+                        setOpen(false);
+                        props.setOpen(false);
+                    }}>
+                    {props.closeIconDirection === "down" ? <ArrowBackIcon /> : <KeyboardArrowDownIcon />}
+                </div>
+                <div className="modal__title">
+                    <Typography
+                        style={{
+                            fontSize: "1.35em",
+                            fontWeight: "bold",
+                            color: "#0D2A54"
+                        }}
+                    >
+                        {props.title}
+                    </Typography>
+                </div>
             </div>
             {props.children}
         </div>

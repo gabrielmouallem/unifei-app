@@ -72,16 +72,16 @@ export default (props: Props) => {
         setValues({
             name: null,
             description: '',
-    
+
             event_type: 0,
             event_date: '',
-    
+
             construction_type: 0,
-    
+
             group_size: 5,
             discipline: '',
             class_group: '',
-    
+
             activity_type: ''
         })
     }
@@ -235,10 +235,10 @@ export default (props: Props) => {
         clearValues();
     }, [markerType])
 
-    useEffect(()=> {
-        if (activeStep === 2){
-            setTimeout(()=>{
-                if (latitude && longitude){
+    useEffect(() => {
+        if (activeStep === 2) {
+            setTimeout(() => {
+                if (latitude && longitude) {
                     saveMarker();
                 } else {
                     notify("Não foi possível obter sua localização atual.", 'error');
@@ -389,31 +389,32 @@ export default (props: Props) => {
                 <div className="add-marker__marker-type">
                     {MARKER_TYPES[markerType]}
                 </div>
-                <div className="add-marker__input">
-                    <TextField
-                        style={{ width: "250px" }}
-                        id="outlined-search"
-                        value={values.name}
-                        onChange={handleChange('name')}
-                        label="Nome do Marcador"
-                        type="text"
-                        variant="outlined" />
+                <div>
+                    <div className="add-marker__input">
+                        <TextField
+                            style={{ width: "250px" }}
+                            id="outlined-search"
+                            value={values.name}
+                            onChange={handleChange('name')}
+                            label="Nome do Marcador"
+                            type="text"
+                            variant="outlined" />
+                    </div>
+                    {handleMarkerInputs(markerType)}
+                    <div className="add-marker__input">
+                        <TextField
+                            style={{ width: "250px" }}
+                            id="outlined-search"
+                            value={values.description}
+                            onChange={handleChange('description')}
+                            label="Descrição"
+                            type="text"
+                            variant="outlined"
+                            multiline
+                            rows={5}
+                            rowsMax={5} />
+                    </div>
                 </div>
-                {handleMarkerInputs(markerType)}
-                <div className="add-marker__input">
-                    <TextField
-                        style={{ width: "250px" }}
-                        id="outlined-search"
-                        value={values.description}
-                        onChange={handleChange('description')}
-                        label="Descrição"
-                        type="text"
-                        variant="outlined"
-                        multiline
-                        rows={5}
-                        rowsMax={5} />
-                </div>
-
             </div>
         )
     }
@@ -466,8 +467,8 @@ export default (props: Props) => {
                 nextButton={
                     <Button
                         size="small"
-                        disabled={ activeStep === 0 || activeStep == 2 }
-                        style={{marginRight: "15px"}}
+                        disabled={activeStep === 0 || activeStep == 2}
+                        style={{ marginRight: "15px" }}
                         onClick={() => {
                             handleNextStep();
                         }}>
@@ -476,8 +477,11 @@ export default (props: Props) => {
                     </Button>
                 }
                 backButton={
-                    <Button size="small" disabled={activeStep === 0 || activeStep === 2}
-                        onClick={()=> {
+                    <Button
+                        size="small"
+                        disabled={activeStep === 0 || activeStep === 2}
+                        style={{ opacity: activeStep === 0 ? "0" : "1" }}
+                        onClick={() => {
                             handleBack();
                             clearValues();
                         }}>
