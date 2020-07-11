@@ -26,7 +26,6 @@ interface Props {
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        maxWidth: '36ch',
         backgroundColor: "#F5F5F5",
     },
     inline: {
@@ -465,9 +464,10 @@ export default (props: Props) => {
                 activeStep={activeStep}
                 className={classes.root}
                 nextButton={
-                    <Button size="small" disabled={
-                        activeStep === 0 || activeStep == 2
-                    }
+                    <Button
+                        size="small"
+                        disabled={ activeStep === 0 || activeStep == 2 }
+                        style={{marginRight: "15px"}}
                         onClick={() => {
                             handleNextStep();
                         }}>
