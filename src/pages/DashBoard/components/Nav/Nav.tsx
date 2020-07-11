@@ -96,7 +96,7 @@ export default () => {
                                 <MenuIcon />
                             </IconButton>
                             <h6>
-                                Bem Vindo!
+                                {/* Bem Vindo! */}
                         </h6>
                         </div>
                         <div className="nav__items-right">
