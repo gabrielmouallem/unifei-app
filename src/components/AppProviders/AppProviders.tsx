@@ -9,6 +9,7 @@ import { Persistor } from "redux-persist";
 import { Store } from "redux";
 import { ChildrenProps } from "../../utils/types";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { RecoilRoot } from "recoil";
 
 const AppProviders = (props: ChildrenProps) => {
   const store: Store = useMemo(() => Redux().store, []);
@@ -27,15 +28,17 @@ const AppProviders = (props: ChildrenProps) => {
   });
 
   return (
-    <ReduxProvider store={store}>
-      <PersistGate persistor={persistor}>
-        <MuiThemeProvider theme={theme}>
-          <SnackProvider>
-            {children}
-          </SnackProvider>
-        </MuiThemeProvider>
-      </PersistGate>
-    </ReduxProvider>
+    <RecoilRoot>
+      <ReduxProvider store={store}>
+        <PersistGate persistor={persistor}>
+          <MuiThemeProvider theme={theme}>
+            <SnackProvider>
+              {children}
+            </SnackProvider>
+          </MuiThemeProvider>
+        </PersistGate>
+      </ReduxProvider>
+    </RecoilRoot>
   );
 };
 

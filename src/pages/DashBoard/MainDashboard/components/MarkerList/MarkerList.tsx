@@ -8,9 +8,6 @@ import greenDot from '../../../../../assets/images/green-dot.png';
 import { coreHTTPClient } from '../../../../../services/webclient';
 import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
-import { FilterState } from '../../../../../redux/filter/types';
-import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../../../../redux';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import BaseModal from '../../../../../components/BaseModal/BaseModal';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
@@ -20,6 +17,8 @@ import { MarkerProps } from '../../../../../models/markers';
 import { Plugins } from '@capacitor/core';
 import { handleFilter } from '../../../../../utils/utils';
 import SearchIcon from '@material-ui/icons/Search';
+import { useRecoilValue } from 'recoil';
+import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 
 const { Modals } = Plugins;
 
@@ -43,8 +42,6 @@ export default () => {
 
     const classes = useStyles();
 
-    const dispatch = useDispatch();
-
     const history = useHistory();
 
     const [searchInput, setSearchInput] = useState<string>("");
@@ -55,7 +52,7 @@ export default () => {
 
     const [isDeleted, setIsDeleted] = useState<any>(undefined);
 
-    var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
+    var filter: FilterState = useRecoilValue(filterAtom);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -151,7 +148,7 @@ export default () => {
                 <List className={classes.root}>
                     {searchInput === ""
                         ? markers.map((marker: MarkerProps) => {
-                            if (handleFilter(filter.data, marker.type) && marker.id !== isDeleted) {
+                            if (handleFilter(filter, marker.type) && marker.id !== isDeleted) {
                                 return (
                                     <>
                                         <ListItem alignItems="flex-start">
@@ -192,7 +189,7 @@ export default () => {
                                     .includes(searchInput.toLowerCase());
                             })
                             .map((marker: MarkerProps) => {
-                                if (handleFilter(filter.data, marker.type) && marker.id !== isDeleted) {
+                                if (handleFilter(filter, marker.type) && marker.id !== isDeleted) {
                                     return (
                                         <>
                                             <ListItem alignItems="flex-start">

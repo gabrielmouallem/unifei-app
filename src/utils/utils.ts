@@ -1,6 +1,6 @@
-import { FilterRedux } from "../redux/filter/types"
+import { FilterState } from "../recoils/filterRecoil"
 
-export const handleFilter = (filter: FilterRedux, markerType: number) => {
+export const handleFilter = (filter: FilterState, markerType: number) => {
     if (
         !filter.constructionMarkers &&
         !filter.eventMarkers &&
