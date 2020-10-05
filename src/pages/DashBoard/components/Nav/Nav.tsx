@@ -135,21 +135,6 @@ export default () => {
                                             label={<span style={{ fontSize: '0.8em' }}>Meus Horários</span>}
                                         />
                                     </MenuItem>
-                                    <Divider />
-                                    {/* <MenuItem>
-                                        <Button
-                                            variant="contained"
-                                            style={{
-                                                fontSize: "0.8em",
-                                                marginLeft: "28%"
-                                            }}
-                                            onClick={()=>{
-                                                dispatch(storeFilter(state));
-                                                handleClose();
-                                            }}>
-                                            Salvar
-                                        </Button>
-                                    </MenuItem> */}
                                 </Menu>
                                 <IconButton>
                                     <NotificationsIcon />

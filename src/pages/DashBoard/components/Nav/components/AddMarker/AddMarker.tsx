@@ -472,8 +472,7 @@ export default (props: Props) => {
                         onClick={() => {
                             handleNextStep();
                         }}>
-                        Próximo
-                        {theme.direction === 'rtl' ? <KeyboardArrowLeftIcon /> : <KeyboardArrowRightIcon />}
+                        {theme.direction === 'rtl' ? <KeyboardArrowLeftIcon style={activeStep === 0 ? { opacity: 0 } : {}} /> : <KeyboardArrowRightIcon style={activeStep === 0 ? { opacity: 0 } : {}} />}
                     </Button>
                 }
                 backButton={
@@ -486,7 +485,6 @@ export default (props: Props) => {
                             clearValues();
                         }}>
                         {theme.direction === 'rtl' ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
-                        Voltar
                     </Button>
                 }
             />
@@ -584,29 +582,33 @@ export default (props: Props) => {
                     </ListItem>
                     <Divider variant="inset" component="li" />
                 </List>
-                : <></>
+                : null
             }
             {activeStep === 1 ?
-                <div className="add-marker__step-2">
-                    <div className="add-marker__map-container">
-                        <div className="add-marker__map">
-                            {handleMarkersForm()}
+                <Fade in={true} timeout={500}>
+                    <div className="add-marker__step-2">
+                        <div className="add-marker__map-container">
+                            <div className="add-marker__map">
+                                {handleMarkersForm()}
+                            </div>
                         </div>
                     </div>
-                </div>
-                : <></>
+                </Fade>
+                : null
             }
             {activeStep === 2 ?
-                <div className="add-marker__step-2">
-                    <div className="add-marker__map-container">
-                        <img src={AnimatedMarker} alt="animated-marker" width="100%" />
-                        <div className="add-marker__marker-type">
-                            Obtendo sua localização...
+                <Fade in={true} timeout={500}>
+                    <div className="add-marker__step-2">
+                        <div className="add-marker__map-container">
+                            <img src={AnimatedMarker} alt="animated-marker" width="100%" />
+                            <div className="add-marker__marker-type">
+                                Obtendo sua localização...
+                            </div>
                         </div>
-                    </div>
 
-                </div>
-                : <></>
+                    </div>
+                </Fade>
+                : null
             }
         </div>
     )
