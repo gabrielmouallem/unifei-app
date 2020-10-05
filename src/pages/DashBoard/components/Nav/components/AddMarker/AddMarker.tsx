@@ -11,7 +11,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { Plugins, GeolocationOptions } from '@capacitor/core';
 import Map from '../../../../MainDashboard/components/Map/Map';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
-import { MARKER_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES } from '../../../../../../utils/consts';
+import { MARKER_TYPES, EVENT_TYPES, CONSTRUCTION_TYPES, MARKER_ICON_TYPES } from '../../../../../../utils/consts';
 import useNotify from '../../../../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../../../../services/webclient';
 import AnimatedMarker from '../../../../../../assets/images/_animated-marker.gif';
@@ -491,16 +491,16 @@ export default (props: Props) => {
             {activeStep === 0
                 ?
                 <List className={classes.root}>
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 222, 52, 0.1)" }}
+                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 222, 52, 0.05)" }}
                         onClick={() => {
                             handleNext();
                             setmarkerType(0)
                         }}>
                         <ListItemAvatar>
-                            <MenuBookIcon />
+                            <img src={MARKER_ICON_TYPES[0]} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary="Grupo de Estudos"
+                            primary={<div style={{ fontWeight: "bold" }}>Grupo de Estudos</div>}
                             secondary={
                                 <React.Fragment>
                                     {"Chame outros alunos da universidade para estudarem com você baseado na sua localização!"}
@@ -509,16 +509,16 @@ export default (props: Props) => {
                         />
                     </ListItem>
                     <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 252, 23, 0.1)" }}
+                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 252, 23, 0.05)" }}
                         onClick={() => {
                             handleNext();
                             setmarkerType(1)
                         }}>
                         <ListItemAvatar>
-                            <AccessibilityNewIcon />
+                            <img src={MARKER_ICON_TYPES[1]} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary="Atividades Extras"
+                            primary={<div style={{ fontWeight: "bold" }}>Atividades Extras</div>}
                             secondary={
                                 <React.Fragment>
                                     {"Chame outros alunos da universidade para realizar uma atividade com você baseado na sua localização!"}
@@ -527,34 +527,16 @@ export default (props: Props) => {
                         />
                     </ListItem>
                     <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(0, 0, 0, 0.1)" }}
-                        onClick={() => {
-                            handleNext();
-                            setmarkerType(4)
-                        }}>
-                        <ListItemAvatar>
-                            <DirectionsIcon />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary="Sinalize Uma Obra"
-                            secondary={
-                                <React.Fragment>
-                                    {'Se deparou com uma obra que atrapalhou seu caminho? Sinalize para que outros estudantes possam se desviar dela.'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 110, 52, 0.1)" }}
+                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 110, 52, 0.05)" }}
                         onClick={() => {
                             handleNext();
                             setmarkerType(2)
                         }}>
                         <ListItemAvatar>
-                            <EventNoteIcon />
+                            <img src={MARKER_ICON_TYPES[2]} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary="Eventos"
+                            primary={<div style={{ fontWeight: "bold" }}>Eventos</div>}
                             secondary={
                                 <React.Fragment>
                                     {'Adicione seu próprio evento para que outros alunos e professores possam participar dele!'}
@@ -563,16 +545,16 @@ export default (props: Props) => {
                         />
                     </ListItem>
                     <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 115, 252, 0.1)" }}
+                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 115, 252, 0.05)" }}
                         onClick={() => {
                             handleNext();
                             setmarkerType(3)
                         }}>
                         <ListItemAvatar>
-                            <RoomIcon />
+                            <img src={MARKER_ICON_TYPES[3]} />
                         </ListItemAvatar>
                         <ListItemText
-                            primary="Salas e Locais"
+                            primary={<div style={{ fontWeight: "bold" }}>Salas e Locais</div>}
                             secondary={
                                 <React.Fragment>
                                     {'Nos ajude adicionando novas salas e locais que ainda não estão registrados em nosso app!'}
@@ -581,6 +563,23 @@ export default (props: Props) => {
                         />
                     </ListItem>
                     <Divider variant="inset" component="li" />
+                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+                        onClick={() => {
+                            handleNext();
+                            setmarkerType(4)
+                        }}>
+                        <ListItemAvatar>
+                            <img src={MARKER_ICON_TYPES[4]} />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={<div style={{ fontWeight: "bold" }}>Sinalize Uma Obra</div>}
+                            secondary={
+                                <React.Fragment>
+                                    {'Se deparou com uma obra que atrapalhou seu caminho? Sinalize para que outros estudantes possam se desviar dela.'}
+                                </React.Fragment>
+                            }
+                        />
+                    </ListItem>
                 </List>
                 : null
             }
