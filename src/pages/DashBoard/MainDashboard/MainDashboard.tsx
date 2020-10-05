@@ -6,32 +6,32 @@ import TopTab from '../components/TopTab/TopTab';
 import AbsoluteWrapper from '../../../components/AbsoluteWrapper/AbsoluteWrapper';
 import { useHistory } from 'react-router-dom';
 import { coreHTTPClient } from '../../../services/webclient';
-import { useDispatch } from 'react-redux';
-import { setProfile } from '../../../redux/profile/actions';
+import { useSetRecoilState } from 'recoil';
+import { profileAtom } from '../../../recoils/profileRecoil';
 
 export default () => {
 
     const history = useHistory();
 
-    const dispatch = useDispatch();
+    const setProfile = useSetRecoilState(profileAtom);
 
     async function getProfile() {
         await new Promise(async resolve => {
             try {
                 const response: any = await coreHTTPClient.get(`profile/`);
                 console.log(response)
-                if(!response.data.created){
+                if (!response.data.created) {
                     history.push(
                         '/profile/'
                     )
                 } else {
-                    dispatch(setProfile({
+                    setProfile({
                         name: response.data.data.name,
                         course: response.data.data.course,
                         user_permissions: response.data.data.user_permissions,
                         email: response.data.data.email,
                         code: response.data.data.code
-                    }))
+                    })
                 }
             } catch (err) {
                 console.log("Erro em getProfile", err);

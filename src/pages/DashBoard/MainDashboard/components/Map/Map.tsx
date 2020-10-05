@@ -9,12 +9,10 @@ import { coreHTTPClient } from '../../../../../services/webclient';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
 import MarkerSummary from '../FilterList/SelectedMarkerSummary';
 import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
-import { Fade } from '@material-ui/core';
-import { FilterState } from '../../../../../redux/filter/types';
-import { useSelector } from 'react-redux';
-import { ApplicationState } from '../../../../../redux';
 import { MarkerProps } from '../../../../../models/markers';
 import { handleFilter } from '../../../../../utils/utils';
+import { useRecoilValue } from 'recoil';
+import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 
 interface Props {
     center?: {
@@ -47,7 +45,7 @@ export default (props: Props) => {
 
     const [googleMap, setGoogleMap] = useState<any>(undefined);
 
-    var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
+    const filter: FilterState = useRecoilValue(filterAtom);
 
     const [defaultProps, _] = useState({
         center: {
@@ -115,7 +113,7 @@ export default (props: Props) => {
                     var newMarkers = markers.filter((item: MarkerProps) => !prevMarkers.some(other => item.id == other.id));
                     if (JSON.stringify(newMarkers) !== JSON.stringify(markers))
                         newMarkers.forEach((marker, index) => {
-                            if (handleFilter(filter.data, marker.type)) {
+                            if (handleFilter(filter, marker.type)) {
                                 const markersMapsFormat = []
 
                                 const m = new google.maps.Marker({
@@ -144,7 +142,7 @@ export default (props: Props) => {
                         })
                     else {
                         markers.forEach((marker, index) => {
-                            if (handleFilter(filter.data, marker.type)) {
+                            if (handleFilter(filter, marker.type)) {
                                 const markersMapsFormat = []
     
                                 const m = new google.maps.Marker({

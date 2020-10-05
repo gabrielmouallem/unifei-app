@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { BasicsContext } from "../BasicsProvider/BasicsProvider";
 import { Typography, makeStyles, List, ListItem, ListItemIcon, ListItemText, Divider } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
 import { clearToken } from "../../../../redux/auth/actions";
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -13,9 +12,10 @@ import './MenuDrawer.scss'
 import "@codetrix-studio/capacitor-google-auth";
 import { Plugins } from '@capacitor/core';
 import { useHistory } from "react-router-dom";
-import { ProfileState } from "../../../../redux/profile/types";
-import { ApplicationState } from "../../../../redux";
 import UnknownProfile from '../../../../assets/images/unknown-avatar.jpg';
+import { useRecoilValue } from "recoil";
+import { profileAtom, ProfileState } from "../../../../recoils/profileRecoil";
+import { useDispatch } from "react-redux";
 
 const { GoogleAuth } = Plugins;
 
@@ -30,15 +30,15 @@ const MenuDrawer = () => {
 
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
   const ctx = useContext(BasicsContext);
 
   const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  var profile: ProfileState = useSelector((state: ApplicationState) => state.profile);
-
-  const dispatch = useDispatch();
+  var profile: ProfileState = useRecoilValue(profileAtom);
 
   return (
     <>
@@ -62,11 +62,11 @@ const MenuDrawer = () => {
             <div className="menu-drawer__profile-name">
               <Typography
                 style={{ fontWeight: "bold" }} >
-                {profile.data.name}
+                {profile.name}
               </Typography>
             </div>
             <div className="menu-drawer__profile-infos">
-              <span className="menu-drawer__code">{profile.data.code}</span>
+              <span className="menu-drawer__code">{profile.code}</span>
               <span className="menu-drawer__logout"
                 onClick={() => {
                   GoogleAuth.signOut()

@@ -7,24 +7,16 @@ import { coreHTTPClient } from '../../../services/webclient';
 import { Button, TextField } from '@material-ui/core';
 import CustomCircularProgress from '../../../components/CustomCircularProgress/CustomCircularProgress';
 import useNotify from '../../../hooks/tools/useNotify';
-import { setProfile } from '../../../redux/profile/actions';
-import { useDispatch } from 'react-redux';
-
-interface ProfileProps {
-    name: string,
-    email: string,
-    course: number,
-    user_permissions: number,
-    code: string
-}
+import { useSetRecoilState } from 'recoil';
+import { profileAtom } from '../../../recoils/profileRecoil';
 
 export default () => {
 
     const history = useHistory();
 
     const notify = useNotify();
-
-    const dispatch = useDispatch();
+    
+    const setProfile = useSetRecoilState(profileAtom);
 
     const [open, setOpen] = useState(true);
 
@@ -71,13 +63,13 @@ export default () => {
                 const response: any = await coreHTTPClient.post('profile/create/', body);
                 notify('Perfil salvo com sucesso!', 'success');
                 setLoading(false);
-                dispatch(setProfile({
+                setProfile({
                     name: name,
                     course: course,
                     user_permissions: userPermissions,
                     email: email,
                     code: code
-                }))
+                })
                 history.push('/marker-list/');
             } catch (err) {
                 notify('Erro ao salvar perfil.', 'error');
@@ -94,13 +86,13 @@ export default () => {
                 const response: any = await coreHTTPClient.patch(`profile/${profileID}/edit/`, body);
                 notify('Perfil editado com sucesso!', 'success');
                 setLoading(false);
-                dispatch(setProfile({
+                setProfile({
                     name: name,
                     course: course,
                     user_permissions: userPermissions,
                     email: email,
                     code: code
-                }))
+                })
                 history.push('/marker-list/');
             } catch (err) {
                 notify('Erro ao editar perfil.', 'error');

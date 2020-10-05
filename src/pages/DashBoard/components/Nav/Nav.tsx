@@ -12,12 +12,9 @@ import { BasicsContext } from '../BasicsProvider/BasicsProvider';
 import BaseModal from '../../../../components/BaseModal/BaseModal';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
 import AddMarker from './components/AddMarker/AddMarker';
-import { FilterState } from '../../../../redux/filter/types';
-import { useSelector, useDispatch } from 'react-redux';
-import { ApplicationState } from '../../../../redux';
-import { storeFilter } from '../../../../redux/filter/actions';
 import { useHistory } from 'react-router-dom';
-import { selectTab } from '../../../../redux/tab/actions';
+import { filterAtom } from '../../../../recoils/filterRecoil';
+import { useRecoilState } from 'recoil';
 
 const { StatusBar } = Plugins;
 
@@ -33,25 +30,13 @@ export default () => {
 
     const ctx = useContext(BasicsContext);
 
-    const dispatch = useDispatch();
-
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const [open, setOpen] = useState(false);
 
     const [showAllMarkers, setShowAllMarkers] = useState(undefined);
 
-    var filter: FilterState = useSelector((state: ApplicationState) => state.filter);
-
-    const [state, setState] = React.useState({
-        genericMarkers: false,
-        eventMarkers: false,
-        studyGroupMarkers: false,
-        extraActivityMarkers: false,
-        constructionMarkers: false,
-        scheduleMarkers: false
-
-    });
+    const [state, setState] = useRecoilState(filterAtom);
 
     const handleChange = (event: any) => {
         setState({ ...state, [event.target.name]: event.target.checked });
@@ -76,12 +61,7 @@ export default () => {
 
     useEffect(() => {
         StatusBar.setBackgroundColor({ color: "#004780" });
-        dispatch(selectTab({ value: 0 }))
     }, []);
-
-    useEffect(()=> {
-        dispatch(storeFilter(state));
-    }, [state])
 
     return (
         <>
