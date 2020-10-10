@@ -222,7 +222,7 @@ export default () => {
                             variant="outlined" />
                     </div>
                     <Button
-                        style={{ width: "75%", marginTop: "20px" }}
+                        style={{ width: "250px", marginTop: "20px" }}
                         variant="contained"
                         onClick={() => {
                             const body = {
