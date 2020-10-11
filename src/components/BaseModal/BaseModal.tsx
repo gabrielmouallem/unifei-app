@@ -6,6 +6,8 @@ import { Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import { Plugins } from '@capacitor/core';
+const { App } = Plugins;
 
 interface Props {
     title?: string;
@@ -22,13 +24,12 @@ export default (props: Props) => {
 
     const dispatch = useDispatch();
 
-    // useEffect(()=> {
-    //     console.log("mount BaseModal");
-
-    //     return () => {
-    //         console.log("unmount BaseModal");
-    //     }
-    // })
+    window.addEventListener('popstate', (e)=>{
+        e.preventDefault();
+        history.goForward();
+        setOpen(false);
+        props.setOpen(false);
+    });
 
     return (
         <div className="modal">
