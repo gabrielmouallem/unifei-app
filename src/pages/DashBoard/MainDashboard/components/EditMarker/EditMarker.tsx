@@ -471,7 +471,7 @@ export default () => {
                         rowsMax={5} />
                 </div>
                 <Button
-                    style={{ width: "80%", marginTop: "10px", alignSelf: "center", marginLeft: "15px" }}
+                    style={{ width: "250px", marginTop: "10px", alignSelf: "center" }}
                     variant="contained"
                     onClick={()=>{
                         updateMarker();

@@ -18,12 +18,17 @@
     }
 
     &__input {
-        width: 100%;
+        width: auto;
+        max-width: 400px;
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
+
         margin-bottom: 2.5vh;
+
+        span {
+            width: 55px;
+        }
     }
 
     &__button {
