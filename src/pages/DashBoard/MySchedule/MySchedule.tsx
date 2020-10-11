@@ -23,27 +23,35 @@ export default () => {
 
   const history = useHistory();
 
-  const [scheduleArray, setScheduleArray] = useState<any>(undefined);
+  const [scheduleArray, setScheduleArray] = useState<any>([]);
 
   const [loading, setLoading] = useState(false);
 
   const postPdf = (pdf: any) => {
     coreHTTPClient.post(`pdf/`, pdf).then((res: any) => {
       setScheduleArray(res.data.data);
-      localStorage.setItem("my-schedule", JSON.stringify(res.data));
+      localStorage.setItem("my-schedule", JSON.stringify(res.data.data));
     }).catch(err => {
       console.log("Erro em postPdf", err);
-    }).finally(()=>{
+    }).finally(() => {
       setLoading(false);
     })
   }
 
   useEffect(() => {
     var tempSchedule = localStorage.getItem("my-schedule");
-    if (tempSchedule) {
+    if (tempSchedule !== null) {
       setScheduleArray(JSON.parse(tempSchedule));
     }
   }, [])
+
+  useEffect(() => {
+    console.log("loading: ", loading);
+  }, [loading]);
+
+  useEffect(() => {
+    console.log("scheduleArray: ", scheduleArray);
+  }, [scheduleArray]);
 
   useEffect(() => {
     if (!open) {
@@ -61,27 +69,25 @@ export default () => {
         </BaseModal>
       </AbsoluteWrapper>
     )
-  }
-
-  if (scheduleArray) {
+  } else if (scheduleArray?.length) {
     return (
       <AbsoluteWrapper>
         <BaseModal setOpen={setOpen} title={`Horários ${new Date().getFullYear()}.${semester}`} closeIconDirection="down">
           <div className="my-schedule">
             {scheduleArray.map((schedule: any, index: number) => {
               return (
-              <ExpansionPanel style={{marginBottom: "15px", width: "70vw"}}>
-                <ExpansionPanelSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls={`panel1a-content-${index}`}
-                  id={`panel1a-header-${index}`}
-                >
-                  <b>{schedule.codigo}</b>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  {schedule.codigo_horario}{' - '}{schedule.local}
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
+                <ExpansionPanel style={{ marginBottom: "15px", width: "70vw" }}>
+                  <ExpansionPanelSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel1a-content-${index}`}
+                    id={`panel1a-header-${index}`}
+                  >
+                    <b>{schedule.codigo}</b>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    {schedule.codigo_horario}{' - '}{schedule.local}
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
               )
             })}
           </div>
@@ -97,7 +103,7 @@ export default () => {
           <div className="my-schedule__empty">
             Você ainda não importou seus horários, gere seu atestado de matrícula no Sigaa em formato PDF
             e importe seus horário em nosso app clicando no botão abaixo.
-          </div>
+            </div>
           <Button variant="contained" className="my-schedule__btn-add"
             onClick={() => {
               setLoading(true);
@@ -108,15 +114,16 @@ export default () => {
                   }).then(res => {
                     postPdf(res.data);
                   }).catch(err => {
+                    setLoading(false);
                     notify("Erro ao importar PDF.", "error");
                   });
                 })
                 .catch(e => {
-
+                  setLoading(false);
                 })
             }}>
             IMPORTAR
-            </Button>
+              </Button>
         </div>
       </BaseModal>
     </AbsoluteWrapper>

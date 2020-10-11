@@ -50,7 +50,7 @@
 }
 
 .scrollable-content {
-    height: 100%;
+    height: calc(100vh - 155px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
