@@ -11,8 +11,9 @@ import MarkerSummary from '../FilterList/SelectedMarkerSummary';
 import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
 import { MarkerProps } from '../../../../../models/markers';
 import { handleFilter } from '../../../../../utils/utils';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
+import { mapCenterAtom, MapCenterState } from '../../../../../recoils/mapCenterRecoil';
 
 interface Props {
     center?: {
@@ -46,6 +47,8 @@ export default (props: Props) => {
     const [googleMap, setGoogleMap] = useState<any>(undefined);
 
     const filter: FilterState = useRecoilValue(filterAtom);
+
+    const [mapCenter, setMapCenter] = useRecoilState<MapCenterState>(mapCenterAtom);
 
     const [defaultProps, _] = useState({
         center: {
@@ -215,11 +218,14 @@ export default (props: Props) => {
                         language: "pt",
                         region: "BR"
                     }}
-                    // Gambiarra que atualiza mapa sempre que sair e entrar novamente no mapa
-                    // Assim os markers nao somem misteriosamente
-                    // key={`${markers.length}`}
+                    onDrag={(e)=>{
+                        setMapCenter({
+                            lat: e.center.lat(),
+                            lng: e.center.lng()
+                        })
+                    }}
                     options={defaultMapOptions}
-                    defaultCenter={props.center ? props.center : defaultProps.center}
+                    defaultCenter={mapCenter ? mapCenter : defaultProps.center}
                     defaultZoom={props.zoom ? props.zoom : defaultProps.zoom}
                     draggable={props.draggable !== undefined ? props.draggable : true}
 
