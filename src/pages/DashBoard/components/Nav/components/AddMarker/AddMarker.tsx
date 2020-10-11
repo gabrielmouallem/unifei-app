@@ -488,127 +488,129 @@ export default (props: Props) => {
                     </Button>
                 }
             />
-            {activeStep === 0
-                ?
-                <List className={classes.root}>
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 222, 52, 0.05)" }}
-                        onClick={() => {
-                            handleNext();
-                            setmarkerType(0)
-                        }}>
-                        <ListItemAvatar>
-                            <img src={MARKER_ICON_TYPES[0]} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<div style={{ fontWeight: "bold" }}>Grupo de Estudos</div>}
-                            secondary={
-                                <React.Fragment>
-                                    {"Chame outros alunos da universidade para estudarem com você baseado na sua localização!"}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 252, 23, 0.05)" }}
-                        onClick={() => {
-                            handleNext();
-                            setmarkerType(1)
-                        }}>
-                        <ListItemAvatar>
-                            <img src={MARKER_ICON_TYPES[1]} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<div style={{ fontWeight: "bold" }}>Atividades Extras</div>}
-                            secondary={
-                                <React.Fragment>
-                                    {"Chame outros alunos da universidade para realizar uma atividade com você baseado na sua localização!"}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 110, 52, 0.05)" }}
-                        onClick={() => {
-                            handleNext();
-                            setmarkerType(2)
-                        }}>
-                        <ListItemAvatar>
-                            <img src={MARKER_ICON_TYPES[2]} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<div style={{ fontWeight: "bold" }}>Eventos</div>}
-                            secondary={
-                                <React.Fragment>
-                                    {'Adicione seu próprio evento para que outros alunos e professores possam participar dele!'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 115, 252, 0.05)" }}
-                        onClick={() => {
-                            handleNext();
-                            setmarkerType(3)
-                        }}>
-                        <ListItemAvatar>
-                            <img src={MARKER_ICON_TYPES[3]} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<div style={{ fontWeight: "bold" }}>Salas e Locais</div>}
-                            secondary={
-                                <React.Fragment>
-                                    {'Nos ajude adicionando novas salas e locais que ainda não estão registrados em nosso app!'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                    <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-                        onClick={() => {
-                            handleNext();
-                            setmarkerType(4)
-                        }}>
-                        <ListItemAvatar>
-                            <img src={MARKER_ICON_TYPES[4]} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={<div style={{ fontWeight: "bold" }}>Sinalize Uma Obra</div>}
-                            secondary={
-                                <React.Fragment>
-                                    {'Se deparou com uma obra que atrapalhou seu caminho? Sinalize para que outros estudantes possam se desviar dela.'}
-                                </React.Fragment>
-                            }
-                        />
-                    </ListItem>
-                </List>
-                : null
-            }
-            {activeStep === 1 ?
-                <Fade in={true} timeout={500}>
-                    <div className="add-marker__step-2">
-                        <div className="add-marker__map-container">
-                            <div className="add-marker__map">
-                                {handleMarkersForm()}
+            <div className="scrollable-content">
+                {activeStep === 0
+                    ?
+                    <List className={classes.root}>
+                        <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 222, 52, 0.05)" }}
+                            onClick={() => {
+                                handleNext();
+                                setmarkerType(0)
+                            }}>
+                            <ListItemAvatar>
+                                <img src={MARKER_ICON_TYPES[0]} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={<div style={{ fontWeight: "bold" }}>Grupo de Estudos</div>}
+                                secondary={
+                                    <React.Fragment>
+                                        {"Chame outros alunos da universidade para estudarem com você baseado na sua localização!"}
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                        <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 252, 23, 0.05)" }}
+                            onClick={() => {
+                                handleNext();
+                                setmarkerType(1)
+                            }}>
+                            <ListItemAvatar>
+                                <img src={MARKER_ICON_TYPES[1]} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={<div style={{ fontWeight: "bold" }}>Atividades Extras</div>}
+                                secondary={
+                                    <React.Fragment>
+                                        {"Chame outros alunos da universidade para realizar uma atividade com você baseado na sua localização!"}
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                        <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(235, 110, 52, 0.05)" }}
+                            onClick={() => {
+                                handleNext();
+                                setmarkerType(2)
+                            }}>
+                            <ListItemAvatar>
+                                <img src={MARKER_ICON_TYPES[2]} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={<div style={{ fontWeight: "bold" }}>Eventos</div>}
+                                secondary={
+                                    <React.Fragment>
+                                        {'Adicione seu próprio evento para que outros alunos e professores possam participar dele!'}
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                        <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(3, 115, 252, 0.05)" }}
+                            onClick={() => {
+                                handleNext();
+                                setmarkerType(3)
+                            }}>
+                            <ListItemAvatar>
+                                <img src={MARKER_ICON_TYPES[3]} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={<div style={{ fontWeight: "bold" }}>Salas e Locais</div>}
+                                secondary={
+                                    <React.Fragment>
+                                        {'Nos ajude adicionando novas salas e locais que ainda não estão registrados em nosso app!'}
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                        <ListItem alignItems="flex-start" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+                            onClick={() => {
+                                handleNext();
+                                setmarkerType(4)
+                            }}>
+                            <ListItemAvatar>
+                                <img src={MARKER_ICON_TYPES[4]} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={<div style={{ fontWeight: "bold" }}>Sinalize Uma Obra</div>}
+                                secondary={
+                                    <React.Fragment>
+                                        {'Se deparou com uma obra que atrapalhou seu caminho? Sinalize para que outros estudantes possam se desviar dela.'}
+                                    </React.Fragment>
+                                }
+                            />
+                        </ListItem>
+                    </List>
+                    : null
+                }
+                {activeStep === 1 ?
+                    <Fade in={true} timeout={500}>
+                        <div className="add-marker__step-2">
+                            <div className="add-marker__map-container">
+                                <div className="add-marker__map">
+                                    {handleMarkersForm()}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Fade>
-                : null
-            }
-            {activeStep === 2 ?
-                <Fade in={true} timeout={500}>
-                    <div className="add-marker__step-2">
-                        <div className="add-marker__map-container">
-                            <img src={AnimatedMarker} alt="animated-marker" width="100%" />
-                            <div className="add-marker__marker-type">
-                                Obtendo sua localização...
+                    </Fade>
+                    : null
+                }
+                {activeStep === 2 ?
+                    <Fade in={true} timeout={500}>
+                        <div className="add-marker__step-2">
+                            <div className="add-marker__map-container">
+                                <img src={AnimatedMarker} alt="animated-marker" width="100%" />
+                                <div className="add-marker__marker-type">
+                                    Obtendo sua localização...
                             </div>
-                        </div>
+                            </div>
 
-                    </div>
-                </Fade>
-                : null
-            }
+                        </div>
+                    </Fade>
+                    : null
+                }
+            </div>
         </div>
     )
 }
