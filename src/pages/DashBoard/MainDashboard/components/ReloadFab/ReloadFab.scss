@@ -1,0 +1,25 @@
+.reload-fab {
+    z-index: 1;
+    position: absolute;
+    top: calc(100% - 75px);
+    left: calc(100% - 75px);
+
+    width: 50px;
+    height: 50px;
+
+    background-color: #004780;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.9);
+    text-align: center !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .MuiSvgIcon-root {
+        color: white;
+        opacity: 0.8;
+        width: 0.9em;
+        height: 0.9em;
+    }
+}

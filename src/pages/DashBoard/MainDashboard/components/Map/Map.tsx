@@ -14,6 +14,7 @@ import { handleFilter } from '../../../../../utils/utils';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsRecoil';
+import ReloadFab from '../ReloadFab/ReloadFab';
 
 interface Props {
     center?: {
@@ -50,6 +51,8 @@ export default (props: Props) => {
 
     const [mapProps, setMapProps] = useRecoilState<MapPropsState>(mapPropsAtom);
 
+    const [loading, setLoading] = useState(false);
+
     const [defaultProps, _] = useState({
         center: {
             lat: -22.413042,
@@ -60,6 +63,7 @@ export default (props: Props) => {
 
     const defaultMapOptions = {
         fullscreenControl: false,
+        zoomControl: false,
         mapTypeId: props.satellite ? "satellite" : "roadmap",
         disableDefaultUI: props.disableUI ? true : false
     };
@@ -90,6 +94,23 @@ export default (props: Props) => {
     }
 
     // setTheArray([...theArray, newElement]);
+
+    
+    async function reloadAllMarkers() {
+        setLoading(true);
+        await new Promise(async resolve => {
+            try {
+                const response: any = await coreHTTPClient.get(`markers/`);
+                // console.log(response)
+                // @ts-ignore
+                setMarkers(response.data.data);
+            } catch (err) {
+                console.log("Erro em reloadAllMarkers", err);
+            } finally {
+                setLoading(false);
+            }
+        });
+    }
 
     async function getAllMarkers() {
         await new Promise(async resolve => {
@@ -212,6 +233,7 @@ export default (props: Props) => {
             // Important! Always set the container height explicitly
             <>
                 <MarkerSummary icon={selectedMarkerIcon} id_title={selectedMarkerTitle} />
+                <ReloadFab action={reloadAllMarkers} isLoading={loading} />
                 <GoogleMapReact
                     bootstrapURLKeys={{
                         key: "AIzaSyAaZsfNRSww_QDtQJXRP-BsrXg83EKqoYw",
@@ -236,7 +258,7 @@ export default (props: Props) => {
                     defaultCenter={mapProps?.center ? mapProps.center : defaultProps.center}
                     defaultZoom={mapProps?.zoom ? mapProps?.zoom : defaultProps.zoom}
                     draggable={props.draggable !== undefined ? props.draggable : true}
-
+                    
                     onGoogleApiLoaded={({ map, maps }) => {
                         returnMyPositionMarker(map)
                         setGoogleMap(map)
