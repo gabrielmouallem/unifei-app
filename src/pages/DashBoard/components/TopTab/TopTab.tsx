@@ -12,6 +12,8 @@ import MarkerList from '../../MainDashboard/components/MarkerList/MarkerList';
 import { filterAtom, FilterState } from '../../../../recoils/filterRecoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { tabAtom, TabState } from '../../../../recoils/TabRecoil';
+import { Plugins } from '@capacitor/core';
+const { App } = Plugins;
 
 const useStyles = makeStyles({
     root: {
@@ -30,6 +32,10 @@ export default () => {
     var filter: FilterState = useRecoilValue(filterAtom);
 
     const [selectedTab, setSelectedTab] = useRecoilState<TabState>(tabAtom);
+
+    App.addListener("backButton", (e)=>{
+        App.exitApp();
+    });
 
     useEffect(()=>{
         console.log({selectedTab})
