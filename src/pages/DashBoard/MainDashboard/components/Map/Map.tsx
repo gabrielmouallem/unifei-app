@@ -13,7 +13,7 @@ import { MarkerProps } from '../../../../../models/markers';
 import { handleFilter } from '../../../../../utils/utils';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
-import { mapCenterAtom, MapCenterState } from '../../../../../recoils/mapCenterRecoil';
+import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsRecoil';
 
 interface Props {
     center?: {
@@ -48,7 +48,7 @@ export default (props: Props) => {
 
     const filter: FilterState = useRecoilValue(filterAtom);
 
-    const [mapCenter, setMapCenter] = useRecoilState<MapCenterState>(mapCenterAtom);
+    const [mapProps, setMapProps] = useRecoilState<MapPropsState>(mapPropsAtom);
 
     const [defaultProps, _] = useState({
         center: {
@@ -218,15 +218,23 @@ export default (props: Props) => {
                         language: "pt",
                         region: "BR"
                     }}
+                    onZoomAnimationEnd={(e)=>{
+                        if (e){
+                            setMapProps({...mapProps, zoom: e});
+                        };
+                    }}
                     onDrag={(e)=>{
-                        setMapCenter({
-                            lat: e.center.lat(),
-                            lng: e.center.lng()
+                        setMapProps({
+                            center: {
+                                lat: e.center.lat(),
+                                lng: e.center.lng()
+                            },
+                            zoom: e.zoom
                         })
                     }}
                     options={defaultMapOptions}
-                    defaultCenter={mapCenter ? mapCenter : defaultProps.center}
-                    defaultZoom={props.zoom ? props.zoom : defaultProps.zoom}
+                    defaultCenter={mapProps?.center ? mapProps.center : defaultProps.center}
+                    defaultZoom={mapProps?.zoom ? mapProps?.zoom : defaultProps.zoom}
                     draggable={props.draggable !== undefined ? props.draggable : true}
 
                     onGoogleApiLoaded={({ map, maps }) => {
