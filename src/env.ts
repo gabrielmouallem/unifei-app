@@ -1,1 +1,1 @@
-export const URL = "https://silly-sheep-44.serverless.social/"
+export const URL = "https://rude-octopus-49.loca.lt/"
