@@ -21,33 +21,6 @@ export default () => {
 
   const history = useHistory();
 
-  async function fileWrite() {
-    try {
-      const result = await Filesystem.writeFile({
-        path: 'TESTE.PDF',
-        data: "This is a test",
-        directory: FilesystemDirectory.Documents,
-        encoding: FilesystemEncoding.UTF8
-      })
-      console.log('Wrote file', result);
-    } catch (e) {
-      console.error('Unable to write file', e);
-    }
-  }
-
-  async function fileRead() {
-    let contents = await Filesystem.readFile({
-      path: String('Sistema Integrado de Gestão de Atividades Acadêmicas.pdf'),
-      directory: FilesystemDirectory.Documents,
-    });
-    const result = await Filesystem.writeFile({
-      path: 'TESTE4.PDF',
-      data: contents.data,
-      directory: FilesystemDirectory.Documents,
-    })
-    console.log('Wrote file', result);
-  }
-
   useEffect(() => {
     if (!open) {
       history.goBack();
@@ -70,9 +43,9 @@ export default () => {
                   var result = Filesystem.readFile({
                     path: uri,
                   }).then(res => {
-                    alert('Arquivo localizado ' + res);
+                    
                   }).catch(err => {
-                    alert("Erro " + err);
+                    
                   });
                 })
                 .catch(e => alert(e));
