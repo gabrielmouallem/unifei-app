@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ReactJSX } from '../../utils/types';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import './BaseModal.scss';
 import { Typography } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { Plugins } from '@capacitor/core';
@@ -20,15 +19,16 @@ export default (props: Props) => {
 
     const history = useHistory();
 
-    const [open, setOpen] = useState(false);
-
-    const dispatch = useDispatch();
+    const [open, setOpen] = useState(true);
 
     window.addEventListener('popstate', (e)=>{
-        e.preventDefault();
-        history.goForward();
-        setOpen(false);
-        props.setOpen(false);
+        props.setOpen((open: boolean)=>{
+            if(open) {
+                window.history.go(1);
+                return !open;
+            }
+            else return open;
+        })
     });
 
     return (
