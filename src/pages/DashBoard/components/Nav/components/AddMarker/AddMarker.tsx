@@ -16,6 +16,8 @@ import useNotify from '../../../../../../hooks/tools/useNotify';
 import { coreHTTPClient } from '../../../../../../services/webclient';
 import AnimatedMarker from '../../../../../../assets/images/_animated-marker.gif';
 import { useDispatch } from 'react-redux';
+import { useSetRecoilState } from 'recoil';
+import { reloadAtom } from '../../../../../../recoils/reloadRecoil';
 
 const { Geolocation } = Plugins;
 
@@ -51,6 +53,8 @@ export default (props: Props) => {
 
     const [latitude, setLatitude] = useState<any>('');
     const [longitude, setLongitude] = useState<any>('');
+
+    var setReload = useSetRecoilState(reloadAtom);
 
     const [values, setValues] = useState<any>({
         name: null,
@@ -255,6 +259,7 @@ export default (props: Props) => {
                 const response = await coreHTTPClient.post(`${handleMarkerRoute()}/create/`, body);
                 console.log(response.data)
                 notify("Marcador salvo com sucesso!", "success");
+                setReload({reload: true});
                 props.setOpen(false);
             } catch (err) {
                 console.log("Erro em saveMarker", err);

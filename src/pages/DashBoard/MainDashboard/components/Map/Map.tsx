@@ -15,6 +15,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsRecoil';
 import ReloadFab from '../ReloadFab/ReloadFab';
+import socketIo from 'socket.io-client';
 
 interface Props {
     center?: {
@@ -95,7 +96,7 @@ export default (props: Props) => {
 
     // setTheArray([...theArray, newElement]);
 
-    
+
     async function reloadAllMarkers() {
         setLoading(true);
         await new Promise(async resolve => {
@@ -129,77 +130,74 @@ export default (props: Props) => {
         return MARKER_ICON_TYPES[markerType]
     }
 
+    useEffect(() => {
+        const socketIO = socketIo('http://localhost:80');
+        socketIO.on('new-marker', (data: any) => {
+            const markersMapsFormat = []
+
+            const m = new google.maps.Marker({
+                title: data.id + "-" + data.name,
+                position: {
+                    lat: parseFloat(data.latitude),
+                    lng: parseFloat(data.longitude)
+                },
+                animation: google.maps.Animation.DROP,
+                // label: data.name,
+                map: googleMap,//Objeto mapa
+                icon: { url: handleTypeIcon(data.type) },
+            })
+
+            markersMapsFormat.push(m)
+
+            google.maps.event.addListener(m, 'click', function () {
+
+                setClickedMarker(m);
+
+                m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                setSelectedMarkerIcon(m.getIcon());
+                setSelectedMarkerTitle(m.getTitle());
+            });
+        });
+    }, [googleMap]);
+
     useEffect(
         () => {
             if (googleMap) {
                 if (markers) {
                     // @ts-ignore
-                    var newMarkers = markers.filter((item: MarkerProps) => !prevMarkers.some(other => item.id == other.id));
-                    if (JSON.stringify(newMarkers) !== JSON.stringify(markers))
-                        newMarkers.forEach((marker, index) => {
-                            if (handleFilter(filter, marker.type)) {
-                                const markersMapsFormat = []
+                    markers.forEach((marker, index) => {
+                        if (handleFilter(filter, marker.type)) {
+                            const markersMapsFormat = []
 
-                                const m = new google.maps.Marker({
-                                    title: marker.id + "-" + marker.name,
-                                    position: {
-                                        lat: parseFloat(marker.latitude),
-                                        lng: parseFloat(marker.longitude)
-                                    },
-                                    animation: google.maps.Animation.DROP,
-                                    // label: marker.name,
-                                    map: googleMap,//Objeto mapa
-                                    icon: { url: handleTypeIcon(marker.type) },
-                                })
+                            const m = new google.maps.Marker({
+                                title: marker.id + "-" + marker.name,
+                                position: {
+                                    lat: parseFloat(marker.latitude),
+                                    lng: parseFloat(marker.longitude)
+                                },
+                                // animation: google.maps.Animation.DROP,
+                                // label: marker.name,
+                                map: googleMap,//Objeto mapa
+                                icon: { url: handleTypeIcon(marker.type) },
+                            })
 
-                                markersMapsFormat.push(m)
+                            markersMapsFormat.push(m)
 
-                                google.maps.event.addListener(m, 'click', function () {
+                            google.maps.event.addListener(m, 'click', function () {
 
-                                    setClickedMarker(m);
+                                setClickedMarker(m);
 
-                                    m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
-                                    setSelectedMarkerIcon(m.getIcon());
-                                    setSelectedMarkerTitle(m.getTitle());
-                                });
-                            }
-                        })
-                    else {
-                        markers.forEach((marker, index) => {
-                            if (handleFilter(filter, marker.type)) {
-                                const markersMapsFormat = []
-    
-                                const m = new google.maps.Marker({
-                                    title: marker.id + "-" + marker.name,
-                                    position: {
-                                        lat: parseFloat(marker.latitude),
-                                        lng: parseFloat(marker.longitude)
-                                    },
-                                    // animation: google.maps.Animation.DROP,
-                                    // label: marker.name,
-                                    map: googleMap,//Objeto mapa
-                                    icon: { url: handleTypeIcon(marker.type) },
-                                })
-    
-                                markersMapsFormat.push(m)
-    
-                                google.maps.event.addListener(m, 'click', function () {
-    
-                                    console.log("valor de antes na func: ", clickedMarker)
-    
-                                    setClickedMarker(m);
-    
-                                    m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
-                                    setSelectedMarkerIcon(m.getIcon());
-                                    setSelectedMarkerTitle(m.getTitle());
-                                });
-                            }
-                        })
-                    }
-                } 
+                                m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                                setSelectedMarkerIcon(m.getIcon());
+                                setSelectedMarkerTitle(m.getTitle());
+                            });
+                        }
+                    })
+
+                }
             }
 
-        }, [clickedMarker, prevMarkers, markers, googleMap, filter]
+        }, [markers, googleMap, filter]
     )
 
     useEffect(() => {
@@ -218,16 +216,6 @@ export default (props: Props) => {
         }
     }, [googleMap])
 
-    useEffect(() => {
-        let intervalID = setInterval(async () => {
-            getAllMarkers()
-            //set state aqui
-        }, 10000);
-        return () => {
-            clearInterval(intervalID);
-        }
-    })
-
     if (markers) {
         return (
             // Important! Always set the container height explicitly
@@ -240,12 +228,12 @@ export default (props: Props) => {
                         language: "pt",
                         region: "BR"
                     }}
-                    onZoomAnimationEnd={(e)=>{
-                        if (e){
-                            setMapProps({...mapProps, zoom: e});
+                    onZoomAnimationEnd={(e) => {
+                        if (e) {
+                            setMapProps({ ...mapProps, zoom: e });
                         };
                     }}
-                    onDrag={(e)=>{
+                    onDrag={(e) => {
                         setMapProps({
                             center: {
                                 lat: e.center.lat(),
@@ -258,7 +246,7 @@ export default (props: Props) => {
                     defaultCenter={mapProps?.center ? mapProps.center : defaultProps.center}
                     defaultZoom={mapProps?.zoom ? mapProps?.zoom : defaultProps.zoom}
                     draggable={props.draggable !== undefined ? props.draggable : true}
-                    
+
                     onGoogleApiLoaded={({ map, maps }) => {
                         returnMyPositionMarker(map)
                         setGoogleMap(map)
