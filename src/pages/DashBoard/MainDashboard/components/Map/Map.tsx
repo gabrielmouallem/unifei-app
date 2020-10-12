@@ -16,6 +16,7 @@ import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsRecoil';
 import ReloadFab from '../ReloadFab/ReloadFab';
 import socketIo from 'socket.io-client';
+import { socketURL } from '../../../../../env';
 
 interface Props {
     center?: {
@@ -131,7 +132,7 @@ export default (props: Props) => {
     }
 
     useEffect(() => {
-        const socketIO = socketIo('http://localhost:80');
+        const socketIO = socketIo(socketURL);
         socketIO.on('new-marker', (data: any) => {
             const markersMapsFormat = []
 

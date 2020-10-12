@@ -33,10 +33,6 @@ export default () => {
 
     const [selectedTab, setSelectedTab] = useRecoilState<TabState>(tabAtom);
 
-    App.addListener("backButton", (e)=>{
-        App.exitApp();
-    });
-
     useEffect(()=>{
         console.log({selectedTab})
     },[selectedTab])

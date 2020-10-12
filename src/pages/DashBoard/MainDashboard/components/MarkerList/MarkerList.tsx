@@ -23,6 +23,7 @@ import ReloadFab from '../ReloadFab/ReloadFab';
 import socketIo from 'socket.io-client';
 import { useRecoilState } from 'recoil';
 import { reloadAtom, ReloadState } from '../../../../../recoils/reloadRecoil';
+import { socketURL } from '../../../../../env';
 
 const { Modals } = Plugins;
 
@@ -144,7 +145,7 @@ export default () => {
     }, [])
 
     useEffect(() => {
-        const socketIO = socketIo('http://localhost:80');
+        const socketIO = socketIo(socketURL);
         socketIO.on('new-marker', (data: any) => {
             setMarkers((prevMarkers)=>{
                 return [...prevMarkers, data].sort((a, b)=>{
