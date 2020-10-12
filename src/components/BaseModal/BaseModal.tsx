@@ -21,16 +21,6 @@ export default (props: Props) => {
 
     const [open, setOpen] = useState(true);
 
-    window.addEventListener('popstate', (e)=>{
-        props.setOpen((open: boolean)=>{
-            if(open) {
-                window.history.go(1);
-                return !open;
-            }
-            else return open;
-        })
-    });
-
     return (
         <div className="modal">
             <div className="modal__container">
