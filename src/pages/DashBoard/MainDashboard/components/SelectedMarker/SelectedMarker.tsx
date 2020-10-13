@@ -188,13 +188,22 @@ export default (props: Props) => {
                     // @ts-ignore */}
                     <BaseModal setOpen={setOpen} title={marker.name} closeIconDirection="down">
                         <div className="selected-marker">
-                            <div className="">
-
-                            </div>
                             <div className="selected-marker__between-line">
                                 {/* 
                                         // @ts-ignore */}
                                 <img src={MARKER_ICON_TYPES[marker.type]} />
+                            </div>
+                            <div className="selected-marker__infos">
+                                <Typography
+                                    style={{ fontWeight: "bold", fontSize: "0.7em" }}>
+                                    Criado por:
+                                </Typography>
+                                <Typography
+                                    style={{ fontSize: "0.7em" }}>
+                                    {/* 
+                                    // @ts-ignore */}
+                                    {marker.created_by.name}
+                                </Typography>
                             </div>
                             <div className="selected-marker__infos">
                                 <Typography>
@@ -208,7 +217,7 @@ export default (props: Props) => {
                                 // @ts-ignore
                                 marker.type === 0
                                     ? <Button
-                                    style={{width: "280px", boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)"}}
+                                        style={{ width: "280px", boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)" }}
                                         variant="contained">
                                         Confirmar Participação
                                         </Button>
