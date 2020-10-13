@@ -17,6 +17,7 @@ import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsReco
 import ReloadFab from '../ReloadFab/ReloadFab';
 import socketIo from 'socket.io-client';
 import { socketURL } from '../../../../../env';
+import { reloadAtom } from '../../../../../recoils/reloadRecoil';
 
 interface Props {
     center?: {
@@ -45,7 +46,7 @@ export default (props: Props) => {
 
     const prevClickedMarker = usePrevious(clickedMarker);
 
-    const prevMarkers = usePrevious(markers);
+    var [reload, setReload] = useRecoilState(reloadAtom);
 
     const [googleMap, setGoogleMap] = useState<any>(undefined);
 
@@ -130,6 +131,13 @@ export default (props: Props) => {
     const handleTypeIcon = (markerType: any) => {
         return MARKER_ICON_TYPES[markerType]
     }
+
+    useEffect(() => {
+        if(reload.reload === true){
+            getAllMarkers();
+            setReload({reload: false})
+        }
+    }, [reload]);
 
     useEffect(() => {
         const socketIO = socketIo(socketURL);

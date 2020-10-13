@@ -134,7 +134,7 @@ export default () => {
     }
 
     useEffect(() => {
-        if(reload.reload){
+        if(reload.reload === true){
             getAllMarkers();
             setReload({reload: false})
         }
