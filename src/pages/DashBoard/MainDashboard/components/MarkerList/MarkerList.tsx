@@ -247,7 +247,9 @@ export default () => {
                                                         primary={marker.name}
                                                         secondary={
                                                             <React.Fragment>
-                                                                {marker?.description}
+                                                                <div className="marker-list__description">
+                                                                    {marker.description}
+                                                                </div>
                                                             </React.Fragment>
                                                         }
                                                     />
@@ -277,7 +279,7 @@ export default () => {
                                 },
                                 zoom: 21
                             });
-                            setSelectedTab({value: 0});
+                            setSelectedTab({ value: 0 });
                             handleClose();
                         }}>
                             Ver no Mapa
