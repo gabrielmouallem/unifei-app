@@ -191,7 +191,7 @@ export default (props: Props) => {
                             <div className="selected-marker__between-line">
                                 {/* 
                                         // @ts-ignore */}
-                                <img src={MARKER_ICON_TYPES[marker.type]} />
+                                <img src={MARKER_ICON_TYPES[marker.type]} width="50px" height="50px" />
                             </div>
                             <div className="selected-marker__infos">
                                 <Typography

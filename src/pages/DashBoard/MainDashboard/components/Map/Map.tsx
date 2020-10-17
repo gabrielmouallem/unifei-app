@@ -10,8 +10,8 @@ import CustomCircularProgress from '../../../../../components/CustomCircularProg
 import MarkerSummary from '../FilterList/SelectedMarkerSummary';
 import { MARKER_ICON_TYPES } from '../../../../../utils/consts';
 import { MarkerProps } from '../../../../../models/markers';
-import { handleFilter } from '../../../../../utils/utils';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { handleFilter, uuidv4 } from '../../../../../utils/utils';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsRecoil';
 import ReloadFab from '../ReloadFab/ReloadFab';
@@ -100,6 +100,9 @@ export default (props: Props) => {
 
 
     async function reloadAllMarkers() {
+        setReload((prevReloadState)=>{
+            return {...prevReloadState, stateChange: uuidv4()}
+        })
         setLoading(true);
         await new Promise(async resolve => {
             try {
@@ -135,7 +138,7 @@ export default (props: Props) => {
     useEffect(() => {
         if(reload.reload === true){
             getAllMarkers();
-            setReload({reload: false})
+            setReload({reload: false, stateChange: null})
         }
     }, [reload]);
 
@@ -153,7 +156,10 @@ export default (props: Props) => {
                 animation: google.maps.Animation.DROP,
                 // label: data.name,
                 map: googleMap,//Objeto mapa
-                icon: { url: handleTypeIcon(data.type) },
+                icon: {
+                    url: handleTypeIcon(data.type),
+                    scaledSize: data.type !== 3 ? new google.maps.Size(45, 45) : new google.maps.Size(35, 35)
+                },
             })
 
             markersMapsFormat.push(m)
@@ -187,7 +193,10 @@ export default (props: Props) => {
                                 // animation: google.maps.Animation.DROP,
                                 // label: marker.name,
                                 map: googleMap,//Objeto mapa
-                                icon: { url: handleTypeIcon(marker.type) },
+                                icon: {
+                                    url: handleTypeIcon(marker.type),
+                                    scaledSize: marker.type !== 3 ? new google.maps.Size(45, 45) : new google.maps.Size(35, 35)
+                                },
                             })
 
                             markersMapsFormat.push(m)
@@ -196,9 +205,15 @@ export default (props: Props) => {
 
                                 setClickedMarker(m);
 
-                                m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                                if (m.getAnimation()){
+                                    m.setAnimation(null)
+                                    setSelectedMarkerTitle(undefined);
+                                } else {
+                                    setSelectedMarkerTitle(m.getTitle());
+                                    m.setAnimation(google.maps.Animation.BOUNCE)
+                                }
+                                // m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
                                 setSelectedMarkerIcon(m.getIcon());
-                                setSelectedMarkerTitle(m.getTitle());
                             });
                         }
                     })

@@ -136,7 +136,9 @@ export default () => {
     useEffect(() => {
         if(reload.reload === true){
             getAllMarkers();
-            setReload({reload: false})
+            setReload((prevReloadState)=>{
+                return {...prevReloadState, reload: false}
+            })
         }
     }, [reload]);
 

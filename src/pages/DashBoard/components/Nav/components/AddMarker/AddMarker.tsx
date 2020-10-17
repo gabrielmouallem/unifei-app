@@ -259,7 +259,7 @@ export default (props: Props) => {
                 const response = await coreHTTPClient.post(`${handleMarkerRoute()}/create/`, body);
                 console.log(response.data)
                 notify("Marcador salvo com sucesso!", "success");
-                setReload({reload: true});
+                setReload({reload: true, stateChange: null});
                 props.setOpen(false);
             } catch (err) {
                 console.log("Erro em saveMarker", err);
@@ -503,7 +503,7 @@ export default (props: Props) => {
                                 setmarkerType(0)
                             }}>
                             <ListItemAvatar>
-                                <img src={MARKER_ICON_TYPES[0]} />
+                                <img src={MARKER_ICON_TYPES[0]} width="50px" height="50px"/>
                             </ListItemAvatar>
                             <ListItemText
                                 primary={<div style={{ fontWeight: "bold" }}>Grupo de Estudos</div>}
@@ -521,7 +521,7 @@ export default (props: Props) => {
                                 setmarkerType(1)
                             }}>
                             <ListItemAvatar>
-                                <img src={MARKER_ICON_TYPES[1]} />
+                                <img src={MARKER_ICON_TYPES[1]} width="50px" height="50px" />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={<div style={{ fontWeight: "bold" }}>Atividades Extras</div>}
@@ -539,7 +539,7 @@ export default (props: Props) => {
                                 setmarkerType(2)
                             }}>
                             <ListItemAvatar>
-                                <img src={MARKER_ICON_TYPES[2]} />
+                                <img src={MARKER_ICON_TYPES[2]} width="50px" height="50px" />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={<div style={{ fontWeight: "bold" }}>Eventos</div>}
@@ -557,7 +557,7 @@ export default (props: Props) => {
                                 setmarkerType(3)
                             }}>
                             <ListItemAvatar>
-                                <img src={MARKER_ICON_TYPES[3]} />
+                                <img src={MARKER_ICON_TYPES[3]} width="50px" height="50px" />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={<div style={{ fontWeight: "bold" }}>Salas e Locais</div>}
@@ -575,7 +575,7 @@ export default (props: Props) => {
                                 setmarkerType(4)
                             }}>
                             <ListItemAvatar>
-                                <img src={MARKER_ICON_TYPES[4]} />
+                                <img src={MARKER_ICON_TYPES[4]} width="50px" height="50px" />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={<div style={{ fontWeight: "bold" }}>Sinalize Uma Obra</div>}

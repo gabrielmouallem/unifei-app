@@ -13,6 +13,7 @@ import { filterAtom, FilterState } from '../../../../recoils/filterRecoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { tabAtom, TabState } from '../../../../recoils/TabRecoil';
 import { Plugins } from '@capacitor/core';
+import { reloadAtom, ReloadState } from '../../../../recoils/reloadRecoil';
 const { App } = Plugins;
 
 const useStyles = makeStyles({
@@ -30,6 +31,8 @@ export default () => {
     };
 
     var filter: FilterState = useRecoilValue(filterAtom);
+
+    var reload: ReloadState = useRecoilValue(reloadAtom);
 
     const [selectedTab, setSelectedTab] = useRecoilState<TabState>(tabAtom);
 
@@ -66,7 +69,7 @@ export default () => {
                     {
                         selectedTab.value 
                             ? <MarkerList />
-                            : <Map key={`${JSON.stringify(filter)}`}/>
+                            : <Map key={`${JSON.stringify(filter)}-${reload.stateChange}`}/>
                     }
                 </div>
             </div>

@@ -1,10 +1,10 @@
 
 
-import BlueDot from '../assets/images/blue-dot-old.png';
-import EventIcon from '../assets/images/event-icon.png';
-import StudyGroupIcon from '../assets/images/study-group-icon.png';
-import ConstructionIcon from '../assets/images/construction-icon.png';
-import ExtraActivityIcon from '../assets/images/extra-activity-icon.png';
+import BlueDot from '../assets/images/blue-dot-old.svg';
+import EventIcon from '../assets/images/event-icon.svg';
+import StudyGroupIcon from '../assets/images/study-group-icon.svg';
+import ConstructionIcon from '../assets/images/construction-icon.svg';
+import ExtraActivityIcon from '../assets/images/extra-activity-icon.svg';
 
 export const MARKER_TYPES = [
     'Grupo de Estudos',     // [0]
