@@ -212,15 +212,9 @@ export default () => {
                                                     primary={marker.name}
                                                     secondary={
                                                         <React.Fragment>
-                                                            {/* <Typography
-                                                            component="span"
-                                                            variant="body2"
-                                                            className={classes.inline}
-                                                            color="textPrimary"
-                                                        >
-                                                            {marker.description}
-                                                        </Typography> */}
-                                                            {marker.description}
+                                                            <div className="marker-list__description">
+                                                                {marker.description}
+                                                            </div>
                                                         </React.Fragment>
                                                     }
                                                 />
@@ -253,15 +247,7 @@ export default () => {
                                                         primary={marker.name}
                                                         secondary={
                                                             <React.Fragment>
-                                                                {/* <Typography
-                                                                component="span"
-                                                                variant="body2"
-                                                                className={classes.inline}
-                                                                color="textPrimary"
-                                                            >
-                                                                {marker.description}
-                                                            </Typography> */}
-                                                                {marker.description}
+                                                                {marker?.description}
                                                             </React.Fragment>
                                                         }
                                                     />
