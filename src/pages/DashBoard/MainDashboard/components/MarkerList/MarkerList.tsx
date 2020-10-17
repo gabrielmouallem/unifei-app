@@ -17,13 +17,15 @@ import { MarkerProps } from '../../../../../models/markers';
 import { Plugins } from '@capacitor/core';
 import { handleFilter } from '../../../../../utils/utils';
 import SearchIcon from '@material-ui/icons/Search';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { filterAtom, FilterState } from '../../../../../recoils/filterRecoil';
 import ReloadFab from '../ReloadFab/ReloadFab';
 import socketIo from 'socket.io-client';
 import { useRecoilState } from 'recoil';
 import { reloadAtom, ReloadState } from '../../../../../recoils/reloadRecoil';
 import { socketURL } from '../../../../../env';
+import { mapPropsAtom } from '../../../../../recoils/mapPropsRecoil';
+import { tabAtom } from '../../../../../recoils/TabRecoil';
 
 const { Modals } = Plugins;
 
@@ -62,6 +64,10 @@ export default () => {
     var filter: FilterState = useRecoilValue(filterAtom);
 
     var [reload, setReload] = useRecoilState(reloadAtom);
+
+    var setMapProps = useSetRecoilState(mapPropsAtom);
+
+    const setSelectedTab = useSetRecoilState(tabAtom);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -134,10 +140,10 @@ export default () => {
     }
 
     useEffect(() => {
-        if(reload.reload === true){
+        if (reload.reload === true) {
             getAllMarkers();
-            setReload((prevReloadState)=>{
-                return {...prevReloadState, reload: false}
+            setReload((prevReloadState) => {
+                return { ...prevReloadState, reload: false }
             })
         }
     }, [reload]);
@@ -149,12 +155,12 @@ export default () => {
     useEffect(() => {
         const socketIO = socketIo(socketURL);
         socketIO.on('new-marker', (data: any) => {
-            setMarkers((prevMarkers)=>{
-                return [...prevMarkers, data].sort((a, b)=>{
-                    if (a.type > b.type){
+            setMarkers((prevMarkers) => {
+                return [...prevMarkers, data].sort((a, b) => {
+                    if (a.type > b.type) {
                         return 1
                     }
-                    if (a.type < b.type){
+                    if (a.type < b.type) {
                         return -1;
                     }
                     else return 0;
@@ -268,7 +274,7 @@ export default () => {
                                         )
                                     } else return <></>
                                 })}
-                                <div style={{marginBottom: "30px"}}></div>
+                        <div style={{ marginBottom: "30px" }}></div>
                     </List>
                     <Menu
                         id={`popover`}
@@ -278,6 +284,20 @@ export default () => {
                         onClose={handleClose}
                     >
                         <MenuItem onClick={() => {
+                            setMapProps({
+                                center: {
+                                    lat: parseFloat(selectedMarker.latitude),
+                                    lng: parseFloat(selectedMarker.longitude)
+                                },
+                                zoom: 21
+                            });
+                            setSelectedTab({value: 0});
+                            handleClose();
+                        }}>
+                            Ver no Mapa
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={() => {
                             console.log(selectedMarker.id)
                             history.push(
                                 String('/markers/:marker/edit').replace(':marker', `${selectedMarker.id}`)
@@ -285,14 +305,14 @@ export default () => {
                             handleClose();
                         }}>
                             Editar
-                    </MenuItem>
+                        </MenuItem>
                         <Divider />
                         <MenuItem onClick={() => {
                             showConfirm()
                             handleClose();
                         }}>
                             Deletar
-                    </MenuItem>
+                        </MenuItem>
                     </Menu>
                 </div>
             </>

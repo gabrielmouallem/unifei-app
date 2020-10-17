@@ -17,7 +17,7 @@ import { mapPropsAtom, MapPropsState } from '../../../../../recoils/mapPropsReco
 import ReloadFab from '../ReloadFab/ReloadFab';
 import socketIo from 'socket.io-client';
 import { socketURL } from '../../../../../env';
-import { reloadAtom } from '../../../../../recoils/reloadRecoil';
+import { reloadAtom, ReloadState } from '../../../../../recoils/reloadRecoil';
 
 interface Props {
     center?: {
@@ -55,6 +55,8 @@ export default (props: Props) => {
     const [mapProps, setMapProps] = useRecoilState<MapPropsState>(mapPropsAtom);
 
     const [loading, setLoading] = useState(false);
+
+    var reload: ReloadState = useRecoilValue(reloadAtom);
 
     const [defaultProps, _] = useState({
         center: {
@@ -247,6 +249,7 @@ export default (props: Props) => {
                 <MarkerSummary icon={selectedMarkerIcon} id_title={selectedMarkerTitle} />
                 <ReloadFab action={reloadAllMarkers} isLoading={loading} />
                 <GoogleMapReact
+                    key={reload.stateChange}
                     bootstrapURLKeys={{
                         key: "AIzaSyAaZsfNRSww_QDtQJXRP-BsrXg83EKqoYw",
                         language: "pt",

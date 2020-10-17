@@ -32,8 +32,6 @@ export default () => {
 
     var filter: FilterState = useRecoilValue(filterAtom);
 
-    var reload: ReloadState = useRecoilValue(reloadAtom);
-
     const [selectedTab, setSelectedTab] = useRecoilState<TabState>(tabAtom);
 
     useEffect(()=>{
@@ -69,7 +67,7 @@ export default () => {
                     {
                         selectedTab.value 
                             ? <MarkerList />
-                            : <Map key={`${JSON.stringify(filter)}-${reload.stateChange}`}/>
+                            : <Map key={`${JSON.stringify(filter)}`}/>
                     }
                 </div>
             </div>
