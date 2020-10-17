@@ -2,11 +2,10 @@
 
     width: 92%;
     height: 100%;
+    margin-top: -20px;
 
-    margin: 0px 25px 25px 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow: hidden;
+
     text-align: center;
     align-items: center;
 
@@ -45,6 +44,8 @@
     }
 
     &__infos {
-        margin-bottom: 20px;
+        width: 100%;
+        height: calc(100vh - 290px);
+        overflow-y: scroll !important;
     }
 }

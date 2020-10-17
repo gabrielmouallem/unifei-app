@@ -72,8 +72,8 @@ export default (props: Props) => {
             // @ts-ignore
             if (marker.type === 0) {          // Grupo de Estudos
                 setMarkerInfos(
-                    <>
-                        <div className="selected-marker__infos">
+                    <div>
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Número de Participantes:
@@ -84,7 +84,7 @@ export default (props: Props) => {
                                 1 / {marker.group_size}
                             </Typography>
                         </div>
-                        <div className="selected-marker__infos">
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Disciplina:
@@ -95,7 +95,7 @@ export default (props: Props) => {
                                 {marker.discipline}
                             </Typography>
                         </div>
-                        <div className="selected-marker__infos">
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Turma:
@@ -106,14 +106,14 @@ export default (props: Props) => {
                                 {marker.class_group}
                             </Typography>
                         </div>
-                    </>
+                    </div>
                 )
                 // @ts-ignore
             } else if (marker.type === 1) {   // Atividade Extra
 
                 setMarkerInfos(
-                    <>
-                        <div className="selected-marker__infos">
+                    <div>
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Tipo de Atividade:
@@ -124,14 +124,14 @@ export default (props: Props) => {
                                 {marker.activity_type}
                             </Typography>
                         </div>
-                    </>
+                    </div>
                 )
                 // @ts-ignore
             } else if (marker.type === 2) {   // Eventos
 
                 setMarkerInfos(
-                    <>
-                        <div className="selected-marker__infos">
+                    <div>
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Tipo de Evento:
@@ -142,7 +142,7 @@ export default (props: Props) => {
                                 {EVENT_TYPES[marker.event_type]}
                             </Typography>
                         </div>
-                        <div className="selected-marker__infos">
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Data:
@@ -153,14 +153,14 @@ export default (props: Props) => {
                                 {moment(marker.event_date).format("DD MMM HH:mm")}
                             </Typography>
                         </div>
-                    </>
+                    </div>
                 )
                 // @ts-ignore
             } else if (marker.type === 4) {   // Obra 
 
                 setMarkerInfos(
-                    <>
-                        <div className="selected-marker__infos">
+                    <div>
+                        <div style={{ marginTop: "20px" }}>
                             <Typography
                                 style={{ fontWeight: "bold" }}>
                                 Tipo de Obra:
@@ -171,7 +171,7 @@ export default (props: Props) => {
                                 {CONSTRUCTION_TYPES[marker.construction_type]}
                             </Typography>
                         </div>
-                    </>
+                    </div>
                 )
 
             }
@@ -193,36 +193,36 @@ export default (props: Props) => {
                                         // @ts-ignore */}
                                 <img src={MARKER_ICON_TYPES[marker.type]} width="50px" height="50px" />
                             </div>
-                            <div className="selected-marker__infos">
-                                <Typography
-                                    style={{ fontWeight: "bold", fontSize: "0.7em" }}>
-                                    Criado por:
-                                </Typography>
-                                <Typography
-                                    style={{ fontSize: "0.7em" }}>
+                            <Typography
+                                style={{ fontWeight: "bold", fontSize: "0.7em" }}>
+                                Criado por:
+                                <div
+                                    style={{fontWeight: "normal"}}>
                                     {/* 
                                     // @ts-ignore */}
                                     {marker.created_by.name}
-                                </Typography>
-                            </div>
+                                </div>
+                            </Typography>
                             <div className="selected-marker__infos">
-                                <Typography>
+                                <Typography style={{ marginTop: "20px" }}>
                                     {/* 
                                         // @ts-ignore */}
                                     {marker.description}
                                 </Typography>
-                            </div>
-                            {markerInfos}
-                            {
-                                // @ts-ignore
-                                marker.type === 0
-                                    ? <Button
-                                        style={{ width: "280px", boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)" }}
-                                        variant="contained">
-                                        Confirmar Participação
+                                <div style={{ marginTop: "20px" }}>
+                                    {markerInfos}
+                                </div>
+                                {
+                                    // @ts-ignore
+                                    marker.type === 0
+                                        ? <Button
+                                            style={{ width: "280px", marginTop: "20px", marginBottom: "20px", boxShadow: "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)" }}
+                                            variant="contained">
+                                            Confirmar Participação
                                         </Button>
-                                    : <></>
-                            }
+                                        : <div></div>
+                                }
+                            </div>
                         </div>
                     </BaseModal>
                 </div>
