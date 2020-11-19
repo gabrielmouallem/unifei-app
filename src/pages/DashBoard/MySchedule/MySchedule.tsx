@@ -30,7 +30,6 @@ export default () => {
   const postPdf = (pdf: any) => {
     coreHTTPClient.post(`pdf/`, pdf).then((res: any) => {
       setScheduleArray(res.data.data);
-      localStorage.setItem("my-schedule", JSON.stringify(res.data.data));
     }).catch(err => {
       console.log("Erro em postPdf", err);
     }).finally(() => {
@@ -39,19 +38,8 @@ export default () => {
   }
 
   useEffect(() => {
-    var tempSchedule = localStorage.getItem("my-schedule");
-    if (tempSchedule !== null) {
-      setScheduleArray(JSON.parse(tempSchedule));
-    }
-  }, [])
-
-  useEffect(() => {
     console.log("loading: ", loading);
   }, [loading]);
-
-  useEffect(() => {
-    console.log("scheduleArray: ", scheduleArray);
-  }, [scheduleArray]);
 
   useEffect(() => {
     if (!open) {
@@ -82,10 +70,15 @@ export default () => {
                     aria-controls={`panel1a-content-${index}`}
                     id={`panel1a-header-${index}`}
                   >
-                    <b>{schedule.codigo}</b>
+                    <b>{schedule.name}</b>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
-                    {schedule.codigo_horario}{' - '}{schedule.local}
+                    <div className="container-row">
+                      {schedule.schedules.map((time: any) => {
+                        return <div style={{ marginRight: "5px" }}>{` ${time} `}</div>
+                      })}
+                    </div>
+                    {schedule.classroom}
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               )
@@ -112,7 +105,7 @@ export default () => {
                   Filesystem.readFile({
                     path: uri,
                   }).then(res => {
-                    postPdf(res.data);
+                    postPdf({ data: res.data });
                   }).catch(err => {
                     setLoading(false);
                     notify("Erro ao importar PDF.", "error");
