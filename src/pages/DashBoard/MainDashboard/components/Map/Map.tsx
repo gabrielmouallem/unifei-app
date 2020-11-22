@@ -18,6 +18,7 @@ import ReloadFab from '../ReloadFab/ReloadFab';
 import socketIo from 'socket.io-client';
 import { socketURL } from '../../../../../env';
 import { reloadAtom, ReloadState } from '../../../../../recoils/reloadRecoil';
+import { markersAtom } from '../../../../../recoils/markersRecoil';
 
 interface Props {
     center?: {
@@ -55,6 +56,8 @@ export default (props: Props) => {
     const [mapProps, setMapProps] = useRecoilState<MapPropsState>(mapPropsAtom);
 
     const [loading, setLoading] = useState(false);
+
+    const setMarkersRecoil = useSetRecoilState(markersAtom);
 
     var reload: ReloadState = useRecoilValue(reloadAtom);
 
@@ -112,6 +115,7 @@ export default (props: Props) => {
                 // console.log(response)
                 // @ts-ignore
                 setMarkers(response.data.data);
+                setMarkersRecoil(response.data.data.filter((marker: any)=> marker.type === 3));
             } catch (err) {
                 console.log("Erro em reloadAllMarkers", err);
             } finally {
@@ -127,6 +131,8 @@ export default (props: Props) => {
                 // console.log(response)
                 // @ts-ignore
                 setMarkers(response.data.data);
+                console.log(response.data.data);
+                setMarkersRecoil(response.data.data.filter((marker: any)=> marker.type === 3))
             } catch (err) {
                 console.log("Erro em getAllMarkers", err);
             }
