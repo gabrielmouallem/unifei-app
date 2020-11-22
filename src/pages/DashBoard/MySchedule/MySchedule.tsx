@@ -27,9 +27,23 @@ export default () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [scheduleID, setScheduleID] = useState<any>(undefined);
+
+  const getSchedule = () => {
+    setLoading(true);
+    coreHTTPClient.get(`schedule/`).then((res: any) => {
+      setScheduleArray(res.data.classrooms);
+    }).catch(err => {
+      notify('Erro ao carregar horários.', 'error');
+    }).finally(()=>{
+      setLoading(false);
+    })
+  }
+
   const postPdf = (pdf: any) => {
     coreHTTPClient.post(`pdf/`, pdf).then((res: any) => {
-      setScheduleArray(res.data.data);
+      setScheduleID(res.data.data.id);
+      getSchedule();
     }).catch(err => {
       console.log("Erro em postPdf", err);
     }).finally(() => {
@@ -38,8 +52,8 @@ export default () => {
   }
 
   useEffect(() => {
-    console.log("loading: ", loading);
-  }, [loading]);
+    getSchedule();
+  }, []);
 
   useEffect(() => {
     if (!open) {
@@ -70,15 +84,15 @@ export default () => {
                     aria-controls={`panel1a-content-${index}`}
                     id={`panel1a-header-${index}`}
                   >
-                    <b>{schedule.name}</b>
+                    <b>{schedule.content.name}</b>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <div className="container-row">
-                      {schedule.schedules.map((time: any) => {
+                      {schedule.content.schedules.map((time: any) => {
                         return <div style={{ marginRight: "5px" }}>{` ${time} `}</div>
                       })}
                     </div>
-                    {schedule.classroom}
+                    {schedule.content.classroom}
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               )
