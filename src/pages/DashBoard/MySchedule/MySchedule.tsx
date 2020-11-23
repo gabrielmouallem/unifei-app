@@ -79,14 +79,13 @@ export default () => {
 
   const addMarkerToClassroom = () => {
     console.log({
-      marker_id: selectedMarkerID,
+      marker_id: parseInt(selectedMarkerID),
       classroom_id: selectedClassroomID
     })
     coreHTTPClient.post(`schedule/classroom/marker/`, {
       marker_id: selectedMarkerID,
       classroom_id: selectedClassroomID
     }).then((res: any) => {
-      setScheduleID(res.data.data.id);
       getSchedule();
       setModalOpen(false);
       getSchedule();

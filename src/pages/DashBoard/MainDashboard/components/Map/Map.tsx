@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import GoogleMapReact from 'google-map-react';
-
 import blueDot from '../../../../../assets/images/blue-dot.png';
 import personIcon from '../../../../../assets/images/person-icon.png';
+import classIcon from '../../../../../assets/images/class-marker.png';
 import greenDot from '../../../../../assets/images/green-dot.png';
 import { coreHTTPClient } from '../../../../../services/webclient';
 import CustomCircularProgress from '../../../../../components/CustomCircularProgress/CustomCircularProgress';
@@ -19,6 +19,8 @@ import socketIo from 'socket.io-client';
 import { socketURL } from '../../../../../env';
 import { reloadAtom, ReloadState } from '../../../../../recoils/reloadRecoil';
 import { markersAtom } from '../../../../../recoils/markersRecoil';
+import moment from 'moment';
+import { AxiosResponse } from 'axios';
 
 interface Props {
     center?: {
@@ -58,6 +60,14 @@ export default (props: Props) => {
     const [loading, setLoading] = useState(false);
 
     const setMarkersRecoil = useSetRecoilState(markersAtom);
+
+    const [intervalID, setIntervalID] = useState<any>(undefined);
+
+    const [classrooms, setClassrooms] = useState<any[]>([]);
+
+    const [scheduleMarker, setScheduleMarker] = useState<any>(undefined);
+
+    const [classMarker, setClassMarker] = useState<any>(undefined);
 
     var reload: ReloadState = useRecoilValue(reloadAtom);
 
@@ -105,8 +115,9 @@ export default (props: Props) => {
 
 
     async function reloadAllMarkers() {
-        setReload((prevReloadState)=>{
-            return {...prevReloadState, stateChange: uuidv4()}
+        setMarkers([]);
+        setReload((prevReloadState) => {
+            return { ...prevReloadState, stateChange: uuidv4() }
         })
         setLoading(true);
         await new Promise(async resolve => {
@@ -115,7 +126,7 @@ export default (props: Props) => {
                 // console.log(response)
                 // @ts-ignore
                 setMarkers(response.data.data);
-                setMarkersRecoil(response.data.data.filter((marker: any)=> marker.type === 3));
+                setMarkersRecoil(response.data.data.filter((marker: any) => marker.type === 3));
             } catch (err) {
                 console.log("Erro em reloadAllMarkers", err);
             } finally {
@@ -125,6 +136,7 @@ export default (props: Props) => {
     }
 
     async function getAllMarkers() {
+        setScheduleMarker(undefined);
         await new Promise(async resolve => {
             try {
                 const response: any = await coreHTTPClient.get(`markers/`);
@@ -132,7 +144,7 @@ export default (props: Props) => {
                 // @ts-ignore
                 setMarkers(response.data.data);
                 console.log(response.data.data);
-                setMarkersRecoil(response.data.data.filter((marker: any)=> marker.type === 3))
+                setMarkersRecoil(response.data.data.filter((marker: any) => marker.type === 3))
             } catch (err) {
                 console.log("Erro em getAllMarkers", err);
             }
@@ -144,11 +156,105 @@ export default (props: Props) => {
     }
 
     useEffect(() => {
-        if(reload.reload === true){
+        try {
+            coreHTTPClient.get(`classroom/`).then((response) => {
+                setClassrooms(response.data);
+            });
+        } catch (err) {
+            console.log("Erro em getClassrooms", err);
+        }
+    }, [])
+
+    useEffect(()=>{
+        return () => {
+            clearInterval(intervalID)
+        }
+    },[intervalID])
+
+    useEffect(() => {
+        if (classrooms?.length > 0) {
+            const id = setInterval(() => {
+                classrooms.forEach((item: { schedules: string[], marker: MarkerProps }) => {
+                    item.schedules.forEach((time) => {
+                        var now = moment().second(0);
+                        var hour = time.split(":")[0]
+                        var minute = time.split(":")[1]
+
+                        var timeToCompareEnd = moment().hour(parseInt(hour)).minute(parseInt(minute)).second(0);
+                        var timetoCompareStart =  moment().hour(parseInt(hour)).minute(parseInt(minute)).second(0).subtract(30, 'minutes');
+
+                        // if (true){
+                        if (now.isBetween(timetoCompareStart, timeToCompareEnd)){
+                            console.log("CLASS TIME!!");
+                            setScheduleMarker((prevState: any)=>{
+                                if (prevState?.id === item.marker.id){
+                                    return undefined;
+                                } else {
+                                    return item.marker;
+                                }
+                            })
+                            return;
+                        }
+                    })
+                })
+            }, 10000)
+            setIntervalID(id);
+        }
+    }, [classrooms])
+
+    useEffect(()=>{
+        if (markers.length > 0 && scheduleMarker){
+            const m = new google.maps.Marker({
+                title: scheduleMarker.id + "-" + scheduleMarker.name,
+                position: {
+                    lat: parseFloat(scheduleMarker.latitude),
+                    lng: parseFloat(scheduleMarker.longitude)
+                },
+                animation: google.maps.Animation.BOUNCE,
+                // label: data.name,
+                map: googleMap,//Objeto mapa
+                icon: {
+                    url: classIcon,
+                    scaledSize: new google.maps.Size(50, 50)
+                },
+            })
+
+            google.maps.event.addListener(m, 'click', function () {
+
+                setClickedMarker(m);
+
+                m.getAnimation() ? m.setAnimation(null) : m.setAnimation(google.maps.Animation.BOUNCE);
+                setSelectedMarkerIcon(m.getIcon());
+                setSelectedMarkerTitle(m.getTitle());
+            });
+
+            setClassMarker((prevState: any)=>{
+                if(prevState) {
+                    prevState.setMap(null);
+                }
+                return m;
+            });
+        }
+    },[markers, scheduleMarker])
+
+    useEffect(()=>{
+        console.log({scheduleMarker});
+    },[])
+
+    useEffect(() => {
+        if (reload.reload === true) {
             getAllMarkers();
-            setReload({reload: false, stateChange: null})
+            setReload({ reload: false, stateChange: null });
+            setScheduleMarker(undefined);
+            clearInterval(intervalID);
         }
     }, [reload]);
+
+    useEffect(()=>{
+        if (reload.reload === true){
+            clearInterval(intervalID);
+        }
+    },[reload, intervalID])
 
     useEffect(() => {
         const socketIO = socketIo(socketURL);
@@ -213,7 +319,7 @@ export default (props: Props) => {
 
                                 setClickedMarker(m);
 
-                                if (m.getAnimation()){
+                                if (m.getAnimation()) {
                                     m.setAnimation(null)
                                     setSelectedMarkerTitle(undefined);
                                 } else {
@@ -285,7 +391,7 @@ export default (props: Props) => {
                         setGoogleMap(map)
                     }}
                 >
-
+                    
                 </GoogleMapReact>
             </>
         );
