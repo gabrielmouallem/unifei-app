@@ -6,6 +6,7 @@
     "@capacitor/android": "^2.0.1",
     "@capacitor/cli": "^1.5.1",
     "@capacitor/core": "^1.5.1",
+    "@capacitor/ios": "^2.4.3",
     "@codetrix-studio/capacitor-google-auth": "^2.1.1",
     "@ionic-native/core": "^5.27.0",
     "@ionic-native/file-chooser": "^5.27.0",
